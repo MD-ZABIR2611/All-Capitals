@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>World Capitals · Ultimate Dashboard</title>
+  <link rel="stylesheet" href="index.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="dashboard">
+  <!-- Header with animated gradient -->
+  <div class="hero">
+    <div class="hero-badge">✨ 197 COUNTRIES ✨</div>
+    <h1>🌍 WORLD CAPITALS</h1>
+    <p>Your Ultimate Link Manager • Click • Add • Explore</p>
+    <div class="instruction-note">
+      <span>🔗</span> Click any button → Add your link or visit saved website
+    </div>
+  </div>
+
+  <!-- Stats & Controls Bar -->
+  <div class="controls-bar">
+    <div class="stats">
+      <div class="counter"><span id="totalCount">0</span> Capitals Ready</div>
+      <div class="linked-counter"><span id="linkedCount">0</span> Linked</div>
+      <div class="legend">⚡ Click → Add Link</div>
+    </div>
+    
+    <!-- Search & Filter -->
+    <div class="search-section">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" placeholder="Search country or capital...">
+        <button id="clearSearch" class="clear-btn">✖</button>
+      </div>
+      <div class="filter-buttons">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="linked">✅ Linked</button>
+        <button class="filter-btn" data-filter="unlinked">⭕ Unlinked</button>
+      </div>
+    </div>
+
+    <!-- View Toggle & Theme -->
+    <div class="view-controls">
+      <button id="gridViewBtn" class="view-btn active">📱 Grid</button>
+      <button id="listViewBtn" class="view-btn">📋 List</button>
+      <button id="themeToggle" class="theme-btn">🌙 Dark</button>
+      <button id="exportLinksBtn" class="export-btn">💾 Export Links</button>
+    </div>
+  </div>
+
+  <!-- Capital Buttons Container -->
+  <div id="capitalButtonsContainer" class="capital-grid">
+    <div class="empty-message">Loading capitals ...</div>
+  </div>
+  
+  <!-- Footer -->
+  <div class="footer-note">
+    <div class="footer-content">
+      <span>💡 Tip: Use <code>setCapitalLink("Country", "URL")</code> in console</span>
+      <span>🎨 Click any button to add/manage links</span>
+      <span>⭐ Linked countries show green border</span>
+    </div>
+    <div class="footer-credit">
+      Made with ❤️ | World Capitals Database | 197 Countries
+    </div>
+  </div>
+</div>
+
+<!-- Toast Notification -->
+<div id="toast" class="toast"></div>
+
+<script src="index.js"></script>
+</body>
+</html>
