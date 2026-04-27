@@ -197,13 +197,59 @@ const COUNTRIES_CAPITALS = [
     { country: "Zimbabwe", capital: "Harare" }
 ];
 
+// ========== GET WIKIPEDIA LINK FOR ANY COUNTRY ==========
+function getWikipediaLink(countryName) {
+    // Special cases for countries with complex names
+    const specialCases = {
+        "Antigua and Barbuda": "Antigua_and_Barbuda",
+        "Bosnia and Herzegovina": "Bosnia_and_Herzegovina",
+        "Burkina Faso": "Burkina_Faso",
+        "Cabo Verde": "Cabo_Verde",
+        "Central African Republic": "Central_African_Republic",
+        "Côte d'Ivoire": "Ivory_Coast",
+        "Czech Republic": "Czech_Republic",
+        "Dominican Republic": "Dominican_Republic",
+        "Equatorial Guinea": "Equatorial_Guinea",
+        "Eswatini": "Eswatini",
+        "Marshall Islands": "Marshall_Islands",
+        "North Korea": "North_Korea",
+        "North Macedonia": "North_Macedonia",
+        "Papua New Guinea": "Papua_New_Guinea",
+        "Saint Kitts and Nevis": "Saint_Kitts_and_Nevis",
+        "Saint Lucia": "Saint_Lucia",
+        "Saint Vincent and the Grenadines": "Saint_Vincent_and_the_Grenadines",
+        "Sao Tome and Principe": "São_Tomé_and_Príncipe",
+        "Saudi Arabia": "Saudi_Arabia",
+        "Sierra Leone": "Sierra_Leone",
+        "Solomon Islands": "Solomon_Islands",
+        "South Africa": "South_Africa",
+        "South Korea": "South_Korea",
+        "South Sudan": "South_Sudan",
+        "Sri Lanka": "Sri_Lanka",
+        "Timor-Leste": "East_Timor",
+        "Trinidad and Tobago": "Trinidad_and_Tobago",
+        "United Arab Emirates": "United_Arab_Emirates",
+        "United Kingdom": "United_Kingdom",
+        "United States": "United_States",
+        "Vatican City": "Vatican_City"
+    };
+    
+    if (specialCases[countryName]) {
+        return `https://en.wikipedia.org/wiki/${specialCases[countryName]}`;
+    }
+    
+    // For regular names: replace spaces with underscores
+    let formattedName = countryName.replace(/ /g, "_");
+    return `https://en.wikipedia.org/wiki/${encodeURIComponent(formattedName)}`;
+}
+
 // ========== STORAGE ==========
 let customLinks = new Map();
 let currentFilter = 'all';
 let currentView = 'grid';
 let searchTerm = '';
 
-// Load saved links from localStorage
+// Load saved links
 function loadSavedLinks() {
     const saved = localStorage.getItem('capitalLinks');
     if (saved) {
@@ -227,7 +273,7 @@ function updateLinkedCount() {
     }
 }
 
-// ========== TOAST NOTIFICATION ==========
+// Toast notification
 function showToast(message, duration = 2000) {
     const toast = document.getElementById('toast');
     if (!toast) return;
@@ -238,24 +284,17 @@ function showToast(message, duration = 2000) {
     }, duration);
 }
 
-// ========== OPEN LINK FUNCTION ==========
+// Open link in new tab
 function openLink(url) {
     if (!url) return false;
-    if (url.startsWith('file://')) {
-        window.location.href = url;
-    } else if (url.startsWith('http://') || url.startsWith('https://')) {
-        window.open(url, '_blank', 'noopener,noreferrer');
-    } else {
-        window.open('https://' + url, '_blank', 'noopener,noreferrer');
-    }
+    window.open(url, '_blank', 'noopener,noreferrer');
     return true;
 }
 
-// ========== FILTER & SEARCH ==========
+// Filter countries
 function filterCountries() {
     let filtered = [...COUNTRIES_CAPITALS];
     
-    // Apply search filter
     if (searchTerm) {
         const term = searchTerm.toLowerCase();
         filtered = filtered.filter(item => 
@@ -264,7 +303,6 @@ function filterCountries() {
         );
     }
     
-    // Apply link filter
     if (currentFilter === 'linked') {
         filtered = filtered.filter(item => customLinks.has(item.country));
     } else if (currentFilter === 'unlinked') {
@@ -274,7 +312,7 @@ function filterCountries() {
     return filtered;
 }
 
-// ========== RENDER BUTTONS ==========
+// Render all buttons
 function renderButtons() {
     const container = document.getElementById('capitalButtonsContainer');
     if (!container) return;
@@ -291,11 +329,10 @@ function renderButtons() {
     
     filtered.forEach((item, idx) => {
         const { country, capital } = item;
-        const hasCustomLink = customLinks.has(country);
+        const wikiLink = getWikipediaLink(country);
         
         const btn = document.createElement('button');
         btn.className = 'capital-btn';
-        if (hasCustomLink) btn.classList.add('has-link');
         btn.style.setProperty('--index', idx);
         btn.setAttribute('data-country', country);
         
@@ -312,7 +349,7 @@ function renderButtons() {
         
         const linkIcon = document.createElement('span');
         linkIcon.className = 'arrow-symbol';
-        linkIcon.textContent = hasCustomLink ? '🔗' : '↗';
+        linkIcon.textContent = '📖';
         
         rightWrapper.appendChild(capitalSpan);
         rightWrapper.appendChild(linkIcon);
@@ -320,24 +357,11 @@ function renderButtons() {
         btn.appendChild(leftSpan);
         btn.appendChild(rightWrapper);
         
+        // Click opens Wikipedia page
         btn.addEventListener('click', (e) => {
             e.preventDefault();
-            const existingLink = customLinks.get(country);
-            
-            if (existingLink) {
-                openLink(existingLink);
-                showToast(`🌍 Opening ${country}...`);
-            } else {
-                const newUrl = prompt(`🔗 Enter URL for ${country} (${capital}):`, "https://");
-                if (newUrl && newUrl.trim()) {
-                    let finalUrl = newUrl.trim();
-                    if (!finalUrl.startsWith('http://') && !finalUrl.startsWith('https://') && !finalUrl.startsWith('file://')) {
-                        finalUrl = 'https://' + finalUrl;
-                    }
-                    setCapitalLink(country, finalUrl);
-                    showToast(`✅ Link saved for ${country}!`);
-                }
-            }
+            openLink(wikiLink);
+            showToast(`📖 Opening Wikipedia: ${country}`, 1500);
         });
         
         fragment.appendChild(btn);
@@ -348,70 +372,7 @@ function renderButtons() {
     document.getElementById('totalCount').innerText = filtered.length;
 }
 
-// ========== SET LINK ==========
-window.setCapitalLink = function(countryName, url) {
-    if (!countryName || typeof url !== 'string') {
-        console.warn("setCapitalLink requires country name and URL");
-        return false;
-    }
-    customLinks.set(countryName, url);
-    saveLinks();
-    renderButtons();
-    updateLinkedCount();
-    console.log(`✅ ${countryName} → ${url}`);
-    return true;
-};
-
-// ========== GET LINK ==========
-window.getCapitalLink = function(countryName) {
-    return customLinks.get(countryName) || null;
-};
-
-// ========== REMOVE LINK ==========
-window.removeCapitalLink = function(countryName) {
-    if (customLinks.delete(countryName)) {
-        saveLinks();
-        renderButtons();
-        updateLinkedCount();
-        showToast(`❌ Link removed for ${countryName}`);
-        return true;
-    }
-    return false;
-};
-
-// ========== EXPORT LINKS ==========
-window.exportLinks = function() {
-    const links = Object.fromEntries(customLinks);
-    const dataStr = JSON.stringify(links, null, 2);
-    const blob = new Blob([dataStr], {type: 'application/json'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `capital-links-${new Date().toISOString().slice(0,19)}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
-    showToast('💾 Links exported!');
-};
-
-// ========== IMPORT LINKS ==========
-window.importLinks = function(jsonData) {
-    try {
-        const links = JSON.parse(jsonData);
-        for (const [country, url] of Object.entries(links)) {
-            customLinks.set(country, url);
-        }
-        saveLinks();
-        renderButtons();
-        updateLinkedCount();
-        showToast(`📥 Imported ${Object.keys(links).length} links`);
-        return true;
-    } catch(e) {
-        showToast('❌ Invalid JSON');
-        return false;
-    }
-};
-
-// ========== SEARCH FUNCTIONALITY ==========
+// Search functionality
 function initSearch() {
     const searchInput = document.getElementById('searchInput');
     const clearBtn = document.getElementById('clearSearch');
@@ -438,7 +399,7 @@ function initSearch() {
     }
 }
 
-// ========== FILTER BUTTONS ==========
+// Filter buttons
 function initFilters() {
     const filterBtns = document.querySelectorAll('.filter-btn');
     filterBtns.forEach(btn => {
@@ -451,7 +412,7 @@ function initFilters() {
     });
 }
 
-// ========== VIEW TOGGLE ==========
+// View toggle (Grid/List)
 function initViewToggle() {
     const gridBtn = document.getElementById('gridViewBtn');
     const listBtn = document.getElementById('listViewBtn');
@@ -474,7 +435,7 @@ function initViewToggle() {
     }
 }
 
-// ========== DARK MODE ==========
+// Dark mode
 function initDarkMode() {
     const themeBtn = document.getElementById('themeToggle');
     const isDark = localStorage.getItem('darkMode') === 'true';
@@ -495,17 +456,29 @@ function initDarkMode() {
     }
 }
 
-// ========== EXPORT BUTTON ==========
+// Export Wikipedia links
 function initExport() {
     const exportBtn = document.getElementById('exportLinksBtn');
     if (exportBtn) {
         exportBtn.addEventListener('click', () => {
-            window.exportLinks();
+            const links = {};
+            for (const country of COUNTRIES_CAPITALS) {
+                links[country.country] = getWikipediaLink(country.country);
+            }
+            const dataStr = JSON.stringify(links, null, 2);
+            const blob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `wikipedia-links-${new Date().toISOString().slice(0,19)}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('💾 Wikipedia links exported!');
         });
     }
 }
 
-// ========== INITIALIZE ==========
+// Initialize everything
 function init() {
     loadSavedLinks();
     initSearch();
@@ -516,15 +489,12 @@ function init() {
     renderButtons();
     updateLinkedCount();
     
-    console.log("🌍 Ultimate World Capitals Dashboard Ready!");
+    console.log("🌍 World Capitals Dashboard Ready!");
     console.log(`📊 ${COUNTRIES_CAPITALS.length} countries loaded`);
-    console.log(`🔗 ${customLinks.size} links saved`);
-    console.log("💡 Commands: setCapitalLink('Country', 'URL') | getCapitalLink('Country') | removeCapitalLink('Country') | exportLinks()");
-    
-    // Pre-load Bangladesh link if not exists
-    if (!customLinks.has("Bangladesh")) {
-        setCapitalLink("Bangladesh", "DHAKA.html");
-    }
+    console.log("📖 Each button opens the country's Wikipedia page!");
+    console.log("💡 Examples:");
+    console.log("   - Bangladesh → https://en.wikipedia.org/wiki/Bangladesh");
+    console.log("   - Argentina → https://en.wikipedia.org/wiki/Argentina");
 }
 
 // Start the app
