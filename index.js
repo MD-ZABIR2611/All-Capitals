@@ -243,40 +243,28 @@ function getWikipediaLink(countryName) {
     return `https://en.wikipedia.org/wiki/${encodeURIComponent(formattedName)}`;
 }
 
-// ========== STORAGE ==========
-let customLinks = new Map();
-let currentFilter = 'all';
+// ========== DOM ELEMENTS ==========
+const container = document.getElementById('capitalButtonsContainer');
+const totalCountSpan = document.getElementById('totalCount');
+const searchInput = document.getElementById('searchInput');
+const clearBtn = document.getElementById('clearSearch');
+const gridViewBtn = document.getElementById('gridViewBtn');
+const listViewBtn = document.getElementById('listViewBtn');
+const themeToggle = document.getElementById('themeToggle');
+
+// ========== STATE ==========
 let currentView = 'grid';
 let searchTerm = '';
 
-// Load saved links
-function loadSavedLinks() {
-    const saved = localStorage.getItem('capitalLinks');
-    if (saved) {
-        try {
-            const parsed = JSON.parse(saved);
-            customLinks = new Map(Object.entries(parsed));
-        } catch(e) {}
-    }
-}
-
-function saveLinks() {
-    const obj = Object.fromEntries(customLinks);
-    localStorage.setItem('capitalLinks', JSON.stringify(obj));
-    updateLinkedCount();
-}
-
-function updateLinkedCount() {
-    const linkedCount = document.getElementById('linkedCount');
-    if (linkedCount) {
-        linkedCount.innerText = customLinks.size;
-    }
-}
-
-// Toast notification
+// ========== TOAST NOTIFICATION ==========
 function showToast(message, duration = 2000) {
-    const toast = document.getElementById('toast');
-    if (!toast) return;
+    let toast = document.getElementById('toast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'toast';
+        toast.className = 'toast';
+        document.body.appendChild(toast);
+    }
     toast.textContent = message;
     toast.classList.add('show');
     setTimeout(() => {
@@ -284,14 +272,14 @@ function showToast(message, duration = 2000) {
     }, duration);
 }
 
-// Open link in new tab
-function openLink(url) {
-    if (!url) return false;
+// ========== OPEN WIKIPEDIA ==========
+function openWikipedia(countryName) {
+    const url = getWikipediaLink(countryName);
     window.open(url, '_blank', 'noopener,noreferrer');
-    return true;
+    showToast(`📖 Opening Wikipedia: ${countryName}`, 1500);
 }
 
-// Filter countries
+// ========== FILTER COUNTRIES ==========
 function filterCountries() {
     let filtered = [...COUNTRIES_CAPITALS];
     
@@ -303,25 +291,18 @@ function filterCountries() {
         );
     }
     
-    if (currentFilter === 'linked') {
-        filtered = filtered.filter(item => customLinks.has(item.country));
-    } else if (currentFilter === 'unlinked') {
-        filtered = filtered.filter(item => !customLinks.has(item.country));
-    }
-    
     return filtered;
 }
 
-// Render all buttons
+// ========== RENDER BUTTONS ==========
 function renderButtons() {
-    const container = document.getElementById('capitalButtonsContainer');
     if (!container) return;
     
     const filtered = filterCountries();
     
     if (filtered.length === 0) {
         container.innerHTML = '<div class="empty-message">✨ No matching countries found ✨</div>';
-        document.getElementById('totalCount').innerText = '0';
+        if (totalCountSpan) totalCountSpan.innerText = '0';
         return;
     }
     
@@ -329,7 +310,6 @@ function renderButtons() {
     
     filtered.forEach((item, idx) => {
         const { country, capital } = item;
-        const wikiLink = getWikipediaLink(country);
         
         const btn = document.createElement('button');
         btn.className = 'capital-btn';
@@ -360,8 +340,7 @@ function renderButtons() {
         // Click opens Wikipedia page
         btn.addEventListener('click', (e) => {
             e.preventDefault();
-            openLink(wikiLink);
-            showToast(`📖 Opening Wikipedia: ${country}`, 1500);
+            openWikipedia(country);
         });
         
         fragment.appendChild(btn);
@@ -369,14 +348,11 @@ function renderButtons() {
     
     container.innerHTML = '';
     container.appendChild(fragment);
-    document.getElementById('totalCount').innerText = filtered.length;
+    if (totalCountSpan) totalCountSpan.innerText = filtered.length;
 }
 
-// Search functionality
+// ========== SEARCH FUNCTIONALITY ==========
 function initSearch() {
-    const searchInput = document.getElementById('searchInput');
-    const clearBtn = document.getElementById('clearSearch');
-    
     if (searchInput) {
         searchInput.addEventListener('input', (e) => {
             searchTerm = e.target.value;
@@ -399,95 +375,51 @@ function initSearch() {
     }
 }
 
-// Filter buttons
-function initFilters() {
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    filterBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            filterBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            currentFilter = btn.dataset.filter;
-            renderButtons();
-        });
-    });
-}
-
-// View toggle (Grid/List)
+// ========== VIEW TOGGLE ==========
 function initViewToggle() {
-    const gridBtn = document.getElementById('gridViewBtn');
-    const listBtn = document.getElementById('listViewBtn');
-    const container = document.getElementById('capitalButtonsContainer');
-    
-    if (gridBtn && listBtn && container) {
-        gridBtn.addEventListener('click', () => {
-            gridBtn.classList.add('active');
-            listBtn.classList.remove('active');
+    if (gridViewBtn && listViewBtn && container) {
+        gridViewBtn.addEventListener('click', () => {
+            gridViewBtn.classList.add('active');
+            listViewBtn.classList.remove('active');
             container.classList.remove('list-view');
             currentView = 'grid';
         });
         
-        listBtn.addEventListener('click', () => {
-            listBtn.classList.add('active');
-            gridBtn.classList.remove('active');
+        listViewBtn.addEventListener('click', () => {
+            listViewBtn.classList.add('active');
+            gridViewBtn.classList.remove('active');
             container.classList.add('list-view');
             currentView = 'list';
         });
     }
 }
 
-// Dark mode
+// ========== DARK MODE ==========
 function initDarkMode() {
-    const themeBtn = document.getElementById('themeToggle');
     const isDark = localStorage.getItem('darkMode') === 'true';
     
     if (isDark) {
         document.body.classList.add('dark-mode');
-        if (themeBtn) themeBtn.textContent = '☀️ Light';
+        if (themeToggle) themeToggle.textContent = '☀️ Light';
     }
     
-    if (themeBtn) {
-        themeBtn.addEventListener('click', () => {
+    if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
             document.body.classList.toggle('dark-mode');
             const isDarkNow = document.body.classList.contains('dark-mode');
             localStorage.setItem('darkMode', isDarkNow);
-            themeBtn.textContent = isDarkNow ? '☀️ Light' : '🌙 Dark';
+            themeToggle.textContent = isDarkNow ? '☀️ Light' : '🌙 Dark';
             showToast(isDarkNow ? '🌙 Dark mode enabled' : '☀️ Light mode enabled');
         });
     }
 }
 
-// Export Wikipedia links
-function initExport() {
-    const exportBtn = document.getElementById('exportLinksBtn');
-    if (exportBtn) {
-        exportBtn.addEventListener('click', () => {
-            const links = {};
-            for (const country of COUNTRIES_CAPITALS) {
-                links[country.country] = getWikipediaLink(country.country);
-            }
-            const dataStr = JSON.stringify(links, null, 2);
-            const blob = new Blob([dataStr], {type: 'application/json'});
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `wikipedia-links-${new Date().toISOString().slice(0,19)}.json`;
-            a.click();
-            URL.revokeObjectURL(url);
-            showToast('💾 Wikipedia links exported!');
-        });
-    }
-}
-
-// Initialize everything
+// ========== INITIALIZE ==========
 function init() {
-    loadSavedLinks();
     initSearch();
-    initFilters();
     initViewToggle();
     initDarkMode();
-    initExport();
     renderButtons();
-    updateLinkedCount();
     
     console.log("🌍 World Capitals Dashboard Ready!");
     console.log(`📊 ${COUNTRIES_CAPITALS.length} countries loaded`);
