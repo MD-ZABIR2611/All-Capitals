@@ -3,65 +3,58 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>World Capitals · Ultimate Dashboard</title>
+  <title>World Capitals · Wikipedia Links</title>
   <link rel="stylesheet" href="index.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
 </head>
 <body>
 
 <div class="dashboard">
-  <!-- Header with animated gradient -->
+  <!-- Header -->
   <div class="hero">
-    <div class="hero-badge">✨ 197 COUNTRIES ✨</div>
+    <div class="hero-badge">🌐 197 COUNTRIES 🌐</div>
     <h1>🌍 WORLD CAPITALS</h1>
-    <p>Your Ultimate Link Manager • Click • Add • Explore</p>
+    <p>Click any country to open its Wikipedia page instantly!</p>
     <div class="instruction-note">
-      <span>🔗</span> Click any button → Add your link or visit saved website
+      <span>📖</span> Every button opens Wikipedia • Search • Filter • Dark Mode
     </div>
   </div>
 
-  <!-- Stats & Controls Bar -->
+  <!-- Controls Bar -->
   <div class="controls-bar">
     <div class="stats">
-      <div class="counter"><span id="totalCount">0</span> Capitals Ready</div>
-      <div class="linked-counter"><span id="linkedCount">0</span> Linked</div>
-      <div class="legend">⚡ Click → Add Link</div>
+      <div class="counter"><span id="totalCount">0</span> Countries</div>
+      <div class="legend">📖 Click → Wikipedia Page</div>
     </div>
     
-    <!-- Search & Filter -->
+    <!-- Search Box -->
     <div class="search-section">
       <div class="search-box">
         <span class="search-icon">🔍</span>
         <input type="text" id="searchInput" placeholder="Search country or capital...">
         <button id="clearSearch" class="clear-btn">✖</button>
       </div>
-      <div class="filter-buttons">
-        <button class="filter-btn active" data-filter="all">All</button>
-        <button class="filter-btn" data-filter="linked">✅ Linked</button>
-        <button class="filter-btn" data-filter="unlinked">⭕ Unlinked</button>
-      </div>
     </div>
 
-    <!-- View Toggle & Theme -->
+    <!-- View Controls -->
     <div class="view-controls">
       <button id="gridViewBtn" class="view-btn active">📱 Grid</button>
       <button id="listViewBtn" class="view-btn">📋 List</button>
       <button id="themeToggle" class="theme-btn">🌙 Dark</button>
-      <button id="exportLinksBtn" class="export-btn">💾 Export Links</button>
     </div>
   </div>
 
   <!-- Capital Buttons Container -->
   <div id="capitalButtonsContainer" class="capital-grid">
-    <div class="empty-message">Loading capitals ...</div>
+    <div class="empty-message">🌍 Loading 197 countries...</div>
   </div>
   
   <!-- Footer -->
   <div class="footer-note">
     <div class="footer-content">
-      <span>💡 Tip: Use <code>setCapitalLink("Country", "URL")</code> in console</span>
-      <span>🎨 Click any button to add/manage links</span>
-      <span>⭐ Linked countries show green border</span>
+      <span>📖 Wikipedia links for ALL 197 countries!</span>
+      <span>🇧🇩 Bangladesh → https://en.wikipedia.org/wiki/Bangladesh</span>
+      <span>🇦🇷 Argentina → https://en.wikipedia.org/wiki/Argentina</span>
     </div>
     <div class="footer-credit">
       Made with ❤️ | World Capitals Database | 197 Countries
