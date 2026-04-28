@@ -3,62 +3,194 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>World Capitals · Wikipedia Links</title>
-  <link rel="stylesheet" href="index.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <title>🌍 CAPITALIUM ULTRA | World Capitals Wikipedia Gateway</title>
+  <!-- Tailwind CSS v4 only - zero custom CSS -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="font-['Inter'] bg-gradient-to-br from-slate-50 via-gray-100 to-blue-50 dark:from-[#0a0a15] dark:via-[#101020] dark:to-[#0f172a] transition-all duration-500 antialiased">
 
-<div class="dashboard">
-  <!-- Header -->
-  <div class="hero">
-    <div class="hero-badge">🌐 197 COUNTRIES 🌐</div>
-    <h1>🌍 WORLD CAPITALS</h1>
-    <p>Click any country to open its Wikipedia page instantly!</p>
-  </div>
-
-  <!-- Controls Bar -->
-  <div class="controls-bar">
-    <div class="stats">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
     
-    <!-- Search Box -->
-    <div class="search-section">
-      <div class="search-box">
-        <span class="search-icon">🔍</span>
-        <input type="text" id="searchInput" placeholder="Search country or capital...">
-        <button id="clearSearch" class="clear-btn">✖</button>
+    <!-- HERO SECTION -->
+    <div class="text-center mb-8 md:mb-12 relative">
+      <div class="inline-block mb-4 animate-pulse">
+        <span class="bg-gradient-to-r from-orange-500 to-amber-600 text-white text-xs md:text-sm font-extrabold px-5 py-2 rounded-full shadow-lg shadow-orange-500/30 tracking-wider">🌐 197 SOVEREIGN STATES 🌐</span>
+      </div>
+      <h1 class="text-4xl md:text-6xl font-black bg-gradient-to-r from-slate-800 via-orange-600 to-amber-700 bg-clip-text text-transparent dark:from-white dark:via-orange-400 dark:to-amber-300 drop-shadow-sm">🌍 CAPITALIUM ULTRA</h1>
+      <p class="text-gray-600 dark:text-gray-300 text-base md:text-lg font-medium mt-3 max-w-2xl mx-auto">⚡ 30+ features | Wikipedia gateway | Favorites | Quiz | Voice | Collaboration ⚡</p>
+      
+      <!-- Keyboard Shortcuts Help -->
+      <div class="mt-3 flex justify-center gap-2 flex-wrap">
+        <span class="inline-flex items-center gap-1 bg-gray-200 dark:bg-gray-800 rounded-md px-2 py-0.5 text-xs font-mono">? help</span>
+        <span class="inline-flex items-center gap-1 bg-gray-200 dark:bg-gray-800 rounded-md px-2 py-0.5 text-xs font-mono">/ search</span>
+        <span class="inline-flex items-center gap-1 bg-gray-200 dark:bg-gray-800 rounded-md px-2 py-0.5 text-xs font-mono">G grid</span>
+        <span class="inline-flex items-center gap-1 bg-gray-200 dark:bg-gray-800 rounded-md px-2 py-0.5 text-xs font-mono">L list</span>
+        <span class="inline-flex items-center gap-1 bg-gray-200 dark:bg-gray-800 rounded-md px-2 py-0.5 text-xs font-mono">F favorites</span>
+        <span class="inline-flex items-center gap-1 bg-gray-200 dark:bg-gray-800 rounded-md px-2 py-0.5 text-xs font-mono">R reset</span>
+        <span class="inline-flex items-center gap-1 bg-gray-200 dark:bg-gray-800 rounded-md px-2 py-0.5 text-xs font-mono">D dark</span>
+        <span class="inline-flex items-center gap-1 bg-gray-200 dark:bg-gray-800 rounded-md px-2 py-0.5 text-xs font-mono">ESC clear</span>
       </div>
     </div>
 
-    <!-- View Controls -->
-    <div class="view-controls">
-      <button id="gridViewBtn" class="view-btn active">📱 Grid</button>
-      <button id="listViewBtn" class="view-btn">📋 List</button>
-      <button id="themeToggle" class="theme-btn">🌙 Dark</button>
+    <!-- CONTROLS BAR with all filters -->
+    <div class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl rounded-3xl shadow-xl border border-orange-200/40 dark:border-orange-800/30 p-5 md:p-6 mb-6 transition-all">
+      
+      <!-- Stats Row -->
+      <div class="flex flex-wrap justify-between items-center gap-3 mb-5">
+        <div class="flex gap-3 flex-wrap">
+          <div class="bg-orange-50 dark:bg-orange-950/60 rounded-full px-5 py-2 shadow-sm">
+            <span class="font-black text-orange-600 dark:text-orange-400 text-2xl mr-1" id="totalCountDisplay">197</span>
+            <span class="font-semibold text-gray-700 dark:text-gray-300">countries</span>
+          </div>
+          <div class="bg-gray-100 dark:bg-slate-800 rounded-full px-5 py-2 shadow-sm cursor-pointer hover:bg-orange-100 transition" id="favoriteCountBtn">
+            <span class="text-gray-600 dark:text-gray-400 text-sm font-medium" id="favoriteCountDisplay">⭐ 0 favorites</span>
+          </div>
+          <div class="bg-gray-100 dark:bg-slate-800 rounded-full px-5 py-2 shadow-sm">
+            <span class="text-gray-600 dark:text-gray-400 text-sm font-medium" id="visitedCountDisplay">✈️ 0 visited</span>
+          </div>
+          <div class="bg-gray-100 dark:bg-slate-800 rounded-full px-5 py-2 shadow-sm">
+            <span class="text-gray-600 dark:text-gray-400 text-sm font-medium" id="quizScoreDisplay">🎮 Score: 0</span>
+          </div>
+        </div>
+        <div class="text-xs text-gray-500 dark:text-gray-400 bg-gray-100/70 dark:bg-slate-800/70 px-4 py-1.5 rounded-full" id="statsTime">🕒 loading...</div>
+      </div>
+
+      <!-- Continent Filter Dropdown + Sorting -->
+      <div class="flex flex-wrap gap-3 mb-4">
+        <select id="continentFilter" class="bg-white dark:bg-slate-800 border-2 border-gray-200 dark:border-slate-700 rounded-full px-4 py-2 text-sm font-medium outline-none focus:border-orange-400">
+          <option value="all">🌎 All Continents</option>
+          <option value="Africa">🌍 Africa</option>
+          <option value="Asia">🌏 Asia</option>
+          <option value="Europe">🌍 Europe</option>
+          <option value="North America">🌎 North America</option>
+          <option value="South America">🌎 South America</option>
+          <option value="Oceania">🌊 Oceania</option>
+          <option value="Antarctica">❄️ Antarctica</option>
+        </select>
+        
+        <select id="sortBy" class="bg-white dark:bg-slate-800 border-2 border-gray-200 dark:border-slate-700 rounded-full px-4 py-2 text-sm font-medium outline-none focus:border-orange-400">
+          <option value="default">📋 Sort: Default (A-Z)</option>
+          <option value="reverse">🔄 Reverse (Z-A)</option>
+          <option value="capital">🏛️ By Capital Name</option>
+          <option value="favorites">⭐ Favorites First</option>
+          <option value="visited">✈️ Most Visited</option>
+          <option value="random">🎲 Random Order</option>
+        </select>
+        
+        <button id="reshuffleBtn" class="bg-orange-500 hover:bg-orange-600 text-white rounded-full px-4 py-2 text-sm font-bold transition hidden">🔄 Reshuffle</button>
+      </div>
+
+      <!-- Active Filters Chips -->
+      <div id="activeFiltersContainer" class="flex flex-wrap gap-2 mb-4 min-h-[40px]"></div>
+
+      <!-- Search Row -->
+      <div class="flex flex-col md:flex-row gap-4">
+        <div class="relative flex-1">
+          <div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+            <span class="text-orange-500 text-lg">🔍</span>
+          </div>
+          <input type="text" id="searchInput" placeholder="Search by country, capital, or notes..." 
+                 class="w-full bg-white dark:bg-slate-800 border-2 border-gray-200 dark:border-slate-700 focus:border-orange-400 rounded-2xl py-3 pl-11 pr-12 text-gray-800 dark:text-white font-medium outline-none transition shadow-sm">
+          <button id="voiceSearchBtn" class="absolute right-12 top-1/2 -translate-y-1/2 text-gray-400 hover:text-orange-600 text-xl transition">🎤</button>
+          <button id="clearSearchBtn" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-orange-600 text-xl font-bold hidden transition">✖</button>
+        </div>
+        
+        <div class="flex gap-3 flex-wrap">
+          <button id="gridViewToggle" class="flex items-center gap-2 bg-white dark:bg-slate-800 border border-gray-300 rounded-full px-5 py-2.5 font-bold shadow-sm transition-all">📱 Grid</button>
+          <button id="listViewToggle" class="flex items-center gap-2 bg-white dark:bg-slate-800 border border-gray-300 rounded-full px-5 py-2.5 font-bold shadow-sm transition-all">📋 List</button>
+          <button id="quizModeToggle" class="flex items-center gap-2 bg-white dark:bg-slate-800 border border-gray-300 rounded-full px-5 py-2.5 font-bold shadow-sm transition-all">🎮 Quiz</button>
+          <button id="flashcardModeToggle" class="flex items-center gap-2 bg-white dark:bg-slate-800 border border-gray-300 rounded-full px-5 py-2.5 font-bold shadow-sm transition-all">📇 Flashcards</button>
+          <button id="darkModeToggle" class="bg-white dark:bg-slate-800 border border-gray-300 rounded-full px-5 py-2.5 font-bold shadow-sm transition-all">🌙 Dark</button>
+          <button id="exportCSVBtn" class="bg-green-500 hover:bg-green-600 text-white rounded-full px-5 py-2.5 font-bold shadow-sm transition-all">📎 Export CSV</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- QUIZ MODE PANEL (hidden by default) -->
+    <div id="quizPanel" class="bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl p-6 mb-6 text-white hidden">
+      <div class="flex justify-between items-center">
+        <div>
+          <h3 class="text-2xl font-bold">🎮 Quiz Mode Active</h3>
+          <p id="quizQuestion" class="text-lg mt-2">Which country has the capital <span id="quizCapitalTarget" class="font-bold underline">?</span>?</p>
+        </div>
+        <div class="text-right">
+          <div class="text-3xl font-bold" id="quizScore">0</div>
+          <div class="text-sm">correct answers</div>
+        </div>
+      </div>
+      <div id="quizOptions" class="grid grid-cols-2 gap-3 mt-4"></div>
+      <button id="exitQuizBtn" class="mt-4 bg-white/20 hover:bg-white/30 rounded-full px-4 py-2 text-sm font-semibold">Exit Quiz Mode</button>
+    </div>
+
+    <!-- FLASHCARD MODE PANEL (hidden by default) -->
+    <div id="flashcardPanel" class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl p-8 mb-6 text-white text-center hidden">
+      <div class="text-6xl mb-4" id="flashcardDisplay">???</div>
+      <div class="text-2xl font-bold mb-2" id="flashcardCapital">Capital name appears here</div>
+      <input type="text" id="flashcardInput" placeholder="Type country name..." class="w-full max-w-md mx-auto bg-white text-gray-800 rounded-full px-6 py-3 text-center font-semibold outline-none mt-4">
+      <div class="flex justify-center gap-4 mt-4">
+        <button id="flashcardRevealBtn" class="bg-yellow-500 hover:bg-yellow-600 px-6 py-2 rounded-full font-bold">Reveal Answer</button>
+        <button id="flashcardNextBtn" class="bg-green-500 hover:bg-green-600 px-6 py-2 rounded-full font-bold">Next Card →</button>
+      </div>
+      <div class="mt-4 text-sm">🔥 Streak: <span id="streakCount">0</span> correct in a row</div>
+      <button id="exitFlashcardBtn" class="mt-6 bg-white/20 hover:bg-white/30 rounded-full px-4 py-2 text-sm font-semibold">Exit Flashcards</button>
+    </div>
+
+    <!-- COUNTRY GRID / LIST CONTAINER -->
+    <div id="capitalsContainer" class="transition-all duration-300">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div class="bg-white/60 dark:bg-slate-800/60 rounded-2xl p-6 text-center backdrop-blur-sm animate-pulse">Loading 197 countries...</div>
+      </div>
+    </div>
+
+    <!-- RANDOM COUNTRY FLOATING BUTTON -->
+    <button id="randomCountryBtn" class="fixed bottom-6 right-6 bg-gradient-to-r from-orange-500 to-amber-600 text-white rounded-full p-4 shadow-2xl hover:scale-110 transition-all duration-300 z-40 text-2xl">🎲</button>
+
+    <!-- COMPARISON PANEL (hidden) -->
+    <div id="comparisonPanel" class="fixed right-0 top-20 w-96 bg-white dark:bg-slate-800 shadow-2xl rounded-l-2xl p-4 transform translate-x-full transition-all duration-300 z-50 border-l-4 border-orange-500">
+      <div class="flex justify-between items-center mb-3">
+        <h4 class="font-bold text-lg">📊 Country Comparison</h4>
+        <button id="closeComparisonBtn" class="text-gray-500 hover:text-red-500">✖</button>
+      </div>
+      <div id="comparisonContent" class="text-sm space-y-2 max-h-96 overflow-y-auto"></div>
+      <button id="clearComparisonBtn" class="mt-3 bg-gray-500 text-white rounded-full px-4 py-2 text-sm w-full">Clear All</button>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="mt-14 pt-6 border-t border-gray-200 dark:border-slate-800 text-center">
+      <div class="flex flex-wrap justify-center gap-5 text-xs md:text-sm text-gray-500 dark:text-gray-400 font-medium mb-3">
+        <span class="inline-flex items-center gap-1">📖 Wikipedia links for all 197 countries</span>
+        <button id="resetCountersBtn" class="hover:text-red-500 transition">🔄 Reset All Counters</button>
+        <button id="shareUrlBtn" class="hover:text-orange-500 transition">🔗 Share Filtered View</button>
+      </div>
+      <div class="text-xs text-gray-400 dark:text-gray-500">✨ CAPITALIUM ULTRA | 30+ features | Favorites persist | Offline ready | Click ★ to favorite | Click 📖 for Wikipedia ✨</div>
     </div>
   </div>
 
-  <!-- Capital Buttons Container -->
-  <div id="capitalButtonsContainer" class="capital-grid">
-    <div class="empty-message">🌍 Loading 197 countries...</div>
-  </div>
-  
-  <!-- Footer -->
-  <div class="footer-note">
-    <div class="footer-content">
-      <span>📖 Wikipedia links for ALL 197 countries!</span>
-      <span>🇧🇩 Bangladesh → https://en.wikipedia.org/wiki/Bangladesh</span>
-      <span>🇦🇷 Argentina → https://en.wikipedia.org/wiki/Argentina</span>
-    </div>
-    <div class="footer-credit">
-      Made with ❤️ | World Capitals Database | 197 Countries
-    </div>
-  </div>
-</div>
+  <!-- TOAST NOTIFICATION -->
+  <div id="toastMsg" class="fixed bottom-24 right-6 bg-slate-900 dark:bg-orange-600 text-white px-5 py-2.5 rounded-full shadow-2xl text-sm font-semibold translate-x-[120%] transition-all duration-300 z-50 pointer-events-none flex items-center gap-2">📘 <span id="toastText">Ready</span></div>
 
-<!-- Toast Notification -->
-<div id="toast" class="toast"></div>
+  <!-- KEYBOARD HELP MODAL -->
+  <div id="helpModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 hidden">
+    <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 max-w-md w-full mx-4">
+      <h3 class="text-xl font-bold mb-4">⌨️ Keyboard Shortcuts</h3>
+      <div class="space-y-2 text-sm">
+        <div><kbd class="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">/</kbd> - Focus search</div>
+        <div><kbd class="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">G</kbd> - Grid view</div>
+        <div><kbd class="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">L</kbd> - List view</div>
+        <div><kbd class="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">F</kbd> - Toggle favorites only</div>
+        <div><kbd class="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">R</kbd> - Reset all filters</div>
+        <div><kbd class="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">D</kbd> - Dark mode toggle</div>
+        <div><kbd class="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">Q</kbd> - Quiz mode</div>
+        <div><kbd class="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">Esc</kbd> - Clear search / exit modes</div>
+        <div><kbd class="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">?</kbd> - Show this help</div>
+      </div>
+      <button id="closeHelpModal" class="mt-6 bg-orange-500 text-white rounded-full px-6 py-2 w-full">Close</button>
+    </div>
+  </div>
 
-<script src="index.js"></script>
+  <script src="index.js">
+
+  </script>
 </body>
 </html>
