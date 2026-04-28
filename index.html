@@ -3,192 +3,360 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>🌍 CAPITALIUM ULTRA | World Capitals Wikipedia Gateway</title>
-  <!-- Tailwind CSS v4 only - zero custom CSS -->
+  <title>🌍 CAPITALIUM | World Capitals · Wikipedia Vault</title>
+  <!-- Tailwind CSS v4 + Inter font (pure tailwind, zero custom CSS) -->
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet">
+  <style>
+    /* no custom CSS blocks — everything is Tailwind utilities. This block intentionally empty. */
+  </style>
 </head>
 <body class="font-['Inter'] bg-gradient-to-br from-slate-50 via-gray-100 to-blue-50 dark:from-[#0a0a15] dark:via-[#101020] dark:to-[#0f172a] transition-all duration-500 antialiased">
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
     
-    <!-- HERO SECTION -->
-    <div class="text-center mb-8 md:mb-12 relative">
-      <div class="inline-block mb-4 animate-pulse">
-        <span class="bg-gradient-to-r from-orange-500 to-amber-600 text-white text-xs md:text-sm font-extrabold px-5 py-2 rounded-full shadow-lg shadow-orange-500/30 tracking-wider">🌐 197 SOVEREIGN STATES 🌐</span>
+    <!-- HERO SECTION — fully tailwind, zero custom CSS -->
+    <div class="text-center mb-10 md:mb-14 relative">
+      <div class="inline-block mb-4">
+        <span class="bg-gradient-to-r from-orange-500 to-amber-600 text-white text-xs md:text-sm font-extrabold px-5 py-2 rounded-full shadow-lg shadow-orange-500/30 tracking-wider animate-pulse">🌐 197 SOVEREIGN STATES 🌐</span>
       </div>
-      <h1 class="text-4xl md:text-6xl font-black bg-gradient-to-r from-slate-800 via-orange-600 to-amber-700 bg-clip-text text-transparent dark:from-white dark:via-orange-400 dark:to-amber-300 drop-shadow-sm">🌍 CAPITALIUM ULTRA</h1>
-      <p class="text-gray-600 dark:text-gray-300 text-base md:text-lg font-medium mt-3 max-w-2xl mx-auto">⚡ 30+ features | Wikipedia gateway | Favorites | Quiz | Voice | Collaboration ⚡</p>
-      
-      <!-- Keyboard Shortcuts Help -->
-      <div class="mt-3 flex justify-center gap-2 flex-wrap">
-        <span class="inline-flex items-center gap-1 bg-gray-200 dark:bg-gray-800 rounded-md px-2 py-0.5 text-xs font-mono">? help</span>
-        <span class="inline-flex items-center gap-1 bg-gray-200 dark:bg-gray-800 rounded-md px-2 py-0.5 text-xs font-mono">/ search</span>
-        <span class="inline-flex items-center gap-1 bg-gray-200 dark:bg-gray-800 rounded-md px-2 py-0.5 text-xs font-mono">G grid</span>
-        <span class="inline-flex items-center gap-1 bg-gray-200 dark:bg-gray-800 rounded-md px-2 py-0.5 text-xs font-mono">L list</span>
-        <span class="inline-flex items-center gap-1 bg-gray-200 dark:bg-gray-800 rounded-md px-2 py-0.5 text-xs font-mono">F favorites</span>
-        <span class="inline-flex items-center gap-1 bg-gray-200 dark:bg-gray-800 rounded-md px-2 py-0.5 text-xs font-mono">R reset</span>
-        <span class="inline-flex items-center gap-1 bg-gray-200 dark:bg-gray-800 rounded-md px-2 py-0.5 text-xs font-mono">D dark</span>
-        <span class="inline-flex items-center gap-1 bg-gray-200 dark:bg-gray-800 rounded-md px-2 py-0.5 text-xs font-mono">ESC clear</span>
+      <h1 class="text-4xl md:text-6xl font-black bg-gradient-to-r from-slate-800 via-orange-600 to-amber-700 bg-clip-text text-transparent dark:from-white dark:via-orange-400 dark:to-amber-300 drop-shadow-sm">🌍 WORLD CAPITALS</h1>
+      <p class="text-gray-600 dark:text-gray-300 text-base md:text-lg font-medium mt-3 max-w-2xl mx-auto">⚡ click any nation → instant Wikipedia portal ⚡</p>
+      <div class="mt-4 flex justify-center gap-2 flex-wrap">
+        <span class="inline-flex items-center gap-1.5 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm rounded-full px-4 py-1.5 text-xs font-semibold text-orange-700 dark:text-orange-300 shadow-sm">📖 197 direct links</span>
+        <span class="inline-flex items-center gap-1.5 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm rounded-full px-4 py-1.5 text-xs font-semibold text-orange-700 dark:text-orange-300 shadow-sm">🔍 smart search</span>
+        <span class="inline-flex items-center gap-1.5 bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm rounded-full px-4 py-1.5 text-xs font-semibold text-orange-700 dark:text-orange-300 shadow-sm">📱 grid/list</span>
       </div>
     </div>
 
-    <!-- CONTROLS BAR with all filters -->
-    <div class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl rounded-3xl shadow-xl border border-orange-200/40 dark:border-orange-800/30 p-5 md:p-6 mb-6 transition-all">
+    <!-- CONTROLS BAR — glassmorphism with tailwind classes only -->
+    <div class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl rounded-3xl shadow-xl border border-orange-200/40 dark:border-orange-800/30 p-5 md:p-6 mb-8 transition-all">
       
-      <!-- Stats Row -->
+      <!-- stats row -->
       <div class="flex flex-wrap justify-between items-center gap-3 mb-5">
         <div class="flex gap-3 flex-wrap">
           <div class="bg-orange-50 dark:bg-orange-950/60 rounded-full px-5 py-2 shadow-sm">
             <span class="font-black text-orange-600 dark:text-orange-400 text-2xl mr-1" id="totalCountDisplay">197</span>
             <span class="font-semibold text-gray-700 dark:text-gray-300">countries</span>
           </div>
-          <div class="bg-gray-100 dark:bg-slate-800 rounded-full px-5 py-2 shadow-sm cursor-pointer hover:bg-orange-100 transition" id="favoriteCountBtn">
-            <span class="text-gray-600 dark:text-gray-400 text-sm font-medium" id="favoriteCountDisplay">⭐ 0 favorites</span>
-          </div>
           <div class="bg-gray-100 dark:bg-slate-800 rounded-full px-5 py-2 shadow-sm">
-            <span class="text-gray-600 dark:text-gray-400 text-sm font-medium" id="visitedCountDisplay">✈️ 0 visited</span>
-          </div>
-          <div class="bg-gray-100 dark:bg-slate-800 rounded-full px-5 py-2 shadow-sm">
-            <span class="text-gray-600 dark:text-gray-400 text-sm font-medium" id="quizScoreDisplay">🎮 Score: 0</span>
+            <span class="text-gray-600 dark:text-gray-400 text-sm font-medium">🔗 wikipedia ready</span>
           </div>
         </div>
-        <div class="text-xs text-gray-500 dark:text-gray-400 bg-gray-100/70 dark:bg-slate-800/70 px-4 py-1.5 rounded-full" id="statsTime">🕒 loading...</div>
+        <div class="text-xs text-gray-500 dark:text-gray-400 bg-gray-100/70 dark:bg-slate-800/70 px-4 py-1.5 rounded-full">⚡ instant redirects</div>
       </div>
 
-      <!-- Continent Filter Dropdown + Sorting -->
-      <div class="flex flex-wrap gap-3 mb-4">
-        <select id="continentFilter" class="bg-white dark:bg-slate-800 border-2 border-gray-200 dark:border-slate-700 rounded-full px-4 py-2 text-sm font-medium outline-none focus:border-orange-400">
-          <option value="all">🌎 All Continents</option>
-          <option value="Africa">🌍 Africa</option>
-          <option value="Asia">🌏 Asia</option>
-          <option value="Europe">🌍 Europe</option>
-          <option value="North America">🌎 North America</option>
-          <option value="South America">🌎 South America</option>
-          <option value="Oceania">🌊 Oceania</option>
-          <option value="Antarctica">❄️ Antarctica</option>
-        </select>
-        
-        <select id="sortBy" class="bg-white dark:bg-slate-800 border-2 border-gray-200 dark:border-slate-700 rounded-full px-4 py-2 text-sm font-medium outline-none focus:border-orange-400">
-          <option value="default">📋 Sort: Default (A-Z)</option>
-          <option value="reverse">🔄 Reverse (Z-A)</option>
-          <option value="capital">🏛️ By Capital Name</option>
-          <option value="favorites">⭐ Favorites First</option>
-          <option value="visited">✈️ Most Visited</option>
-          <option value="random">🎲 Random Order</option>
-        </select>
-        
-        <button id="reshuffleBtn" class="bg-orange-500 hover:bg-orange-600 text-white rounded-full px-4 py-2 text-sm font-bold transition hidden">🔄 Reshuffle</button>
-      </div>
-
-      <!-- Active Filters Chips -->
-      <div id="activeFiltersContainer" class="flex flex-wrap gap-2 mb-4 min-h-[40px]"></div>
-
-      <!-- Search Row -->
+      <!-- search + view controls -->
       <div class="flex flex-col md:flex-row gap-4">
         <div class="relative flex-1">
           <div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
             <span class="text-orange-500 text-lg">🔍</span>
           </div>
-          <input type="text" id="searchInput" placeholder="Search by country, capital, or notes..." 
-                 class="w-full bg-white dark:bg-slate-800 border-2 border-gray-200 dark:border-slate-700 focus:border-orange-400 rounded-2xl py-3 pl-11 pr-12 text-gray-800 dark:text-white font-medium outline-none transition shadow-sm">
-          <button id="voiceSearchBtn" class="absolute right-12 top-1/2 -translate-y-1/2 text-gray-400 hover:text-orange-600 text-xl transition">🎤</button>
-          <button id="clearSearchBtn" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-orange-600 text-xl font-bold hidden transition">✖</button>
+          <input type="text" id="searchInput" placeholder="Search by country or capital… (ex: Bangladesh, Dhaka, Tokyo)" 
+                 class="w-full bg-white dark:bg-slate-800 border-2 border-gray-200 dark:border-slate-700 focus:border-orange-400 dark:focus:border-orange-500 rounded-2xl py-3 pl-11 pr-12 text-gray-800 dark:text-white font-medium outline-none transition shadow-sm">
+          <button id="clearSearchBtn" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-orange-600 dark:hover:text-orange-400 text-xl font-bold hidden transition">✖</button>
         </div>
-        
         <div class="flex gap-3 flex-wrap">
-          <button id="gridViewToggle" class="flex items-center gap-2 bg-white dark:bg-slate-800 border border-gray-300 rounded-full px-5 py-2.5 font-bold shadow-sm transition-all">📱 Grid</button>
-          <button id="listViewToggle" class="flex items-center gap-2 bg-white dark:bg-slate-800 border border-gray-300 rounded-full px-5 py-2.5 font-bold shadow-sm transition-all">📋 List</button>
-          <button id="quizModeToggle" class="flex items-center gap-2 bg-white dark:bg-slate-800 border border-gray-300 rounded-full px-5 py-2.5 font-bold shadow-sm transition-all">🎮 Quiz</button>
-          <button id="flashcardModeToggle" class="flex items-center gap-2 bg-white dark:bg-slate-800 border border-gray-300 rounded-full px-5 py-2.5 font-bold shadow-sm transition-all">📇 Flashcards</button>
-          <button id="darkModeToggle" class="bg-white dark:bg-slate-800 border border-gray-300 rounded-full px-5 py-2.5 font-bold shadow-sm transition-all">🌙 Dark</button>
-          <button id="exportCSVBtn" class="bg-green-500 hover:bg-green-600 text-white rounded-full px-5 py-2.5 font-bold shadow-sm transition-all">📎 Export CSV</button>
+          <button id="gridViewToggle" class="flex items-center gap-2 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 hover:border-orange-500 rounded-full px-5 py-2.5 font-bold text-gray-700 dark:text-gray-200 shadow-sm transition-all data-[active=true]:bg-gradient-to-r data-[active=true]:from-orange-500 data-[active=true]:to-amber-600 data-[active=true]:text-white data-[active=true]:border-orange-500">
+            <span>📱</span> Grid
+          </button>
+          <button id="listViewToggle" class="flex items-center gap-2 bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 hover:border-orange-500 rounded-full px-5 py-2.5 font-bold text-gray-700 dark:text-gray-200 shadow-sm transition-all data-[active=true]:bg-gradient-to-r data-[active=true]:from-orange-500 data-[active=true]:to-amber-600 data-[active=true]:text-white data-[active=true]:border-orange-500">
+            <span>📋</span> List
+          </button>
+          <button id="darkModeToggle" class="bg-white dark:bg-slate-800 border border-gray-300 dark:border-slate-600 hover:border-orange-500 rounded-full px-5 py-2.5 font-bold text-gray-700 dark:text-gray-200 shadow-sm transition-all">🌙 Dark</button>
         </div>
       </div>
     </div>
 
-    <!-- QUIZ MODE PANEL (hidden by default) -->
-    <div id="quizPanel" class="bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl p-6 mb-6 text-white hidden">
-      <div class="flex justify-between items-center">
-        <div>
-          <h3 class="text-2xl font-bold">🎮 Quiz Mode Active</h3>
-          <p id="quizQuestion" class="text-lg mt-2">Which country has the capital <span id="quizCapitalTarget" class="font-bold underline">?</span>?</p>
-        </div>
-        <div class="text-right">
-          <div class="text-3xl font-bold" id="quizScore">0</div>
-          <div class="text-sm">correct answers</div>
-        </div>
-      </div>
-      <div id="quizOptions" class="grid grid-cols-2 gap-3 mt-4"></div>
-      <button id="exitQuizBtn" class="mt-4 bg-white/20 hover:bg-white/30 rounded-full px-4 py-2 text-sm font-semibold">Exit Quiz Mode</button>
-    </div>
-
-    <!-- FLASHCARD MODE PANEL (hidden by default) -->
-    <div id="flashcardPanel" class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl p-8 mb-6 text-white text-center hidden">
-      <div class="text-6xl mb-4" id="flashcardDisplay">???</div>
-      <div class="text-2xl font-bold mb-2" id="flashcardCapital">Capital name appears here</div>
-      <input type="text" id="flashcardInput" placeholder="Type country name..." class="w-full max-w-md mx-auto bg-white text-gray-800 rounded-full px-6 py-3 text-center font-semibold outline-none mt-4">
-      <div class="flex justify-center gap-4 mt-4">
-        <button id="flashcardRevealBtn" class="bg-yellow-500 hover:bg-yellow-600 px-6 py-2 rounded-full font-bold">Reveal Answer</button>
-        <button id="flashcardNextBtn" class="bg-green-500 hover:bg-green-600 px-6 py-2 rounded-full font-bold">Next Card →</button>
-      </div>
-      <div class="mt-4 text-sm">🔥 Streak: <span id="streakCount">0</span> correct in a row</div>
-      <button id="exitFlashcardBtn" class="mt-6 bg-white/20 hover:bg-white/30 rounded-full px-4 py-2 text-sm font-semibold">Exit Flashcards</button>
-    </div>
-
-    <!-- COUNTRY GRID / LIST CONTAINER -->
+    <!-- DYNAMIC CAPITAL GRID / LIST VIEW (fully styled with tailwind) -->
     <div id="capitalsContainer" class="transition-all duration-300">
+      <!-- loading state will be replaced by JS -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        <div class="bg-white/60 dark:bg-slate-800/60 rounded-2xl p-6 text-center backdrop-blur-sm animate-pulse">Loading 197 countries...</div>
+        <div class="bg-white/60 dark:bg-slate-800/60 rounded-2xl p-6 text-center backdrop-blur-sm animate-pulse">
+          <div class="h-6 bg-gray-300 dark:bg-slate-700 rounded-full w-3/4 mx-auto mb-3"></div>
+          <div class="h-4 bg-gray-200 dark:bg-slate-700 rounded-full w-1/2 mx-auto"></div>
+        </div>
       </div>
     </div>
 
-    <!-- RANDOM COUNTRY FLOATING BUTTON -->
-    <button id="randomCountryBtn" class="fixed bottom-6 right-6 bg-gradient-to-r from-orange-500 to-amber-600 text-white rounded-full p-4 shadow-2xl hover:scale-110 transition-all duration-300 z-40 text-2xl">🎲</button>
-
-    <!-- COMPARISON PANEL (hidden) -->
-    <div id="comparisonPanel" class="fixed right-0 top-20 w-96 bg-white dark:bg-slate-800 shadow-2xl rounded-l-2xl p-4 transform translate-x-full transition-all duration-300 z-50 border-l-4 border-orange-500">
-      <div class="flex justify-between items-center mb-3">
-        <h4 class="font-bold text-lg">📊 Country Comparison</h4>
-        <button id="closeComparisonBtn" class="text-gray-500 hover:text-red-500">✖</button>
-      </div>
-      <div id="comparisonContent" class="text-sm space-y-2 max-h-96 overflow-y-auto"></div>
-      <button id="clearComparisonBtn" class="mt-3 bg-gray-500 text-white rounded-full px-4 py-2 text-sm w-full">Clear All</button>
-    </div>
-
-    <!-- FOOTER -->
+    <!-- FOOTER section -->
     <div class="mt-14 pt-6 border-t border-gray-200 dark:border-slate-800 text-center">
       <div class="flex flex-wrap justify-center gap-5 text-xs md:text-sm text-gray-500 dark:text-gray-400 font-medium mb-3">
-        <span class="inline-flex items-center gap-1">📖 Wikipedia links for all 197 countries</span>
-        <button id="resetCountersBtn" class="hover:text-red-500 transition">🔄 Reset All Counters</button>
-        <button id="shareUrlBtn" class="hover:text-orange-500 transition">🔗 Share Filtered View</button>
+        <span class="inline-flex items-center gap-1">📖 <span class="font-mono">en.wikipedia.org/wiki/{country}</span></span>
+        <span class="inline-flex items-center gap-1">🇧🇩 Bangladesh → <span class="text-orange-600 dark:text-orange-400 font-bold">Bangladesh</span></span>
+        <span class="inline-flex items-center gap-1">🇦🇷 Argentina → <span class="text-orange-600 dark:text-orange-400 font-bold">Argentina</span></span>
       </div>
-      <div class="text-xs text-gray-400 dark:text-gray-500">✨ CAPITALIUM ULTRA | 30+ features | Favorites persist | Offline ready | Click ★ to favorite | Click 📖 for Wikipedia ✨</div>
+      <div class="text-xs text-gray-400 dark:text-gray-500">⚡ Wikipedia gateway · 197 nations · real-time search · open source spirit ⚡</div>
+      <div class="mt-2 text-[11px] text-gray-400 dark:text-gray-600">✨ click any card — opens official Wikipedia page in new tab ✨</div>
     </div>
   </div>
 
-  <!-- TOAST NOTIFICATION -->
-  <div id="toastMsg" class="fixed bottom-24 right-6 bg-slate-900 dark:bg-orange-600 text-white px-5 py-2.5 rounded-full shadow-2xl text-sm font-semibold translate-x-[120%] transition-all duration-300 z-50 pointer-events-none flex items-center gap-2">📘 <span id="toastText">Ready</span></div>
-
-  <!-- KEYBOARD HELP MODAL -->
-  <div id="helpModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 hidden">
-    <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 max-w-md w-full mx-4">
-      <h3 class="text-xl font-bold mb-4">⌨️ Keyboard Shortcuts</h3>
-      <div class="space-y-2 text-sm">
-        <div><kbd class="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">/</kbd> - Focus search</div>
-        <div><kbd class="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">G</kbd> - Grid view</div>
-        <div><kbd class="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">L</kbd> - List view</div>
-        <div><kbd class="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">F</kbd> - Toggle favorites only</div>
-        <div><kbd class="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">R</kbd> - Reset all filters</div>
-        <div><kbd class="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">D</kbd> - Dark mode toggle</div>
-        <div><kbd class="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">Q</kbd> - Quiz mode</div>
-        <div><kbd class="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">Esc</kbd> - Clear search / exit modes</div>
-        <div><kbd class="bg-gray-200 dark:bg-gray-700 px-2 py-1 rounded">?</kbd> - Show this help</div>
-      </div>
-      <button id="closeHelpModal" class="mt-6 bg-orange-500 text-white rounded-full px-6 py-2 w-full">Close</button>
-    </div>
+  <!-- TOAST NOTIFICATION (minimal tailwind only) -->
+  <div id="toastMsg" class="fixed bottom-6 right-6 bg-slate-900 dark:bg-orange-600 text-white px-5 py-2.5 rounded-full shadow-2xl backdrop-blur-md text-sm font-semibold translate-x-[120%] transition-all duration-300 z-50 pointer-events-none flex items-center gap-2 border border-white/20">
+    <span>📘</span> <span id="toastText">Wikipedia opened</span>
   </div>
 
-  <script src="index.js"></script>
+  <script>
+    // ------------------------------------------------------------------
+    // COMPLETE WORLD CAPITALS DATABASE (197 sovereign entries)
+    // ------------------------------------------------------------------
+    const COUNTRIES_CAPITALS = [
+      { country: "Afghanistan", capital: "Kabul" }, { country: "Albania", capital: "Tirana" }, { country: "Algeria", capital: "Algiers" },
+      { country: "Andorra", capital: "Andorra la Vella" }, { country: "Angola", capital: "Luanda" }, { country: "Antigua and Barbuda", capital: "St. John's" },
+      { country: "Argentina", capital: "Buenos Aires" }, { country: "Armenia", capital: "Yerevan" }, { country: "Australia", capital: "Canberra" },
+      { country: "Austria", capital: "Vienna" }, { country: "Azerbaijan", capital: "Baku" }, { country: "Bahamas", capital: "Nassau" },
+      { country: "Bahrain", capital: "Manama" }, { country: "Bangladesh", capital: "Dhaka" }, { country: "Barbados", capital: "Bridgetown" },
+      { country: "Belarus", capital: "Minsk" }, { country: "Belgium", capital: "Brussels" }, { country: "Belize", capital: "Belmopan" },
+      { country: "Benin", capital: "Porto-Novo" }, { country: "Bhutan", capital: "Thimphu" }, { country: "Bolivia", capital: "La Paz" },
+      { country: "Bosnia and Herzegovina", capital: "Sarajevo" }, { country: "Botswana", capital: "Gaborone" }, { country: "Brazil", capital: "Brasília" },
+      { country: "Brunei", capital: "Bandar Seri Begawan" }, { country: "Bulgaria", capital: "Sofia" }, { country: "Burkina Faso", capital: "Ouagadougou" },
+      { country: "Burundi", capital: "Gitega" }, { country: "Cabo Verde", capital: "Praia" }, { country: "Cambodia", capital: "Phnom Penh" },
+      { country: "Cameroon", capital: "Yaoundé" }, { country: "Canada", capital: "Ottawa" }, { country: "Central African Republic", capital: "Bangui" },
+      { country: "Chad", capital: "N'Djamena" }, { country: "Chile", capital: "Santiago" }, { country: "China", capital: "Beijing" },
+      { country: "Colombia", capital: "Bogotá" }, { country: "Comoros", capital: "Moroni" }, { country: "Congo", capital: "Brazzaville" },
+      { country: "Costa Rica", capital: "San José" }, { country: "Côte d'Ivoire", capital: "Yamoussoukro" }, { country: "Croatia", capital: "Zagreb" },
+      { country: "Cuba", capital: "Havana" }, { country: "Cyprus", capital: "Nicosia" }, { country: "Czech Republic", capital: "Prague" },
+      { country: "Denmark", capital: "Copenhagen" }, { country: "Djibouti", capital: "Djibouti" }, { country: "Dominica", capital: "Roseau" },
+      { country: "Dominican Republic", capital: "Santo Domingo" }, { country: "Ecuador", capital: "Quito" }, { country: "Egypt", capital: "Cairo" },
+      { country: "El Salvador", capital: "San Salvador" }, { country: "Equatorial Guinea", capital: "Malabo" }, { country: "Eritrea", capital: "Asmara" },
+      { country: "Estonia", capital: "Tallinn" }, { country: "Eswatini", capital: "Mbabane" }, { country: "Ethiopia", capital: "Addis Ababa" },
+      { country: "Fiji", capital: "Suva" }, { country: "Finland", capital: "Helsinki" }, { country: "France", capital: "Paris" },
+      { country: "Gabon", capital: "Libreville" }, { country: "Gambia", capital: "Banjul" }, { country: "Georgia", capital: "Tbilisi" },
+      { country: "Germany", capital: "Berlin" }, { country: "Ghana", capital: "Accra" }, { country: "Greece", capital: "Athens" },
+      { country: "Grenada", capital: "St. George's" }, { country: "Guatemala", capital: "Guatemala City" }, { country: "Guinea", capital: "Conakry" },
+      { country: "Guinea-Bissau", capital: "Bissau" }, { country: "Guyana", capital: "Georgetown" }, { country: "Haiti", capital: "Port-au-Prince" },
+      { country: "Honduras", capital: "Tegucigalpa" }, { country: "Hungary", capital: "Budapest" }, { country: "Iceland", capital: "Reykjavik" },
+      { country: "India", capital: "New Delhi" }, { country: "Indonesia", capital: "Jakarta" }, { country: "Iran", capital: "Tehran" },
+      { country: "Iraq", capital: "Baghdad" }, { country: "Ireland", capital: "Dublin" }, { country: "Israel", capital: "Jerusalem" },
+      { country: "Italy", capital: "Rome" }, { country: "Jamaica", capital: "Kingston" }, { country: "Japan", capital: "Tokyo" },
+      { country: "Jordan", capital: "Amman" }, { country: "Kazakhstan", capital: "Astana" }, { country: "Kenya", capital: "Nairobi" },
+      { country: "Kiribati", capital: "Tarawa" }, { country: "Kuwait", capital: "Kuwait City" }, { country: "Kyrgyzstan", capital: "Bishkek" },
+      { country: "Laos", capital: "Vientiane" }, { country: "Latvia", capital: "Riga" }, { country: "Lebanon", capital: "Beirut" },
+      { country: "Lesotho", capital: "Maseru" }, { country: "Liberia", capital: "Monrovia" }, { country: "Libya", capital: "Tripoli" },
+      { country: "Liechtenstein", capital: "Vaduz" }, { country: "Lithuania", capital: "Vilnius" }, { country: "Luxembourg", capital: "Luxembourg" },
+      { country: "Madagascar", capital: "Antananarivo" }, { country: "Malawi", capital: "Lilongwe" }, { country: "Malaysia", capital: "Kuala Lumpur" },
+      { country: "Maldives", capital: "Malé" }, { country: "Mali", capital: "Bamako" }, { country: "Malta", capital: "Valletta" },
+      { country: "Marshall Islands", capital: "Majuro" }, { country: "Mauritania", capital: "Nouakchott" }, { country: "Mauritius", capital: "Port Louis" },
+      { country: "Mexico", capital: "Mexico City" }, { country: "Micronesia", capital: "Palikir" }, { country: "Moldova", capital: "Chișinău" },
+      { country: "Monaco", capital: "Monaco" }, { country: "Mongolia", capital: "Ulaanbaatar" }, { country: "Montenegro", capital: "Podgorica" },
+      { country: "Morocco", capital: "Rabat" }, { country: "Mozambique", capital: "Maputo" }, { country: "Myanmar", capital: "Naypyidaw" },
+      { country: "Namibia", capital: "Windhoek" }, { country: "Nauru", capital: "Yaren" }, { country: "Nepal", capital: "Kathmandu" },
+      { country: "Netherlands", capital: "Amsterdam" }, { country: "New Zealand", capital: "Wellington" }, { country: "Nicaragua", capital: "Managua" },
+      { country: "Niger", capital: "Niamey" }, { country: "Nigeria", capital: "Abuja" }, { country: "North Korea", capital: "Pyongyang" },
+      { country: "North Macedonia", capital: "Skopje" }, { country: "Norway", capital: "Oslo" }, { country: "Oman", capital: "Muscat" },
+      { country: "Pakistan", capital: "Islamabad" }, { country: "Palau", capital: "Ngerulmud" }, { country: "Palestine", capital: "Ramallah" },
+      { country: "Panama", capital: "Panama City" }, { country: "Papua New Guinea", capital: "Port Moresby" }, { country: "Paraguay", capital: "Asunción" },
+      { country: "Peru", capital: "Lima" }, { country: "Philippines", capital: "Manila" }, { country: "Poland", capital: "Warsaw" },
+      { country: "Portugal", capital: "Lisbon" }, { country: "Qatar", capital: "Doha" }, { country: "Romania", capital: "Bucharest" },
+      { country: "Russia", capital: "Moscow" }, { country: "Rwanda", capital: "Kigali" }, { country: "Saint Kitts and Nevis", capital: "Basseterre" },
+      { country: "Saint Lucia", capital: "Castries" }, { country: "Saint Vincent and the Grenadines", capital: "Kingstown" }, { country: "Samoa", capital: "Apia" },
+      { country: "San Marino", capital: "San Marino" }, { country: "Sao Tome and Principe", capital: "São Tomé" }, { country: "Saudi Arabia", capital: "Riyadh" },
+      { country: "Senegal", capital: "Dakar" }, { country: "Serbia", capital: "Belgrade" }, { country: "Seychelles", capital: "Victoria" },
+      { country: "Sierra Leone", capital: "Freetown" }, { country: "Singapore", capital: "Singapore" }, { country: "Slovakia", capital: "Bratislava" },
+      { country: "Slovenia", capital: "Ljubljana" }, { country: "Solomon Islands", capital: "Honiara" }, { country: "Somalia", capital: "Mogadishu" },
+      { country: "South Africa", capital: "Pretoria" }, { country: "South Korea", capital: "Seoul" }, { country: "South Sudan", capital: "Juba" },
+      { country: "Spain", capital: "Madrid" }, { country: "Sri Lanka", capital: "Sri Jayawardenepura Kotte" }, { country: "Sudan", capital: "Khartoum" },
+      { country: "Suriname", capital: "Paramaribo" }, { country: "Sweden", capital: "Stockholm" }, { country: "Switzerland", capital: "Bern" },
+      { country: "Syria", capital: "Damascus" }, { country: "Taiwan", capital: "Taipei" }, { country: "Tajikistan", capital: "Dushanbe" },
+      { country: "Tanzania", capital: "Dodoma" }, { country: "Thailand", capital: "Bangkok" }, { country: "Timor-Leste", capital: "Dili" },
+      { country: "Togo", capital: "Lomé" }, { country: "Tonga", capital: "Nukuʻalofa" }, { country: "Trinidad and Tobago", capital: "Port of Spain" },
+      { country: "Tunisia", capital: "Tunis" }, { country: "Turkey", capital: "Ankara" }, { country: "Turkmenistan", capital: "Ashgabat" },
+      { country: "Tuvalu", capital: "Funafuti" }, { country: "Uganda", capital: "Kampala" }, { country: "Ukraine", capital: "Kyiv" },
+      { country: "United Arab Emirates", capital: "Abu Dhabi" }, { country: "United Kingdom", capital: "London" }, { country: "United States", capital: "Washington, D.C." },
+      { country: "Uruguay", capital: "Montevideo" }, { country: "Uzbekistan", capital: "Tashkent" }, { country: "Vanuatu", capital: "Port Vila" },
+      { country: "Vatican City", capital: "Vatican City" }, { country: "Venezuela", capital: "Caracas" }, { country: "Vietnam", capital: "Hanoi" },
+      { country: "Yemen", capital: "Sana'a" }, { country: "Zambia", capital: "Lusaka" }, { country: "Zimbabwe", capital: "Harare" }
+    ];
+
+    // Wikipedia link generator (clean)
+    function getWikipediaUrl(country) {
+      const special = {
+        "Antigua and Barbuda": "Antigua_and_Barbuda", "Bosnia and Herzegovina": "Bosnia_and_Herzegovina",
+        "Côte d'Ivoire": "Ivory_Coast", "Czech Republic": "Czech_Republic", "Dominican Republic": "Dominican_Republic",
+        "Equatorial Guinea": "Equatorial_Guinea", "North Korea": "North_Korea", "North Macedonia": "North_Macedonia",
+        "Papua New Guinea": "Papua_New_Guinea", "Saint Kitts and Nevis": "Saint_Kitts_and_Nevis",
+        "Saint Lucia": "Saint_Lucia", "Saint Vincent and the Grenadines": "Saint_Vincent_and_the_Grenadines",
+        "Sao Tome and Principe": "São_Tomé_and_Príncipe", "South Korea": "South_Korea", "Sri Lanka": "Sri_Lanka",
+        "Timor-Leste": "East_Timor", "Trinidad and Tobago": "Trinidad_and_Tobago", "United Arab Emirates": "United_Arab_Emirates",
+        "United Kingdom": "United_Kingdom", "United States": "United_States", "Vatican City": "Vatican_City"
+      };
+      if (special[country]) return `https://en.wikipedia.org/wiki/${special[country]}`;
+      return `https://en.wikipedia.org/wiki/${encodeURIComponent(country.replace(/ /g, '_'))}`;
+    }
+
+    // DOM elements
+    const container = document.getElementById('capitalsContainer');
+    const totalSpan = document.getElementById('totalCountDisplay');
+    const searchInput = document.getElementById('searchInput');
+    const clearBtn = document.getElementById('clearSearchBtn');
+    const gridToggle = document.getElementById('gridViewToggle');
+    const listToggle = document.getElementById('listViewToggle');
+    const darkToggle = document.getElementById('darkModeToggle');
+    const toastDiv = document.getElementById('toastMsg');
+    const toastTextSpan = document.getElementById('toastText');
+
+    let currentView = 'grid';   // 'grid' or 'list'
+    let searchTerm = '';
+
+    function showToast(message, duration = 1800) {
+      toastTextSpan.innerText = message;
+      toastDiv.classList.remove('translate-x-[120%]');
+      toastDiv.classList.add('translate-x-0');
+      setTimeout(() => {
+        toastDiv.classList.add('translate-x-[120%]');
+        toastDiv.classList.remove('translate-x-0');
+      }, duration);
+    }
+
+    function openWikipedia(countryName) {
+      const url = getWikipediaUrl(countryName);
+      window.open(url, '_blank', 'noopener,noreferrer');
+      showToast(`📖 opening Wikipedia: ${countryName}`);
+    }
+
+    function filterCountries() {
+      if (!searchTerm) return [...COUNTRIES_CAPITALS];
+      const term = searchTerm.toLowerCase();
+      return COUNTRIES_CAPITALS.filter(item => 
+        item.country.toLowerCase().includes(term) || item.capital.toLowerCase().includes(term)
+      );
+    }
+
+    function render() {
+      const filtered = filterCountries();
+      if (filtered.length === 0) {
+        container.innerHTML = `<div class="col-span-full text-center py-16 bg-white/40 dark:bg-slate-800/40 rounded-3xl backdrop-blur-sm border border-dashed border-orange-300 dark:border-orange-700">
+          <p class="text-gray-600 dark:text-gray-300 text-lg font-medium">✨ No country or capital matches "${searchTerm}" ✨</p>
+          <p class="text-sm text-gray-400 mt-2">try "japan", "london", "dhaka"</p>
+        </div>`;
+        if (totalSpan) totalSpan.innerText = '0';
+        return;
+      }
+      if (totalSpan) totalSpan.innerText = filtered.length;
+
+      const gridOrListClass = currentView === 'grid' 
+        ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5' 
+        : 'flex flex-col gap-3';
+      
+      const containerClasses = `transition-all duration-300 ${gridOrListClass}`;
+      container.className = containerClasses;
+      
+      const fragment = document.createDocumentFragment();
+      
+      filtered.forEach(countryItem => {
+        const card = document.createElement('button');
+        // fully tailwind based card style - no custom css
+        const baseCardClasses = "w-full text-left bg-white dark:bg-slate-800/90 border-2 border-gray-200 dark:border-slate-700 hover:border-orange-400 dark:hover:border-orange-500 rounded-2xl p-4 shadow-md hover:shadow-xl transition-all duration-200 group cursor-pointer flex justify-between items-center";
+        
+        if (currentView === 'list') {
+          card.className = `${baseCardClasses} py-3 px-5`;
+        } else {
+          card.className = baseCardClasses;
+        }
+        
+        // inner structure
+        const leftDiv = document.createElement('div');
+        leftDiv.className = "flex flex-col";
+        const countryNameSpan = document.createElement('span');
+        countryNameSpan.className = "font-extrabold text-gray-800 dark:text-white text-base md:text-lg group-hover:text-orange-600 dark:group-hover:text-orange-400 transition";
+        countryNameSpan.innerText = countryItem.country;
+        const capitalSpan = document.createElement('span');
+        capitalSpan.className = "text-xs font-semibold text-gray-500 dark:text-gray-400 mt-0.5 inline-flex items-center gap-1";
+        capitalSpan.innerHTML = `🏛️ ${countryItem.capital}`;
+        leftDiv.appendChild(countryNameSpan);
+        leftDiv.appendChild(capitalSpan);
+        
+        const rightBadge = document.createElement('div');
+        rightBadge.className = "flex items-center gap-2";
+        const wikiIcon = document.createElement('span');
+        wikiIcon.className = "text-xl transition-transform duration-200 group-hover:translate-x-1 group-hover:scale-110";
+        wikiIcon.innerText = "📖";
+        rightBadge.appendChild(wikiIcon);
+        
+        card.appendChild(leftDiv);
+        card.appendChild(rightBadge);
+        card.addEventListener('click', (e) => {
+          e.preventDefault();
+          openWikipedia(countryItem.country);
+        });
+        fragment.appendChild(card);
+      });
+      
+      container.innerHTML = '';
+      container.appendChild(fragment);
+    }
+
+    function updateViewButtons() {
+      if (currentView === 'grid') {
+        gridToggle.setAttribute('data-active', 'true');
+        listToggle.setAttribute('data-active', 'false');
+        gridToggle.classList.add('bg-gradient-to-r', 'from-orange-500', 'to-amber-600', 'text-white', 'border-orange-500');
+        gridToggle.classList.remove('bg-white', 'dark:bg-slate-800', 'text-gray-700', 'dark:text-gray-200');
+        listToggle.classList.remove('bg-gradient-to-r', 'from-orange-500', 'to-amber-600', 'text-white', 'border-orange-500');
+        listToggle.classList.add('bg-white', 'dark:bg-slate-800', 'text-gray-700', 'dark:text-gray-200');
+      } else {
+        listToggle.setAttribute('data-active', 'true');
+        gridToggle.setAttribute('data-active', 'false');
+        listToggle.classList.add('bg-gradient-to-r', 'from-orange-500', 'to-amber-600', 'text-white', 'border-orange-500');
+        listToggle.classList.remove('bg-white', 'dark:bg-slate-800', 'text-gray-700', 'dark:text-gray-200');
+        gridToggle.classList.remove('bg-gradient-to-r', 'from-orange-500', 'to-amber-600', 'text-white', 'border-orange-500');
+        gridToggle.classList.add('bg-white', 'dark:bg-slate-800', 'text-gray-700', 'dark:text-gray-200');
+      }
+    }
+
+    // Event listeners
+    function init() {
+      render();
+      if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+          searchTerm = e.target.value;
+          if (clearBtn) {
+            if (searchTerm.length > 0) clearBtn.classList.remove('hidden');
+            else clearBtn.classList.add('hidden');
+          }
+          render();
+        });
+      }
+      if (clearBtn) {
+        clearBtn.addEventListener('click', () => {
+          if (searchInput) searchInput.value = '';
+          searchTerm = '';
+          clearBtn.classList.add('hidden');
+          render();
+          searchInput?.focus();
+        });
+      }
+      if (gridToggle) {
+        gridToggle.addEventListener('click', () => {
+          currentView = 'grid';
+          updateViewButtons();
+          render();
+        });
+      }
+      if (listToggle) {
+        listToggle.addEventListener('click', () => {
+          currentView = 'list';
+          updateViewButtons();
+          render();
+        });
+      }
+      // dark mode toggle (localStorage)
+      const isDarkStored = localStorage.getItem('capitaliumDark') === 'true';
+      if (isDarkStored) document.documentElement.classList.add('dark');
+      darkToggle.addEventListener('click', () => {
+        document.documentElement.classList.toggle('dark');
+        const nowDark = document.documentElement.classList.contains('dark');
+        localStorage.setItem('capitaliumDark', nowDark);
+        darkToggle.innerHTML = nowDark ? '☀️ Light' : '🌙 Dark';
+        showToast(nowDark ? '🌙 dark mode activated' : '☀️ light mode restored', 1000);
+      });
+      if (document.documentElement.classList.contains('dark')) darkToggle.innerHTML = '☀️ Light';
+      else darkToggle.innerHTML = '🌙 Dark';
+      
+      updateViewButtons();
+    }
+    
+    init();
+  </script>
 </body>
 </html>
