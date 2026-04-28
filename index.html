@@ -3,84 +3,192 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>🌍 CAPITALIUM | World Capitals Wikipedia Gateway</title>
+  <title>🌍 CAPITALIUM PRO | World Capitals Wikipedia Gateway</title>
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
-    * { font-family: 'Inter', system-ui, sans-serif; }
-    .card-hover { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
-    .dark {
-      background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%);
+    * {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
     }
+    
+    /* Custom animations */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-5px); }
+    }
+    
+    @keyframes pulse-ring {
+      0% { box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.4); }
+      70% { box-shadow: 0 0 0 10px rgba(249, 115, 22, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(249, 115, 22, 0); }
+    }
+    
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+    
+    @keyframes glow-pulse {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; text-shadow: 0 0 10px rgba(249, 115, 22, 0.5); }
+    }
+    
+    .hero-badge { animation: float 3s ease-in-out infinite; }
+    .pulse-ring { animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+    .country-card { animation: slideIn 0.3s ease backwards; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    .country-card:hover { transform: translateY(-4px) scale(1.01); box-shadow: 0 20px 25px -12px rgba(0, 0, 0, 0.15); }
+    
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, #f97316, #ea580c); border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: #ea580c; }
+    .dark ::-webkit-scrollbar-track { background: #1e1e2e; }
+    
+    /* Glass morphism */
+    .glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.3); }
+    .dark .glass { background: rgba(30, 30, 46, 0.85); border-color: rgba(255, 255, 255, 0.1); }
+    
+    /* Leaderboard specific */
+    .leaderboard-item { transition: all 0.2s ease; }
+    .leaderboard-item:hover { transform: translateX(4px); background: rgba(249, 115, 22, 0.1); }
+    
+    .record-glow {
+      animation: glow-pulse 2s ease-in-out infinite;
+    }
+    
+    /* Focus styles */
+    :focus-visible { outline: 2px solid #f97316; outline-offset: 2px; border-radius: 8px; }
+    .btn-hover:active { transform: scale(0.96); }
+    
+    /* Skeleton loading */
+    .skeleton { background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+    .dark .skeleton { background: linear-gradient(90deg, #2a2a3e 25%, #3a3a4e 50%, #2a2a3e 75%); }
+    
+    ::selection { background: #f97316; color: white; }
+    
+    /* Gold medal styling */
+    .medal-gold { background: linear-gradient(135deg, #ffd700, #ffb347); }
+    .medal-silver { background: linear-gradient(135deg, #c0c0c0, #a8a8a8); }
+    .medal-bronze { background: linear-gradient(135deg, #cd7f32, #b87333); }
   </style>
 </head>
-<body class="bg-gradient-to-br from-slate-50 via-gray-100 to-blue-50 transition-all duration-300">
+<body class="bg-gradient-to-br from-slate-50 via-gray-100 to-blue-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 transition-all duration-500">
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
     
     <!-- HERO SECTION -->
     <div class="text-center mb-8 md:mb-12">
-      <div class="inline-block mb-4">
-        <span class="bg-gradient-to-r from-orange-500 to-amber-600 text-white text-xs md:text-sm font-extrabold px-5 py-2 rounded-full shadow-lg shadow-orange-500/30 animate-pulse">🌐 197 SOVEREIGN STATES 🌐</span>
+      <div class="hero-badge inline-block mb-4">
+        <span class="bg-gradient-to-r from-orange-500 to-amber-600 text-white text-xs md:text-sm font-extrabold px-5 py-2 rounded-full shadow-lg shadow-orange-500/30 pulse-ring">🌐 197 SOVEREIGN STATES 🌐</span>
       </div>
-      <h1 class="text-4xl md:text-6xl font-black bg-gradient-to-r from-slate-800 via-orange-600 to-amber-700 bg-clip-text text-transparent">🌍 CAPITALIUM</h1>
-      <p class="text-gray-600 text-base md:text-lg font-medium mt-3">⚡ Click any country → Wikipedia | ⭐ Favorites | 🔍 Search ⚡</p>
+      <h1 class="text-4xl md:text-6xl font-black bg-gradient-to-r from-slate-800 via-orange-600 to-amber-700 bg-clip-text text-transparent dark:from-white dark:via-orange-400 dark:to-amber-300 drop-shadow-sm">🌍 CAPITALIUM PRO</h1>
+      <p class="text-gray-600 dark:text-gray-300 text-base md:text-lg font-medium mt-3">⚡ Click any country → Wikipedia | ⭐ Favorites | 🏆 World Records ⚡</p>
     </div>
 
-    <!-- CONTROLS BAR -->
-    <div class="bg-white/90 backdrop-blur-xl rounded-3xl shadow-xl border border-orange-200/50 p-5 md:p-6 mb-6 transition-all">
+    <!-- Main Grid: 2 columns - Left: Controls + Countries, Right: Leaderboard -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
       
-      <!-- Stats Row -->
-      <div class="flex flex-wrap justify-between items-center gap-3 mb-5">
-        <div class="flex gap-3 flex-wrap">
-          <div class="bg-orange-50 rounded-full px-5 py-2 shadow-sm">
-            <span class="font-black text-orange-600 text-2xl mr-1" id="totalCount">197</span>
-            <span class="font-semibold text-gray-700">countries</span>
+      <!-- LEFT COLUMN (2/3 width) -->
+      <div class="lg:col-span-2">
+        <!-- CONTROLS BAR -->
+        <div class="glass rounded-3xl shadow-xl p-5 md:p-6 mb-6 transition-all">
+          
+          <!-- Stats Row -->
+          <div class="flex flex-wrap justify-between items-center gap-3 mb-5">
+            <div class="flex gap-3 flex-wrap">
+              <div class="bg-orange-50 dark:bg-orange-950/60 rounded-full px-5 py-2 shadow-sm">
+                <span class="font-black text-orange-600 dark:text-orange-400 text-2xl mr-1" id="totalCount">197</span>
+                <span class="font-semibold text-gray-700 dark:text-gray-300">countries</span>
+              </div>
+              <button id="favFilterBtn" class="bg-gray-100 dark:bg-slate-700 rounded-full px-5 py-2 cursor-pointer hover:bg-orange-100 dark:hover:bg-orange-900/50 transition-all duration-200 btn-hover">
+                <span id="favCount" class="text-gray-700 dark:text-gray-300">⭐ 0 favorites</span>
+              </button>
+              <div class="bg-gray-100 dark:bg-slate-700 rounded-full px-5 py-2">
+                <span id="clickCounter" class="text-gray-700 dark:text-gray-300">📖 0 total clicks</span>
+              </div>
+            </div>
+            <div class="text-xs text-gray-500 dark:text-gray-400 bg-gray-100/80 dark:bg-slate-800/80 backdrop-blur-sm px-4 py-1.5 rounded-full" id="clock">🕒 --:--:--</div>
           </div>
-          <button id="favFilterBtn" class="bg-gray-100 rounded-full px-5 py-2 cursor-pointer hover:bg-orange-100 transition-all">
-            <span id="favCount" class="text-gray-700">⭐ 0 favorites</span>
-          </button>
-          <div class="bg-gray-100 rounded-full px-5 py-2">
-            <span id="clickCounter" class="text-gray-700">📖 0 clicks</span>
+
+          <!-- Search + Controls -->
+          <div class="flex flex-col md:flex-row gap-4">
+            <div class="relative flex-1">
+              <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 text-lg">🔍</span>
+              <input type="text" id="searchInput" placeholder="Search by country or capital..." 
+                     class="w-full bg-white dark:bg-slate-800 border-2 border-gray-200 dark:border-slate-700 focus:border-orange-400 dark:focus:border-orange-500 rounded-2xl py-3 pl-11 pr-12 text-gray-800 dark:text-white font-medium outline-none transition-all">
+              <button id="clearSearch" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 hover:text-red-500 text-xl font-bold hidden transition-all btn-hover">✖</button>
+            </div>
+            
+            <div class="flex gap-2 flex-wrap">
+              <button id="gridView" class="px-5 py-2.5 rounded-full font-bold transition-all duration-200 bg-orange-500 text-white shadow-md btn-hover">📱 Grid</button>
+              <button id="listView" class="px-5 py-2.5 rounded-full font-bold transition-all duration-200 bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-slate-600 btn-hover">📋 List</button>
+              <button id="darkModeBtn" class="px-5 py-2.5 rounded-full font-bold transition-all duration-200 bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-slate-600 btn-hover">🌙 Dark</button>
+              <button id="exportBtn" class="px-5 py-2.5 rounded-full font-bold transition-all duration-200 bg-green-500 text-white hover:bg-green-600 shadow-md btn-hover">📎 Export</button>
+              <button id="randomBtn" class="px-5 py-2.5 rounded-full font-bold transition-all duration-200 bg-purple-500 text-white hover:bg-purple-600 shadow-md btn-hover">🎲 Random</button>
+            </div>
           </div>
+          
+          <!-- Active Filters Indicator -->
+          <div id="activeFilters" class="mt-3 flex flex-wrap gap-2 min-h-[32px]"></div>
         </div>
-        <div class="text-xs text-gray-500 bg-gray-100/80 px-4 py-1.5 rounded-full" id="clock">🕒 --:--:--</div>
+
+        <!-- COUNTRY GRID / LIST CONTAINER -->
+        <div id="countriesContainer" class="transition-all duration-300 max-h-[70vh] overflow-y-auto pr-2">
+          <div class="text-center py-20 text-gray-500 dark:text-gray-400 text-lg">📚 Loading 197 countries...</div>
+        </div>
       </div>
 
-      <!-- Search + Controls -->
-      <div class="flex flex-col md:flex-row gap-4">
-        <div class="relative flex-1">
-          <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-lg">🔍</span>
-          <input type="text" id="searchInput" placeholder="Search by country or capital..." 
-                 class="w-full bg-white border-2 border-gray-200 focus:border-orange-400 rounded-2xl py-3 pl-11 pr-12 text-gray-800 font-medium outline-none transition-all">
-          <button id="clearSearch" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-red-500 text-xl font-bold hidden transition-all">✖</button>
-        </div>
-        
-        <div class="flex gap-2 flex-wrap">
-          <button id="gridView" class="px-5 py-2.5 rounded-full font-bold transition-all bg-orange-500 text-white shadow-md">📱 Grid</button>
-          <button id="listView" class="px-5 py-2.5 rounded-full font-bold transition-all bg-gray-200 text-gray-700 hover:bg-gray-300">📋 List</button>
-          <button id="darkModeBtn" class="px-5 py-2.5 rounded-full font-bold transition-all bg-gray-200 text-gray-700 hover:bg-gray-300">🌙 Dark</button>
-          <button id="exportBtn" class="px-5 py-2.5 rounded-full font-bold transition-all bg-green-500 text-white hover:bg-green-600 shadow-md">📎 Export CSV</button>
+      <!-- RIGHT COLUMN - CLICK WORLD RECORD LEADERBOARD -->
+      <div class="lg:col-span-1">
+        <div class="glass rounded-3xl shadow-xl p-5 sticky top-6 transition-all">
+          <div class="text-center mb-4">
+            <div class="text-3xl mb-2">🏆</div>
+            <h2 class="text-xl font-black bg-gradient-to-r from-orange-500 to-amber-600 bg-clip-text text-transparent">CLICK WORLD RECORD</h2>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Most visited countries</p>
+          </div>
+          
+          <div class="border-t border-gray-200 dark:border-slate-700 my-3"></div>
+          
+          <!-- Total Stats -->
+          <div class="bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-950/30 dark:to-amber-950/30 rounded-2xl p-3 mb-4 text-center">
+            <div class="text-2xl font-black text-orange-600 dark:text-orange-400" id="totalClicksRecord">0</div>
+            <div class="text-xs text-gray-600 dark:text-gray-400">Total Wikipedia Clicks</div>
+            <div class="text-xs text-gray-500 dark:text-gray-500 mt-1" id="topClickRecord">👑 Top: --</div>
+          </div>
+          
+          <!-- Leaderboard List -->
+          <div class="space-y-2 max-h-[500px] overflow-y-auto pr-1" id="leaderboardList">
+            <div class="text-center text-gray-400 py-8">Click on Wikipedia links to see records!</div>
+          </div>
+          
+          <!-- Reset Button -->
+          <button id="resetLeaderboardBtn" class="w-full mt-4 px-4 py-2 rounded-full bg-red-500/80 hover:bg-red-600 text-white text-sm font-semibold transition-all btn-hover">🔄 Reset All Records</button>
+          
+          <div class="text-center text-xs text-gray-400 dark:text-gray-500 mt-3">
+            🎯 Click 📖 on any country to increase its rank
+          </div>
         </div>
       </div>
     </div>
-
-    <!-- COUNTRY GRID / LIST CONTAINER -->
-    <div id="countriesContainer" class="transition-all duration-300">
-      <div class="text-center py-20 text-gray-500 text-lg">📚 Loading 197 countries...</div>
-    </div>
-
-    <!-- FLOATING RANDOM BUTTON -->
-    <button id="randomBtn" class="fixed bottom-6 right-6 bg-gradient-to-r from-orange-500 to-amber-600 text-white rounded-full p-4 shadow-2xl hover:scale-110 transition-all duration-300 z-40 text-2xl shadow-orange-500/30">🎲</button>
 
     <!-- FOOTER -->
-    <div class="mt-14 pt-6 border-t border-gray-200 text-center">
-      <div class="text-xs text-gray-500">✨ Click ★ to favorite | Click 📖 for Wikipedia | All data saved in your browser ✨</div>
+    <div class="mt-10 pt-6 border-t border-gray-200 dark:border-slate-700 text-center">
+      <div class="text-xs text-gray-500 dark:text-gray-400">✨ Click ★ to favorite | Click 📖 for Wikipedia | All data saved in your browser ✨</div>
     </div>
   </div>
 
   <!-- TOAST NOTIFICATION -->
-  <div id="toast" class="fixed bottom-24 right-6 bg-gray-900 text-white px-5 py-2.5 rounded-full shadow-2xl text-sm font-semibold translate-x-[150%] transition-all duration-300 z-50 flex items-center gap-2">📘 <span id="toastMsg">Ready</span></div>
+  <div id="toast" class="fixed bottom-6 right-6 bg-gray-900 dark:bg-orange-600 text-white px-5 py-3 rounded-full shadow-2xl text-sm font-semibold translate-x-[150%] transition-all duration-300 z-50 flex items-center gap-2 min-w-[200px]">
+    <span id="toastIcon">📘</span>
+    <span id="toastMsg">Ready</span>
+  </div>
 
   <script>
     // ======================== COMPLETE DATABASE (197 Countries) ========================
@@ -152,30 +260,16 @@
       { country: "Yemen", capital: "Sana'a" }, { country: "Zambia", capital: "Lusaka" }, { country: "Zimbabwe", capital: "Harare" }
     ];
 
-    // Helper functions
+    // Helper Functions
     function getWikipediaUrl(country) {
-      const specialCases = {
-        "United States": "United_States",
-        "United Kingdom": "United_Kingdom", 
-        "Côte d'Ivoire": "Ivory_Coast",
-        "North Korea": "North_Korea",
-        "South Korea": "South_Korea",
-        "Bosnia and Herzegovina": "Bosnia_and_Herzegovina"
-      };
-      const formatted = specialCases[country] || country.replace(/ /g, '_');
+      const special = { "United States": "United_States", "United Kingdom": "United_Kingdom", "Côte d'Ivoire": "Ivory_Coast", "North Korea": "North_Korea", "South Korea": "South_Korea" };
+      const formatted = special[country] || country.replace(/ /g, '_');
       return `https://en.wikipedia.org/wiki/${encodeURIComponent(formatted)}`;
     }
 
     function getFlagEmoji(country) {
-      const flagMap = {
-        "United States": "🇺🇸", "United Kingdom": "🇬🇧", "Canada": "🇨🇦", "Australia": "🇦🇺",
-        "India": "🇮🇳", "China": "🇨🇳", "Japan": "🇯🇵", "Germany": "🇩🇪", "France": "🇫🇷",
-        "Brazil": "🇧🇷", "Mexico": "🇲🇽", "Bangladesh": "🇧🇩", "Pakistan": "🇵🇰", "Vietnam": "🇻🇳",
-        "Russia": "🇷🇺", "Italy": "🇮🇹", "Spain": "🇪🇸", "Egypt": "🇪🇬", "Nigeria": "🇳🇬",
-        "Turkey": "🇹🇷", "South Korea": "🇰🇷", "Indonesia": "🇮🇩", "Netherlands": "🇳🇱",
-        "Sweden": "🇸🇪", "Norway": "🇳🇴", "Denmark": "🇩🇰", "Finland": "🇫🇮", "Poland": "🇵🇱"
-      };
-      return flagMap[country] || "🌍";
+      const flags = { "United States":"🇺🇸","United Kingdom":"🇬🇧","Canada":"🇨🇦","Australia":"🇦🇺","India":"🇮🇳","China":"🇨🇳","Japan":"🇯🇵","Germany":"🇩🇪","France":"🇫🇷","Brazil":"🇧🇷","Mexico":"🇲🇽","Bangladesh":"🇧🇩","Pakistan":"🇵🇰","Vietnam":"🇻🇳","Russia":"🇷🇺","Italy":"🇮🇹","Spain":"🇪🇸","Egypt":"🇪🇬","Nigeria":"🇳🇬","Turkey":"🇹🇷","South Korea":"🇰🇷","Indonesia":"🇮🇩" };
+      return flags[country] || "🌍";
     }
 
     // App State
@@ -198,39 +292,94 @@
     const exportBtn = document.getElementById('exportBtn');
     const randomBtn = document.getElementById('randomBtn');
     const favFilterBtn = document.getElementById('favFilterBtn');
+    const resetLeaderboardBtn = document.getElementById('resetLeaderboardBtn');
+    const activeFiltersDiv = document.getElementById('activeFilters');
     const toastDiv = document.getElementById('toast');
     const toastMsgSpan = document.getElementById('toastMsg');
+    const toastIcon = document.getElementById('toastIcon');
+    const leaderboardList = document.getElementById('leaderboardList');
+    const totalClicksRecord = document.getElementById('totalClicksRecord');
+    const topClickRecord = document.getElementById('topClickRecord');
 
-    function showToast(message, isError = false) {
+    function showToast(message, icon = '📘') {
+      toastIcon.textContent = icon;
       toastMsgSpan.textContent = message;
       toastDiv.classList.remove('translate-x-[150%]');
       toastDiv.classList.add('translate-x-0');
-      if (isError) toastDiv.classList.add('bg-red-600');
-      else toastDiv.classList.remove('bg-red-600');
       setTimeout(() => {
         toastDiv.classList.add('translate-x-[150%]');
         toastDiv.classList.remove('translate-x-0');
       }, 2000);
     }
 
+    function updateLeaderboard() {
+      const sorted = Object.entries(clickCounts).sort((a, b) => b[1] - a[1]).slice(0, 10);
+      const totalClicks = Object.values(clickCounts).reduce((sum, v) => sum + v, 0);
+      totalClicksRecord.textContent = totalClicks;
+      
+      const top = sorted[0];
+      if (top) topClickRecord.innerHTML = `👑 Top: ${top[0]} (${top[1]} clicks)`;
+      else topClickRecord.innerHTML = `👑 Top: --`;
+      
+      if (sorted.length === 0) {
+        leaderboardList.innerHTML = '<div class="text-center text-gray-400 dark:text-gray-500 py-8 text-sm">✨ Click Wikipedia links to see records ✨</div>';
+        return;
+      }
+      
+      leaderboardList.innerHTML = sorted.map(([country, count], idx) => {
+        let medal = '';
+        let medalClass = '';
+        if (idx === 0) { medal = '🥇'; medalClass = 'medal-gold'; }
+        else if (idx === 1) { medal = '🥈'; medalClass = 'medal-silver'; }
+        else if (idx === 2) { medal = '🥉'; medalClass = 'medal-bronze'; }
+        else medal = `${idx + 1}.`;
+        
+        return `
+          <div class="leaderboard-item flex items-center justify-between p-2 rounded-xl bg-gray-50 dark:bg-slate-800/50">
+            <div class="flex items-center gap-2">
+              <span class="w-8 text-center font-bold ${medalClass ? 'text-white rounded-full w-6 h-6 flex items-center justify-center text-xs' : 'text-gray-600 dark:text-gray-400'}">${medal}</span>
+              <span class="font-medium text-sm text-gray-800 dark:text-gray-200">${getFlagEmoji(country)} ${country}</span>
+            </div>
+            <span class="font-bold text-orange-600 dark:text-orange-400">${count} clicks</span>
+          </div>
+        `;
+      }).join('');
+      
+      clickCounterSpan.innerHTML = `📖 ${totalClicks} total clicks`;
+    }
+
     function updateStats() {
       const totalClicks = Object.values(clickCounts).reduce((sum, val) => sum + val, 0);
-      clickCounterSpan.innerHTML = `📖 ${totalClicks} clicks`;
+      clickCounterSpan.innerHTML = `📖 ${totalClicks} total clicks`;
       favCountSpan.innerHTML = `⭐ ${favorites.size} favorites`;
+      updateLeaderboard();
+    }
+
+    function updateActiveFilters() {
+      activeFiltersDiv.innerHTML = '';
+      if (showFavoritesOnly) {
+        const chip = document.createElement('span');
+        chip.className = 'bg-orange-100 dark:bg-orange-900/50 text-orange-700 dark:text-orange-300 px-3 py-1 rounded-full text-xs flex items-center gap-1';
+        chip.innerHTML = '⭐ Favorites only <button class="ml-1 hover:text-red-500" data-filter="fav">✖</button>';
+        activeFiltersDiv.appendChild(chip);
+      }
+      if (searchTerm) {
+        const chip = document.createElement('span');
+        chip.className = 'bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 px-3 py-1 rounded-full text-xs flex items-center gap-1';
+        chip.innerHTML = `🔍 "${searchTerm}" <button class="ml-1 hover:text-red-500" data-filter="search">✖</button>`;
+        activeFiltersDiv.appendChild(chip);
+      }
+      document.querySelectorAll('[data-filter="fav"]').forEach(btn => btn.onclick = () => { showFavoritesOnly = false; render(); showToast('Showing all countries', '🌍'); });
+      document.querySelectorAll('[data-filter="search"]').forEach(btn => btn.onclick = () => { searchInput.value = ''; searchTerm = ''; clearBtn.classList.add('hidden'); render(); showToast('Search cleared', '🔍'); });
     }
 
     function getFilteredCountries() {
       let filtered = [...allCountries];
       if (searchTerm) {
         const term = searchTerm.toLowerCase();
-        filtered = filtered.filter(c => 
-          c.country.toLowerCase().includes(term) || 
-          c.capital.toLowerCase().includes(term)
-        );
+        filtered = filtered.filter(c => c.country.toLowerCase().includes(term) || c.capital.toLowerCase().includes(term));
       }
-      if (showFavoritesOnly) {
-        filtered = filtered.filter(c => favorites.has(c.country));
-      }
+      if (showFavoritesOnly) filtered = filtered.filter(c => favorites.has(c.country));
       return filtered;
     }
 
@@ -238,24 +387,24 @@
       const filtered = getFilteredCountries();
       totalSpan.textContent = filtered.length;
       updateStats();
+      updateActiveFilters();
 
       if (filtered.length === 0) {
-        container.innerHTML = `<div class="text-center py-20 text-gray-500 text-lg">✨ No countries match your search ✨</div>`;
+        container.innerHTML = `<div class="text-center py-20 text-gray-500 dark:text-gray-400 text-lg">✨ No countries match your search ✨</div>`;
         return;
       }
 
       container.className = currentView === 'grid'
-        ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5'
+        ? 'grid grid-cols-1 sm:grid-cols-2 gap-4'
         : 'flex flex-col gap-3';
 
       container.innerHTML = '';
-
-      filtered.forEach(item => {
+      filtered.forEach((item, idx) => {
         const isFavorite = favorites.has(item.country);
         const visitCount = clickCounts[item.country] || 0;
-        
         const card = document.createElement('div');
-        card.className = `bg-white border-2 border-gray-200 hover:border-orange-400 rounded-2xl p-4 shadow-md hover:shadow-xl transition-all duration-200 group ${currentView === 'list' ? 'flex justify-between items-center' : ''}`;
+        card.className = `country-card bg-white dark:bg-slate-800/90 border-2 border-gray-200 dark:border-slate-700 hover:border-orange-400 dark:hover:border-orange-500 rounded-2xl p-4 shadow-md cursor-pointer ${currentView === 'list' ? 'flex justify-between items-center' : ''}`;
+        card.style.animationDelay = `${idx * 0.01}s`;
         
         if (currentView === 'grid') {
           card.innerHTML = `
@@ -263,201 +412,91 @@
               <div class="flex-1">
                 <div class="flex items-center gap-2 flex-wrap">
                   <span class="text-2xl">${getFlagEmoji(item.country)}</span>
-                  <span class="font-extrabold text-gray-800 group-hover:text-orange-600 transition">${item.country}</span>
+                  <span class="font-extrabold text-gray-800 dark:text-white group-hover:text-orange-600">${item.country}</span>
                 </div>
                 <div class="mt-2 flex items-center gap-2 flex-wrap">
-                  <span class="text-sm font-semibold text-gray-500">🏛️ ${item.capital}</span>
+                  <span class="text-sm font-semibold text-gray-500 dark:text-gray-400">🏛️ ${item.capital}</span>
                   ${visitCount > 0 ? `<span class="text-xs text-gray-400">📚 ${visitCount}</span>` : ''}
-                  ${visitCount > 3 ? '<span class="text-xs text-orange-500">🔥</span>' : ''}
+                  ${visitCount > 3 ? '<span class="text-xs text-orange-500 animate-pulse">🔥</span>' : ''}
                 </div>
               </div>
               <div class="flex gap-2">
-                <button class="fav-star text-2xl ${isFavorite ? 'text-yellow-500' : 'text-gray-400'} hover:scale-125 transition-transform" data-country="${item.country}">${isFavorite ? '★' : '☆'}</button>
-                <button class="wiki-link text-2xl text-blue-500 hover:scale-110 transition-transform" data-country="${item.country}">📖</button>
+                <button class="fav-star text-2xl ${isFavorite ? 'text-yellow-500' : 'text-gray-400'} hover:scale-125 transition" data-country="${item.country}">${isFavorite ? '★' : '☆'}</button>
+                <button class="wiki-link text-2xl text-blue-500 hover:scale-110 transition" data-country="${item.country}">📖</button>
               </div>
             </div>
           `;
         } else {
           card.innerHTML = `
             <div class="flex justify-between items-center w-full">
-              <div class="flex items-center gap-3 flex-wrap">
+              <div class="flex items-center gap-3">
                 <span class="text-2xl">${getFlagEmoji(item.country)}</span>
-                <div>
-                  <span class="font-extrabold text-gray-800">${item.country}</span>
-                  <span class="text-sm text-gray-500 ml-2">🏛️ ${item.capital}</span>
-                  ${visitCount > 0 ? `<span class="text-xs text-gray-400 ml-2">📚 ${visitCount}</span>` : ''}
-                  ${visitCount > 3 ? '<span class="text-xs text-orange-500 ml-1">🔥</span>' : ''}
-                </div>
+                <div><span class="font-extrabold text-gray-800 dark:text-white">${item.country}</span><span class="text-sm text-gray-500 ml-2">🏛️ ${item.capital}</span></div>
               </div>
               <div class="flex gap-3">
-                <button class="fav-star text-xl ${isFavorite ? 'text-yellow-500' : 'text-gray-400'} hover:scale-125 transition-transform" data-country="${item.country}">${isFavorite ? '★' : '☆'}</button>
-                <button class="wiki-link text-xl text-blue-500 hover:scale-110 transition-transform" data-country="${item.country}">📖</button>
+                <button class="fav-star text-xl ${isFavorite ? 'text-yellow-500' : 'text-gray-400'} hover:scale-125 transition" data-country="${item.country}">${isFavorite ? '★' : '☆'}</button>
+                <button class="wiki-link text-xl text-blue-500 hover:scale-110 transition" data-country="${item.country}">📖</button>
               </div>
             </div>
           `;
         }
-        
         container.appendChild(card);
       });
 
-      // Attach event listeners to dynamically created buttons
-      document.querySelectorAll('.fav-star').forEach(btn => {
-        btn.onclick = (e) => {
-          e.stopPropagation();
-          const country = btn.getAttribute('data-country');
-          if (favorites.has(country)) {
-            favorites.delete(country);
-            showToast(`💔 Removed ${country} from favorites`);
-          } else {
-            favorites.add(country);
-            showToast(`⭐ Added ${country} to favorites`);
-          }
-          localStorage.setItem('capitalium_favorites', JSON.stringify([...favorites]));
-          render();
-        };
+      document.querySelectorAll('.fav-star').forEach(btn => btn.onclick = (e) => {
+        e.stopPropagation(); const country = btn.dataset.country;
+        if (favorites.has(country)) favorites.delete(country);
+        else favorites.add(country);
+        localStorage.setItem('capitalium_favorites', JSON.stringify([...favorites]));
+        showToast(favorites.has(country) ? `⭐ Added ${country}` : `💔 Removed ${country}`);
+        render();
       });
 
-      document.querySelectorAll('.wiki-link').forEach(btn => {
-        btn.onclick = (e) => {
-          e.stopPropagation();
-          const country = btn.getAttribute('data-country');
-          clickCounts[country] = (clickCounts[country] || 0) + 1;
-          localStorage.setItem('capitalium_clicks', JSON.stringify(clickCounts));
-          window.open(getWikipediaUrl(country), '_blank');
-          showToast(`📖 Opening Wikipedia: ${country}`);
-          render();
-        };
+      document.querySelectorAll('.wiki-link').forEach(btn => btn.onclick = (e) => {
+        e.stopPropagation(); const country = btn.dataset.country;
+        clickCounts[country] = (clickCounts[country] || 0) + 1;
+        localStorage.setItem('capitalium_clicks', JSON.stringify(clickCounts));
+        window.open(getWikipediaUrl(country), '_blank');
+        showToast(`📖 Opening Wikipedia: ${country}`, '📖');
+        render();
       });
     }
 
-    // Dark Mode Functionality
+    // Dark Mode
     function initDarkMode() {
       const isDark = localStorage.getItem('capitalium_dark') === 'true';
-      if (isDark) {
-        document.body.classList.add('dark');
-        darkBtn.textContent = '☀️ Light';
-        darkBtn.classList.remove('bg-gray-200', 'text-gray-700');
-        darkBtn.classList.add('bg-orange-500', 'text-white');
-      } else {
-        darkBtn.textContent = '🌙 Dark';
-        darkBtn.classList.remove('bg-orange-500', 'text-white');
-        darkBtn.classList.add('bg-gray-200', 'text-gray-700');
-      }
+      if (isDark) document.documentElement.classList.add('dark');
+      darkBtn.textContent = isDark ? '☀️ Light' : '🌙 Dark';
+      if (isDark) darkBtn.classList.replace('bg-gray-200', 'bg-orange-500');
+      else darkBtn.classList.replace('bg-orange-500', 'bg-gray-200');
     }
-
     function toggleDarkMode() {
-      document.body.classList.toggle('dark');
-      const isDark = document.body.classList.contains('dark');
+      document.documentElement.classList.toggle('dark');
+      const isDark = document.documentElement.classList.contains('dark');
       localStorage.setItem('capitalium_dark', isDark);
-      if (isDark) {
-        darkBtn.textContent = '☀️ Light';
-        darkBtn.classList.remove('bg-gray-200', 'text-gray-700');
-        darkBtn.classList.add('bg-orange-500', 'text-white');
-        showToast('🌙 Dark mode enabled');
-      } else {
-        darkBtn.textContent = '🌙 Dark';
-        darkBtn.classList.remove('bg-orange-500', 'text-white');
-        darkBtn.classList.add('bg-gray-200', 'text-gray-700');
-        showToast('☀️ Light mode enabled');
-      }
+      darkBtn.textContent = isDark ? '☀️ Light' : '🌙 Dark';
+      if (isDark) darkBtn.classList.replace('bg-gray-200', 'bg-orange-500');
+      else darkBtn.classList.replace('bg-orange-500', 'bg-gray-200');
+      showToast(isDark ? 'Dark mode enabled' : 'Light mode enabled', isDark ? '🌙' : '☀️');
     }
 
     // Event Listeners
-    searchInput.addEventListener('input', (e) => {
-      searchTerm = e.target.value;
-      clearBtn.classList.toggle('hidden', searchTerm === '');
-      render();
-    });
-
-    clearBtn.addEventListener('click', () => {
-      searchInput.value = '';
-      searchTerm = '';
-      clearBtn.classList.add('hidden');
-      render();
-      showToast('Search cleared');
-    });
-
-    gridBtn.addEventListener('click', () => {
-      currentView = 'grid';
-      gridBtn.className = 'px-5 py-2.5 rounded-full font-bold transition-all bg-orange-500 text-white shadow-md';
-      listBtn.className = 'px-5 py-2.5 rounded-full font-bold transition-all bg-gray-200 text-gray-700 hover:bg-gray-300';
-      render();
-      showToast('Grid view');
-    });
-
-    listBtn.addEventListener('click', () => {
-      currentView = 'list';
-      listBtn.className = 'px-5 py-2.5 rounded-full font-bold transition-all bg-orange-500 text-white shadow-md';
-      gridBtn.className = 'px-5 py-2.5 rounded-full font-bold transition-all bg-gray-200 text-gray-700 hover:bg-gray-300';
-      render();
-      showToast('List view');
-    });
-
+    searchInput.addEventListener('input', (e) => { searchTerm = e.target.value; clearBtn.classList.toggle('hidden', searchTerm === ''); render(); });
+    clearBtn.addEventListener('click', () => { searchInput.value = ''; searchTerm = ''; clearBtn.classList.add('hidden'); render(); showToast('Search cleared', '🔍'); });
+    gridBtn.addEventListener('click', () => { currentView = 'grid'; gridBtn.classList.replace('bg-gray-200', 'bg-orange-500'); listBtn.classList.replace('bg-orange-500', 'bg-gray-200'); render(); showToast('Grid view', '📱'); });
+    listBtn.addEventListener('click', () => { currentView = 'list'; listBtn.classList.replace('bg-gray-200', 'bg-orange-500'); gridBtn.classList.replace('bg-orange-500', 'bg-gray-200'); render(); showToast('List view', '📋'); });
     darkBtn.addEventListener('click', toggleDarkMode);
+    favFilterBtn.addEventListener('click', () => { showFavoritesOnly = !showFavoritesOnly; render(); showToast(showFavoritesOnly ? 'Showing favorites only' : 'Showing all countries', '⭐'); });
+    exportBtn.addEventListener('click', () => { let csv = "Country,Capital,Favorite,Clicks\n" + allCountries.map(c => `"${c.country}","${c.capital}",${favorites.has(c.country) ? "Yes" : "No"},${clickCounts[c.country] || 0}`).join('\n'); const blob = new Blob([csv], { type: 'text/csv' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `capitalium_${new Date().toISOString().slice(0,10)}.csv`; a.click(); URL.revokeObjectURL(blob); showToast(`Exported ${allCountries.length} countries`, '📎'); });
+    randomBtn.addEventListener('click', () => { const rand = allCountries[Math.floor(Math.random() * allCountries.length)]; showToast(`🎲 Random: ${rand.country} → ${rand.capital}`, '🎲'); });
+    resetLeaderboardBtn.addEventListener('click', () => { if (confirm('Reset all click records? This cannot be undone.')) { clickCounts = {}; localStorage.setItem('capitalium_clicks', JSON.stringify(clickCounts)); render(); showToast('All click records reset!', '🔄'); } });
 
-    favFilterBtn.addEventListener('click', () => {
-      showFavoritesOnly = !showFavoritesOnly;
-      if (showFavoritesOnly) {
-        favFilterBtn.classList.add('bg-orange-200');
-        showToast('⭐ Showing only favorites');
-      } else {
-        favFilterBtn.classList.remove('bg-orange-200');
-        showToast('🌍 Showing all countries');
-      }
-      render();
-    });
-
-    exportBtn.addEventListener('click', () => {
-      let csvContent = "Country,Capital,Favorite,Wikipedia Clicks\n";
-      allCountries.forEach(c => {
-        csvContent += `"${c.country}","${c.capital}",${favorites.has(c.country) ? "Yes" : "No"},${clickCounts[c.country] || 0}\n`;
-      });
-      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-      const link = document.createElement('a');
-      const url = URL.createObjectURL(blob);
-      link.href = url;
-      link.setAttribute('download', `capitalium_export_${new Date().toISOString().slice(0,10)}.csv`);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
-      showToast(`📎 Exported ${allCountries.length} countries to CSV`);
-    });
-
-    randomBtn.addEventListener('click', () => {
-      const randomCountry = allCountries[Math.floor(Math.random() * allCountries.length)];
-      showToast(`🎲 Random: ${randomCountry.country} → ${randomCountry.capital}`);
-    });
-
-    // Live Clock
-    function updateClock() {
-      const now = new Date();
-      const timeString = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-      document.getElementById('clock').innerHTML = `🕒 ${timeString}`;
-    }
+    function updateClock() { document.getElementById('clock').innerHTML = `🕒 ${new Date().toLocaleTimeString()}`; }
     setInterval(updateClock, 1000);
     updateClock();
-
-    // Keyboard Shortcuts
-    document.addEventListener('keydown', (e) => {
-      if (e.key === '/' && document.activeElement !== searchInput) {
-        e.preventDefault();
-        searchInput.focus();
-        showToast('🔍 Type to search...');
-      }
-      if (e.key === 'Escape' && searchTerm) {
-        clearBtn.click();
-      }
-      if (e.key === 'g' || e.key === 'G') gridBtn.click();
-      if (e.key === 'l' || e.key === 'L') listBtn.click();
-      if (e.key === 'd' || e.key === 'D') darkBtn.click();
-      if (e.key === 'f' || e.key === 'F') favFilterBtn.click();
-    });
-
-    // Initialize
     initDarkMode();
     render();
-    showToast('✨ Welcome to CAPITALIUM! Click ★ to save favorites ✨');
+    showToast('✨ Welcome to CAPITALIUM PRO! Click 📖 to set world records ✨', '🏆');
   </script>
 </body>
 </html>
