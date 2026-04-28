@@ -4,499 +4,491 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
   <title>🌍 CAPITALIUM PRO | World Capitals Wikipedia Gateway</title>
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
       font-family: 'Inter', system-ui, -apple-system, sans-serif;
     }
-    
-    /* Custom animations */
-    @keyframes float {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-5px); }
+
+    /* LIGHT MODE (default) */
+    :root {
+      --bg-start: #f8fafc;
+      --bg-end: #e2e8f0;
+      --card-bg: #ffffff;
+      --card-border: #e2e8f0;
+      --card-hover-border: #f97316;
+      --text-primary: #1e293b;
+      --text-secondary: #64748b;
+      --text-muted: #94a3b8;
+      --glass-bg: rgba(255, 255, 255, 0.85);
+      --glass-border: rgba(255, 255, 255, 0.3);
+      --badge-bg: #fff7ed;
+      --badge-text: #ea580c;
+      --stats-bg: #fef3c7;
+      --btn-bg: #f1f5f9;
+      --btn-text: #334155;
+      --btn-primary-bg: #f97316;
+      --btn-primary-text: white;
+      --btn-hover-bg: #ea580c;
+      --leaderboard-bg: #f8fafc;
+      --border-color: #e2e8f0;
+      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+      --toast-bg: #1e293b;
+      --scrollbar-track: #f1f1f1;
+      --scrollbar-thumb: #f97316;
     }
-    
-    @keyframes pulse-ring {
-      0% { box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.4); }
-      70% { box-shadow: 0 0 0 10px rgba(249, 115, 22, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(249, 115, 22, 0); }
+
+    /* DARK MODE */
+    body.dark {
+      --bg-start: #0f0f1a;
+      --bg-end: #1a1a2e;
+      --card-bg: #1e1e2e;
+      --card-border: #2d2d44;
+      --card-hover-border: #f97316;
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --glass-bg: rgba(30, 30, 46, 0.85);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --badge-bg: #2d1b0a;
+      --badge-text: #fb923c;
+      --stats-bg: #2a1f0c;
+      --btn-bg: #334155;
+      --btn-text: #cbd5e1;
+      --btn-primary-bg: #f97316;
+      --btn-primary-text: white;
+      --btn-hover-bg: #ea580c;
+      --leaderboard-bg: #1a1a2e;
+      --border-color: #334155;
+      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+      --toast-bg: #f97316;
+      --scrollbar-track: #1e1e2e;
+      --scrollbar-thumb: #f97316;
     }
-    
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+
+    body {
+      background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+      min-height: 100vh;
+      transition: background 0.3s ease, color 0.3s ease;
+      color: var(--text-primary);
     }
-    
-    @keyframes shimmer {
-      0% { background-position: -200% 0; }
-      100% { background-position: 200% 0; }
-    }
-    
-    @keyframes glow-pulse {
-      0%, 100% { opacity: 0.6; }
-      50% { opacity: 1; text-shadow: 0 0 10px rgba(249, 115, 22, 0.5); }
-    }
-    
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: var(--scrollbar-track); border-radius: 10px; }
+    ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, var(--scrollbar-thumb), #ea580c); border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: #ea580c; }
+
+    /* Animations */
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+    @keyframes pulse-ring { 0% { box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(249, 115, 22, 0); } 100% { box-shadow: 0 0 0 0 rgba(249, 115, 22, 0); } }
+    @keyframes slideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+    @keyframes glow-pulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; text-shadow: 0 0 10px rgba(249, 115, 22, 0.5); } }
+
     .hero-badge { animation: float 3s ease-in-out infinite; }
     .pulse-ring { animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
     .country-card { animation: slideIn 0.3s ease backwards; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
     .country-card:hover { transform: translateY(-4px) scale(1.01); box-shadow: 0 20px 25px -12px rgba(0, 0, 0, 0.15); }
-    
-    /* Custom scrollbar */
-    ::-webkit-scrollbar { width: 8px; height: 8px; }
-    ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
-    ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, #f97316, #ea580c); border-radius: 10px; }
-    ::-webkit-scrollbar-thumb:hover { background: #ea580c; }
-    .dark ::-webkit-scrollbar-track { background: #1e1e2e; }
-    
-    /* Glass morphism */
-    .glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.3); }
-    .dark .glass { background: rgba(30, 30, 46, 0.85); border-color: rgba(255, 255, 255, 0.1); }
-    
-    /* Leaderboard specific */
-    .leaderboard-item { transition: all 0.2s ease; }
-    .leaderboard-item:hover { transform: translateX(4px); background: rgba(249, 115, 22, 0.1); }
-    
-    .record-glow {
-      animation: glow-pulse 2s ease-in-out infinite;
-    }
-    
-    /* Focus styles */
-    :focus-visible { outline: 2px solid #f97316; outline-offset: 2px; border-radius: 8px; }
+    .record-glow { animation: glow-pulse 2s ease-in-out infinite; }
     .btn-hover:active { transform: scale(0.96); }
-    
-    /* Skeleton loading */
-    .skeleton { background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
-    .dark .skeleton { background: linear-gradient(90deg, #2a2a3e 25%, #3a3a4e 50%, #2a2a3e 75%); }
-    
-    ::selection { background: #f97316; color: white; }
-    
-    /* Gold medal styling */
-    .medal-gold { background: linear-gradient(135deg, #ffd700, #ffb347); }
-    .medal-silver { background: linear-gradient(135deg, #c0c0c0, #a8a8a8); }
-    .medal-bronze { background: linear-gradient(135deg, #cd7f32, #b87333); }
+
+    /* Glass morphism */
+    .glass {
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    /* Layout */
+    .container { max-width: 1400px; margin: 0 auto; padding: 40px 24px; }
+    .hero { text-align: center; margin-bottom: 48px; }
+    .badge-text {
+      display: inline-block;
+      background: linear-gradient(135deg, #f97316, #ea580c);
+      color: white;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 8px 20px;
+      border-radius: 60px;
+      margin-bottom: 16px;
+      letter-spacing: 1px;
+      box-shadow: 0 8px 20px rgba(249, 115, 22, 0.3);
+    }
+    h1 {
+      font-size: 48px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #1e293b, #f97316, #ea580c);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      margin-bottom: 12px;
+    }
+    body.dark h1 { background: linear-gradient(135deg, #ffffff, #f97316, #fb923c); background-clip: text; -webkit-background-clip: text; }
+    .subtitle { color: var(--text-secondary); font-size: 18px; font-weight: 500; margin-top: 8px; }
+
+    /* Feature badges */
+    .feature-badges { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 20px; }
+    .feature-badge {
+      background: var(--glass-bg);
+      backdrop-filter: blur(8px);
+      padding: 4px 14px;
+      border-radius: 60px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--badge-text);
+      border: 1px solid var(--border-color);
+    }
+
+    /* Grid Layout (2 columns) */
+    .main-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
+    @media (max-width: 900px) { .main-grid { grid-template-columns: 1fr; } }
+
+    /* Controls Panel */
+    .controls-panel { padding: 24px; margin-bottom: 24px; }
+    .stats-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 20px; }
+    .stats-group { display: flex; gap: 12px; flex-wrap: wrap; }
+    .stat-chip {
+      background: var(--stats-bg);
+      padding: 6px 18px;
+      border-radius: 60px;
+      font-weight: 600;
+      color: var(--badge-text);
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+    }
+    .stat-chip:hover { opacity: 0.8; transform: translateY(-2px); }
+    .stat-chip span { font-size: 20px; font-weight: 800; margin-right: 4px; color: var(--badge-text); }
+    .clock { font-size: 12px; color: var(--text-muted); background: var(--btn-bg); padding: 6px 16px; border-radius: 60px; }
+
+    /* Search & Controls */
+    .search-controls { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 16px; }
+    .search-wrapper { flex: 1; position: relative; }
+    .search-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); font-size: 18px; color: var(--text-muted); }
+    #searchInput {
+      width: 100%;
+      padding: 14px 20px 14px 48px;
+      border: 2px solid var(--card-border);
+      border-radius: 60px;
+      font-size: 14px;
+      background: var(--card-bg);
+      color: var(--text-primary);
+      outline: none;
+      transition: all 0.2s;
+    }
+    #searchInput:focus { border-color: #f97316; box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1); }
+    .clear-btn {
+      position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; font-size: 18px; cursor: pointer; color: var(--text-muted);
+      display: none;
+    }
+    .clear-btn:hover { color: #ef4444; }
+    .btn-group { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn {
+      padding: 10px 20px;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      background: var(--btn-bg);
+      color: var(--btn-text);
+    }
+    .btn-primary { background: var(--btn-primary-bg); color: white; }
+    .btn-primary:hover { background: var(--btn-hover-bg); transform: translateY(-2px); }
+    .btn:hover { transform: translateY(-2px); filter: brightness(0.95); }
+
+    /* Active Filters */
+    .active-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; min-height: 40px; }
+    .filter-chip {
+      background: var(--badge-bg);
+      color: var(--badge-text);
+      padding: 4px 12px;
+      border-radius: 60px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .filter-chip button { background: none; border: none; cursor: pointer; font-size: 14px; color: inherit; }
+
+    /* Countries Container (Grid/List) */
+    .countries-container {
+      max-height: 65vh;
+      overflow-y: auto;
+      padding-right: 8px;
+    }
+    .grid-view { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+    .list-view { display: flex; flex-direction: column; gap: 12px; }
+    .country-card {
+      background: var(--card-bg);
+      border: 2px solid var(--card-border);
+      border-radius: 20px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .country-card:hover { border-color: var(--card-hover-border); }
+    .card-header { display: flex; justify-content: space-between; align-items: flex-start; }
+    .country-info { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .flag { font-size: 28px; }
+    .country-name { font-weight: 800; font-size: 16px; color: var(--text-primary); }
+    .capital-info { margin-top: 10px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .capital-name { font-size: 13px; font-weight: 600; color: var(--text-secondary); }
+    .click-count { font-size: 11px; color: var(--text-muted); }
+    .hot-badge { font-size: 12px; color: #f97316; animation: pulse-ring 1.5s infinite; }
+    .card-actions { display: flex; gap: 12px; align-items: center; }
+    .star-btn, .wiki-btn { background: none; border: none; font-size: 22px; cursor: pointer; transition: transform 0.2s; }
+    .star-btn:hover, .wiki-btn:hover { transform: scale(1.15); }
+    .star-btn.favorited { color: #fbbf24; }
+    .star-btn:not(.favorited) { color: var(--text-muted); }
+    .wiki-btn { color: #3b82f6; }
+    .list-view .country-card { display: flex; justify-content: space-between; align-items: center; }
+    .list-view .country-info { flex: 1; }
+
+    /* Leaderboard */
+    .leaderboard-panel { padding: 24px; position: sticky; top: 24px; }
+    .leaderboard-title { text-align: center; margin-bottom: 20px; }
+    .leaderboard-title h3 { font-size: 20px; font-weight: 800; background: linear-gradient(135deg, #f97316, #ea580c); background-clip: text; -webkit-background-clip: text; color: transparent; margin-bottom: 4px; }
+    .total-stats {
+      background: var(--badge-bg);
+      border-radius: 20px;
+      padding: 16px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .total-number { font-size: 32px; font-weight: 900; color: var(--badge-text); }
+    .leaderboard-list { max-height: 400px; overflow-y: auto; }
+    .leaderboard-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 12px; border-radius: 16px;
+      background: var(--leaderboard-bg);
+      margin-bottom: 8px;
+      transition: all 0.2s;
+    }
+    .leaderboard-item:hover { transform: translateX(4px); background: rgba(249, 115, 22, 0.1); }
+    .medal { width: 30px; font-weight: 700; }
+    .reset-btn {
+      width: 100%; margin-top: 16px; padding: 10px;
+      background: #ef4444; color: white; border: none;
+      border-radius: 60px; font-weight: 600; cursor: pointer;
+      transition: all 0.2s;
+    }
+    .reset-btn:hover { background: #dc2626; transform: translateY(-2px); }
+
+    /* Footer */
+    .footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border-color); text-align: center; font-size: 12px; color: var(--text-muted); }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 24px; right: 24px;
+      background: var(--toast-bg); color: white;
+      padding: 12px 24px; border-radius: 60px;
+      font-size: 14px; font-weight: 600;
+      transform: translateX(150%);
+      transition: transform 0.3s ease;
+      z-index: 1000;
+      display: flex; align-items: center; gap: 8px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+    .toast.show { transform: translateX(0); }
+
+    /* Empty state */
+    .empty-message { text-align: center; padding: 60px; color: var(--text-muted); font-size: 18px; }
   </style>
 </head>
-<body class="bg-gradient-to-br from-slate-50 via-gray-100 to-blue-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 transition-all duration-500">
-
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
-    
-    <!-- HERO SECTION -->
-    <div class="text-center mb-8 md:mb-12">
-      <div class="hero-badge inline-block mb-4">
-        <span class="bg-gradient-to-r from-orange-500 to-amber-600 text-white text-xs md:text-sm font-extrabold px-5 py-2 rounded-full shadow-lg shadow-orange-500/30 pulse-ring">🌐 197 SOVEREIGN STATES 🌐</span>
+<body>
+  <div class="container">
+    <!-- Hero Section -->
+    <div class="hero">
+      <div class="hero-badge"><span class="badge-text pulse-ring">🌐 197 SOVEREIGN STATES 🌐</span></div>
+      <h1>🌍 CAPITALIUM PRO</h1>
+      <p class="subtitle">⚡ Click any country → Wikipedia | ⭐ Favorites | 🏆 World Records ⚡</p>
+      <div class="feature-badges">
+        <span class="feature-badge">📖 Direct Wikipedia links</span>
+        <span class="feature-badge">⭐ Persist favorites</span>
+        <span class="feature-badge">📊 Click counter</span>
+        <span class="feature-badge">🏆 Live leaderboard</span>
       </div>
-      <h1 class="text-4xl md:text-6xl font-black bg-gradient-to-r from-slate-800 via-orange-600 to-amber-700 bg-clip-text text-transparent dark:from-white dark:via-orange-400 dark:to-amber-300 drop-shadow-sm">🌍 CAPITALIUM PRO</h1>
-      <p class="text-gray-600 dark:text-gray-300 text-base md:text-lg font-medium mt-3">⚡ Click any country → Wikipedia | ⭐ Favorites | 🏆 World Records ⚡</p>
     </div>
 
-    <!-- Main Grid: 2 columns - Left: Controls + Countries, Right: Leaderboard -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      
-      <!-- LEFT COLUMN (2/3 width) -->
-      <div class="lg:col-span-2">
-        <!-- CONTROLS BAR -->
-        <div class="glass rounded-3xl shadow-xl p-5 md:p-6 mb-6 transition-all">
-          
-          <!-- Stats Row -->
-          <div class="flex flex-wrap justify-between items-center gap-3 mb-5">
-            <div class="flex gap-3 flex-wrap">
-              <div class="bg-orange-50 dark:bg-orange-950/60 rounded-full px-5 py-2 shadow-sm">
-                <span class="font-black text-orange-600 dark:text-orange-400 text-2xl mr-1" id="totalCount">197</span>
-                <span class="font-semibold text-gray-700 dark:text-gray-300">countries</span>
-              </div>
-              <button id="favFilterBtn" class="bg-gray-100 dark:bg-slate-700 rounded-full px-5 py-2 cursor-pointer hover:bg-orange-100 dark:hover:bg-orange-900/50 transition-all duration-200 btn-hover">
-                <span id="favCount" class="text-gray-700 dark:text-gray-300">⭐ 0 favorites</span>
-              </button>
-              <div class="bg-gray-100 dark:bg-slate-700 rounded-full px-5 py-2">
-                <span id="clickCounter" class="text-gray-700 dark:text-gray-300">📖 0 total clicks</span>
-              </div>
+    <!-- Main Grid -->
+    <div class="main-grid">
+      <!-- LEFT COLUMN -->
+      <div>
+        <!-- Controls Panel -->
+        <div class="glass controls-panel">
+          <div class="stats-row">
+            <div class="stats-group">
+              <button class="stat-chip" id="totalStat"><span id="totalCount">197</span> countries</button>
+              <button class="stat-chip" id="favFilterBtn"><span id="favCount">⭐ 0</span> favorites</button>
+              <div class="stat-chip"><span id="clickCounter">📖 0</span> total clicks</div>
             </div>
-            <div class="text-xs text-gray-500 dark:text-gray-400 bg-gray-100/80 dark:bg-slate-800/80 backdrop-blur-sm px-4 py-1.5 rounded-full" id="clock">🕒 --:--:--</div>
-          </div>
-
-          <!-- Search + Controls -->
-          <div class="flex flex-col md:flex-row gap-4">
-            <div class="relative flex-1">
-              <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 text-lg">🔍</span>
-              <input type="text" id="searchInput" placeholder="Search by country or capital..." 
-                     class="w-full bg-white dark:bg-slate-800 border-2 border-gray-200 dark:border-slate-700 focus:border-orange-400 dark:focus:border-orange-500 rounded-2xl py-3 pl-11 pr-12 text-gray-800 dark:text-white font-medium outline-none transition-all">
-              <button id="clearSearch" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 hover:text-red-500 text-xl font-bold hidden transition-all btn-hover">✖</button>
-            </div>
-            
-            <div class="flex gap-2 flex-wrap">
-              <button id="gridView" class="px-5 py-2.5 rounded-full font-bold transition-all duration-200 bg-orange-500 text-white shadow-md btn-hover">📱 Grid</button>
-              <button id="listView" class="px-5 py-2.5 rounded-full font-bold transition-all duration-200 bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-slate-600 btn-hover">📋 List</button>
-              <button id="darkModeBtn" class="px-5 py-2.5 rounded-full font-bold transition-all duration-200 bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-slate-600 btn-hover">🌙 Dark</button>
-              <button id="exportBtn" class="px-5 py-2.5 rounded-full font-bold transition-all duration-200 bg-green-500 text-white hover:bg-green-600 shadow-md btn-hover">📎 Export</button>
-              <button id="randomBtn" class="px-5 py-2.5 rounded-full font-bold transition-all duration-200 bg-purple-500 text-white hover:bg-purple-600 shadow-md btn-hover">🎲 Random</button>
-            </div>
+            <div class="clock" id="clock">🕒 --:--:--</div>
           </div>
           
-          <!-- Active Filters Indicator -->
-          <div id="activeFilters" class="mt-3 flex flex-wrap gap-2 min-h-[32px]"></div>
+          <div class="search-controls">
+            <div class="search-wrapper">
+              <span class="search-icon">🔍</span>
+              <input type="text" id="searchInput" placeholder="Search by country or capital...">
+              <button class="clear-btn" id="clearSearch">✖</button>
+            </div>
+            <div class="btn-group">
+              <button class="btn btn-primary" id="gridView">📱 Grid</button>
+              <button class="btn" id="listView">📋 List</button>
+              <button class="btn" id="darkModeBtn">🌙 Dark</button>
+              <button class="btn btn-primary" id="exportBtn">📎 Export</button>
+              <button class="btn btn-primary" id="randomBtn">🎲 Random</button>
+            </div>
+          </div>
+          <div class="active-filters" id="activeFilters"></div>
         </div>
 
-        <!-- COUNTRY GRID / LIST CONTAINER -->
-        <div id="countriesContainer" class="transition-all duration-300 max-h-[70vh] overflow-y-auto pr-2">
-          <div class="text-center py-20 text-gray-500 dark:text-gray-400 text-lg">📚 Loading 197 countries...</div>
+        <!-- Countries Container -->
+        <div class="countries-container" id="countriesContainer">
+          <div class="empty-message">📚 Loading 197 countries...</div>
         </div>
       </div>
 
-      <!-- RIGHT COLUMN - CLICK WORLD RECORD LEADERBOARD -->
-      <div class="lg:col-span-1">
-        <div class="glass rounded-3xl shadow-xl p-5 sticky top-6 transition-all">
-          <div class="text-center mb-4">
-            <div class="text-3xl mb-2">🏆</div>
-            <h2 class="text-xl font-black bg-gradient-to-r from-orange-500 to-amber-600 bg-clip-text text-transparent">CLICK WORLD RECORD</h2>
-            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Most visited countries</p>
+      <!-- RIGHT COLUMN - Leaderboard -->
+      <div>
+        <div class="glass leaderboard-panel">
+          <div class="leaderboard-title">
+            <div style="font-size: 32px;">🏆</div>
+            <h3>CLICK WORLD RECORD</h3>
+            <p style="font-size: 11px; color: var(--text-muted);">Most visited countries</p>
           </div>
-          
-          <div class="border-t border-gray-200 dark:border-slate-700 my-3"></div>
-          
-          <!-- Total Stats -->
-          <div class="bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-950/30 dark:to-amber-950/30 rounded-2xl p-3 mb-4 text-center">
-            <div class="text-2xl font-black text-orange-600 dark:text-orange-400" id="totalClicksRecord">0</div>
-            <div class="text-xs text-gray-600 dark:text-gray-400">Total Wikipedia Clicks</div>
-            <div class="text-xs text-gray-500 dark:text-gray-500 mt-1" id="topClickRecord">👑 Top: --</div>
+          <div class="total-stats">
+            <div class="total-number" id="totalClicksRecord">0</div>
+            <div style="font-size: 12px;">Total Wikipedia Clicks</div>
+            <div style="font-size: 11px; margin-top: 6px;" id="topClickRecord">👑 Top: --</div>
           </div>
-          
-          <!-- Leaderboard List -->
-          <div class="space-y-2 max-h-[500px] overflow-y-auto pr-1" id="leaderboardList">
-            <div class="text-center text-gray-400 py-8">Click on Wikipedia links to see records!</div>
+          <div class="leaderboard-list" id="leaderboardList">
+            <div style="text-align: center; padding: 30px; color: var(--text-muted);">✨ Click Wikipedia links to see records ✨</div>
           </div>
-          
-          <!-- Reset Button -->
-          <button id="resetLeaderboardBtn" class="w-full mt-4 px-4 py-2 rounded-full bg-red-500/80 hover:bg-red-600 text-white text-sm font-semibold transition-all btn-hover">🔄 Reset All Records</button>
-          
-          <div class="text-center text-xs text-gray-400 dark:text-gray-500 mt-3">
-            🎯 Click 📖 on any country to increase its rank
-          </div>
+          <button class="reset-btn" id="resetLeaderboardBtn">🔄 Reset All Records</button>
+          <p style="font-size: 10px; text-align: center; margin-top: 12px; color: var(--text-muted);">🎯 Click 📖 on any country to increase its rank</p>
         </div>
       </div>
     </div>
 
-    <!-- FOOTER -->
-    <div class="mt-10 pt-6 border-t border-gray-200 dark:border-slate-700 text-center">
-      <div class="text-xs text-gray-500 dark:text-gray-400">✨ Click ★ to favorite | Click 📖 for Wikipedia | All data saved in your browser ✨</div>
+    <div class="footer">
+      ✨ Click ★ to favorite | Click 📖 for Wikipedia | All data saved in your browser ✨
     </div>
   </div>
 
-  <!-- TOAST NOTIFICATION -->
-  <div id="toast" class="fixed bottom-6 right-6 bg-gray-900 dark:bg-orange-600 text-white px-5 py-3 rounded-full shadow-2xl text-sm font-semibold translate-x-[150%] transition-all duration-300 z-50 flex items-center gap-2 min-w-[200px]">
-    <span id="toastIcon">📘</span>
-    <span id="toastMsg">Ready</span>
-  </div>
+  <div class="toast" id="toast"><span id="toastIcon">📘</span> <span id="toastMsg">Ready</span></div>
 
   <script>
-    // ======================== COMPLETE DATABASE (197 Countries) ========================
+    // FULL DATABASE (197 countries - abbreviated for demo, includes all major ones + complete set)
     const allCountries = [
-      { country: "Afghanistan", capital: "Kabul" }, { country: "Albania", capital: "Tirana" }, { country: "Algeria", capital: "Algiers" },
-      { country: "Andorra", capital: "Andorra la Vella" }, { country: "Angola", capital: "Luanda" }, { country: "Antigua and Barbuda", capital: "St. John's" },
-      { country: "Argentina", capital: "Buenos Aires" }, { country: "Armenia", capital: "Yerevan" }, { country: "Australia", capital: "Canberra" },
-      { country: "Austria", capital: "Vienna" }, { country: "Azerbaijan", capital: "Baku" }, { country: "Bahamas", capital: "Nassau" },
-      { country: "Bahrain", capital: "Manama" }, { country: "Bangladesh", capital: "Dhaka" }, { country: "Barbados", capital: "Bridgetown" },
-      { country: "Belarus", capital: "Minsk" }, { country: "Belgium", capital: "Brussels" }, { country: "Belize", capital: "Belmopan" },
-      { country: "Benin", capital: "Porto-Novo" }, { country: "Bhutan", capital: "Thimphu" }, { country: "Bolivia", capital: "La Paz" },
-      { country: "Bosnia and Herzegovina", capital: "Sarajevo" }, { country: "Botswana", capital: "Gaborone" }, { country: "Brazil", capital: "Brasília" },
-      { country: "Brunei", capital: "Bandar Seri Begawan" }, { country: "Bulgaria", capital: "Sofia" }, { country: "Burkina Faso", capital: "Ouagadougou" },
-      { country: "Burundi", capital: "Gitega" }, { country: "Cabo Verde", capital: "Praia" }, { country: "Cambodia", capital: "Phnom Penh" },
-      { country: "Cameroon", capital: "Yaoundé" }, { country: "Canada", capital: "Ottawa" }, { country: "Central African Republic", capital: "Bangui" },
-      { country: "Chad", capital: "N'Djamena" }, { country: "Chile", capital: "Santiago" }, { country: "China", capital: "Beijing" },
-      { country: "Colombia", capital: "Bogotá" }, { country: "Comoros", capital: "Moroni" }, { country: "Congo", capital: "Brazzaville" },
-      { country: "Costa Rica", capital: "San José" }, { country: "Côte d'Ivoire", capital: "Yamoussoukro" }, { country: "Croatia", capital: "Zagreb" },
-      { country: "Cuba", capital: "Havana" }, { country: "Cyprus", capital: "Nicosia" }, { country: "Czech Republic", capital: "Prague" },
-      { country: "Denmark", capital: "Copenhagen" }, { country: "Djibouti", capital: "Djibouti" }, { country: "Dominica", capital: "Roseau" },
-      { country: "Dominican Republic", capital: "Santo Domingo" }, { country: "Ecuador", capital: "Quito" }, { country: "Egypt", capital: "Cairo" },
-      { country: "El Salvador", capital: "San Salvador" }, { country: "Equatorial Guinea", capital: "Malabo" }, { country: "Eritrea", capital: "Asmara" },
-      { country: "Estonia", capital: "Tallinn" }, { country: "Eswatini", capital: "Mbabane" }, { country: "Ethiopia", capital: "Addis Ababa" },
-      { country: "Fiji", capital: "Suva" }, { country: "Finland", capital: "Helsinki" }, { country: "France", capital: "Paris" },
-      { country: "Gabon", capital: "Libreville" }, { country: "Gambia", capital: "Banjul" }, { country: "Georgia", capital: "Tbilisi" },
-      { country: "Germany", capital: "Berlin" }, { country: "Ghana", capital: "Accra" }, { country: "Greece", capital: "Athens" },
-      { country: "Grenada", capital: "St. George's" }, { country: "Guatemala", capital: "Guatemala City" }, { country: "Guinea", capital: "Conakry" },
-      { country: "Guinea-Bissau", capital: "Bissau" }, { country: "Guyana", capital: "Georgetown" }, { country: "Haiti", capital: "Port-au-Prince" },
-      { country: "Honduras", capital: "Tegucigalpa" }, { country: "Hungary", capital: "Budapest" }, { country: "Iceland", capital: "Reykjavik" },
-      { country: "India", capital: "New Delhi" }, { country: "Indonesia", capital: "Jakarta" }, { country: "Iran", capital: "Tehran" },
-      { country: "Iraq", capital: "Baghdad" }, { country: "Ireland", capital: "Dublin" }, { country: "Israel", capital: "Jerusalem" },
-      { country: "Italy", capital: "Rome" }, { country: "Jamaica", capital: "Kingston" }, { country: "Japan", capital: "Tokyo" },
-      { country: "Jordan", capital: "Amman" }, { country: "Kazakhstan", capital: "Astana" }, { country: "Kenya", capital: "Nairobi" },
-      { country: "Kiribati", capital: "Tarawa" }, { country: "Kuwait", capital: "Kuwait City" }, { country: "Kyrgyzstan", capital: "Bishkek" },
-      { country: "Laos", capital: "Vientiane" }, { country: "Latvia", capital: "Riga" }, { country: "Lebanon", capital: "Beirut" },
-      { country: "Lesotho", capital: "Maseru" }, { country: "Liberia", capital: "Monrovia" }, { country: "Libya", capital: "Tripoli" },
-      { country: "Liechtenstein", capital: "Vaduz" }, { country: "Lithuania", capital: "Vilnius" }, { country: "Luxembourg", capital: "Luxembourg" },
-      { country: "Madagascar", capital: "Antananarivo" }, { country: "Malawi", capital: "Lilongwe" }, { country: "Malaysia", capital: "Kuala Lumpur" },
-      { country: "Maldives", capital: "Malé" }, { country: "Mali", capital: "Bamako" }, { country: "Malta", capital: "Valletta" },
-      { country: "Marshall Islands", capital: "Majuro" }, { country: "Mauritania", capital: "Nouakchott" }, { country: "Mauritius", capital: "Port Louis" },
-      { country: "Mexico", capital: "Mexico City" }, { country: "Micronesia", capital: "Palikir" }, { country: "Moldova", capital: "Chișinău" },
-      { country: "Monaco", capital: "Monaco" }, { country: "Mongolia", capital: "Ulaanbaatar" }, { country: "Montenegro", capital: "Podgorica" },
-      { country: "Morocco", capital: "Rabat" }, { country: "Mozambique", capital: "Maputo" }, { country: "Myanmar", capital: "Naypyidaw" },
-      { country: "Namibia", capital: "Windhoek" }, { country: "Nauru", capital: "Yaren" }, { country: "Nepal", capital: "Kathmandu" },
-      { country: "Netherlands", capital: "Amsterdam" }, { country: "New Zealand", capital: "Wellington" }, { country: "Nicaragua", capital: "Managua" },
-      { country: "Niger", capital: "Niamey" }, { country: "Nigeria", capital: "Abuja" }, { country: "North Korea", capital: "Pyongyang" },
-      { country: "North Macedonia", capital: "Skopje" }, { country: "Norway", capital: "Oslo" }, { country: "Oman", capital: "Muscat" },
-      { country: "Pakistan", capital: "Islamabad" }, { country: "Palau", capital: "Ngerulmud" }, { country: "Palestine", capital: "Ramallah" },
-      { country: "Panama", capital: "Panama City" }, { country: "Papua New Guinea", capital: "Port Moresby" }, { country: "Paraguay", capital: "Asunción" },
-      { country: "Peru", capital: "Lima" }, { country: "Philippines", capital: "Manila" }, { country: "Poland", capital: "Warsaw" },
-      { country: "Portugal", capital: "Lisbon" }, { country: "Qatar", capital: "Doha" }, { country: "Romania", capital: "Bucharest" },
-      { country: "Russia", capital: "Moscow" }, { country: "Rwanda", capital: "Kigali" }, { country: "Saint Kitts and Nevis", capital: "Basseterre" },
-      { country: "Saint Lucia", capital: "Castries" }, { country: "Saint Vincent and the Grenadines", capital: "Kingstown" }, { country: "Samoa", capital: "Apia" },
-      { country: "San Marino", capital: "San Marino" }, { country: "Sao Tome and Principe", capital: "São Tomé" }, { country: "Saudi Arabia", capital: "Riyadh" },
-      { country: "Senegal", capital: "Dakar" }, { country: "Serbia", capital: "Belgrade" }, { country: "Seychelles", capital: "Victoria" },
-      { country: "Sierra Leone", capital: "Freetown" }, { country: "Singapore", capital: "Singapore" }, { country: "Slovakia", capital: "Bratislava" },
-      { country: "Slovenia", capital: "Ljubljana" }, { country: "Solomon Islands", capital: "Honiara" }, { country: "Somalia", capital: "Mogadishu" },
-      { country: "South Africa", capital: "Pretoria" }, { country: "South Korea", capital: "Seoul" }, { country: "South Sudan", capital: "Juba" },
-      { country: "Spain", capital: "Madrid" }, { country: "Sri Lanka", capital: "Sri Jayawardenepura Kotte" }, { country: "Sudan", capital: "Khartoum" },
-      { country: "Suriname", capital: "Paramaribo" }, { country: "Sweden", capital: "Stockholm" }, { country: "Switzerland", capital: "Bern" },
-      { country: "Syria", capital: "Damascus" }, { country: "Taiwan", capital: "Taipei" }, { country: "Tajikistan", capital: "Dushanbe" },
-      { country: "Tanzania", capital: "Dodoma" }, { country: "Thailand", capital: "Bangkok" }, { country: "Timor-Leste", capital: "Dili" },
-      { country: "Togo", capital: "Lomé" }, { country: "Tonga", capital: "Nukuʻalofa" }, { country: "Trinidad and Tobago", capital: "Port of Spain" },
-      { country: "Tunisia", capital: "Tunis" }, { country: "Turkey", capital: "Ankara" }, { country: "Turkmenistan", capital: "Ashgabat" },
-      { country: "Tuvalu", capital: "Funafuti" }, { country: "Uganda", capital: "Kampala" }, { country: "Ukraine", capital: "Kyiv" },
-      { country: "United Arab Emirates", capital: "Abu Dhabi" }, { country: "United Kingdom", capital: "London" }, { country: "United States", capital: "Washington, D.C." },
-      { country: "Uruguay", capital: "Montevideo" }, { country: "Uzbekistan", capital: "Tashkent" }, { country: "Vanuatu", capital: "Port Vila" },
-      { country: "Vatican City", capital: "Vatican City" }, { country: "Venezuela", capital: "Caracas" }, { country: "Vietnam", capital: "Hanoi" },
-      { country: "Yemen", capital: "Sana'a" }, { country: "Zambia", capital: "Lusaka" }, { country: "Zimbabwe", capital: "Harare" }
-    ];
+      "Afghanistan,Kabul", "Albania,Tirana", "Algeria,Algiers", "Andorra,Andorra la Vella", "Angola,Luanda",
+      "Antigua and Barbuda,St. John's", "Argentina,Buenos Aires", "Armenia,Yerevan", "Australia,Canberra", "Austria,Vienna",
+      "Azerbaijan,Baku", "Bahamas,Nassau", "Bahrain,Manama", "Bangladesh,Dhaka", "Barbados,Bridgetown", "Belarus,Minsk",
+      "Belgium,Brussels", "Belize,Belmopan", "Benin,Porto-Novo", "Bhutan,Thimphu", "Bolivia,La Paz", "Bosnia and Herzegovina,Sarajevo",
+      "Botswana,Gaborone", "Brazil,Brasília", "Brunei,Bandar Seri Begawan", "Bulgaria,Sofia", "Burkina Faso,Ouagadougou",
+      "Burundi,Gitega", "Cabo Verde,Praia", "Cambodia,Phnom Penh", "Cameroon,Yaoundé", "Canada,Ottawa", "Central African Republic,Bangui",
+      "Chad,N'Djamena", "Chile,Santiago", "China,Beijing", "Colombia,Bogotá", "Comoros,Moroni", "Congo,Brazzaville", "Costa Rica,San José",
+      "Côte d'Ivoire,Yamoussoukro", "Croatia,Zagreb", "Cuba,Havana", "Cyprus,Nicosia", "Czech Republic,Prague", "Denmark,Copenhagen",
+      "Djibouti,Djibouti", "Dominica,Roseau", "Dominican Republic,Santo Domingo", "Ecuador,Quito", "Egypt,Cairo", "El Salvador,San Salvador",
+      "Equatorial Guinea,Malabo", "Eritrea,Asmara", "Estonia,Tallinn", "Eswatini,Mbabane", "Ethiopia,Addis Ababa", "Fiji,Suva", "Finland,Helsinki",
+      "France,Paris", "Gabon,Libreville", "Gambia,Banjul", "Georgia,Tbilisi", "Germany,Berlin", "Ghana,Accra", "Greece,Athens", "Grenada,St. George's",
+      "Guatemala,Guatemala City", "Guinea,Conakry", "Guinea-Bissau,Bissau", "Guyana,Georgetown", "Haiti,Port-au-Prince", "Honduras,Tegucigalpa",
+      "Hungary,Budapest", "Iceland,Reykjavik", "India,New Delhi", "Indonesia,Jakarta", "Iran,Tehran", "Iraq,Baghdad", "Ireland,Dublin",
+      "Israel,Jerusalem", "Italy,Rome", "Jamaica,Kingston", "Japan,Tokyo", "Jordan,Amman", "Kazakhstan,Astana", "Kenya,Nairobi", "Kiribati,Tarawa",
+      "Kuwait,Kuwait City", "Kyrgyzstan,Bishkek", "Laos,Vientiane", "Latvia,Riga", "Lebanon,Beirut", "Lesotho,Maseru", "Liberia,Monrovia",
+      "Libya,Tripoli", "Liechtenstein,Vaduz", "Lithuania,Vilnius", "Luxembourg,Luxembourg", "Madagascar,Antananarivo", "Malawi,Lilongwe",
+      "Malaysia,Kuala Lumpur", "Maldives,Malé", "Mali,Bamako", "Malta,Valletta", "Marshall Islands,Majuro", "Mauritania,Nouakchott",
+      "Mauritius,Port Louis", "Mexico,Mexico City", "Micronesia,Palikir", "Moldova,Chișinău", "Monaco,Monaco", "Mongolia,Ulaanbaatar",
+      "Montenegro,Podgorica", "Morocco,Rabat", "Mozambique,Maputo", "Myanmar,Naypyidaw", "Namibia,Windhoek", "Nauru,Yaren", "Nepal,Kathmandu",
+      "Netherlands,Amsterdam", "New Zealand,Wellington", "Nicaragua,Managua", "Niger,Niamey", "Nigeria,Abuja", "North Korea,Pyongyang",
+      "North Macedonia,Skopje", "Norway,Oslo", "Oman,Muscat", "Pakistan,Islamabad", "Palau,Ngerulmud", "Palestine,Ramallah", "Panama,Panama City",
+      "Papua New Guinea,Port Moresby", "Paraguay,Asunción", "Peru,Lima", "Philippines,Manila", "Poland,Warsaw", "Portugal,Lisbon", "Qatar,Doha",
+      "Romania,Bucharest", "Russia,Moscow", "Rwanda,Kigali", "Saint Kitts and Nevis,Basseterre", "Saint Lucia,Castries",
+      "Saint Vincent and the Grenadines,Kingstown", "Samoa,Apia", "San Marino,San Marino", "Sao Tome and Principe,São Tomé", "Saudi Arabia,Riyadh",
+      "Senegal,Dakar", "Serbia,Belgrade", "Seychelles,Victoria", "Sierra Leone,Freetown", "Singapore,Singapore", "Slovakia,Bratislava",
+      "Slovenia,Ljubljana", "Solomon Islands,Honiara", "Somalia,Mogadishu", "South Africa,Pretoria", "South Korea,Seoul", "South Sudan,Juba",
+      "Spain,Madrid", "Sri Lanka,Sri Jayawardenepura Kotte", "Sudan,Khartoum", "Suriname,Paramaribo", "Sweden,Stockholm", "Switzerland,Bern",
+      "Syria,Damascus", "Taiwan,Taipei", "Tajikistan,Dushanbe", "Tanzania,Dodoma", "Thailand,Bangkok", "Timor-Leste,Dili", "Togo,Lomé",
+      "Tonga,Nukuʻalofa", "Trinidad and Tobago,Port of Spain", "Tunisia,Tunis", "Turkey,Ankara", "Turkmenistan,Ashgabat", "Tuvalu,Funafuti",
+      "Uganda,Kampala", "Ukraine,Kyiv", "United Arab Emirates,Abu Dhabi", "United Kingdom,London", "United States,Washington, D.C.",
+      "Uruguay,Montevideo", "Uzbekistan,Tashkent", "Vanuatu,Port Vila", "Vatican City,Vatican City", "Venezuela,Caracas", "Vietnam,Hanoi",
+      "Yemen,Sana'a", "Zambia,Lusaka", "Zimbabwe,Harare"
+    ].map(str => { let [c, cap] = str.split(','); return { country: c, capital: cap }; });
 
-    // Helper Functions
-    function getWikipediaUrl(country) {
-      const special = { "United States": "United_States", "United Kingdom": "United_Kingdom", "Côte d'Ivoire": "Ivory_Coast", "North Korea": "North_Korea", "South Korea": "South_Korea" };
-      const formatted = special[country] || country.replace(/ /g, '_');
-      return `https://en.wikipedia.org/wiki/${encodeURIComponent(formatted)}`;
+    function getFlag(country) {
+      const flags = { "United States":"🇺🇸","United Kingdom":"🇬🇧","Canada":"🇨🇦","Australia":"🇦🇺","India":"🇮🇳","China":"🇨🇳","Japan":"🇯🇵","Germany":"🇩🇪","France":"🇫🇷","Brazil":"🇧🇷","Mexico":"🇲🇽","Bangladesh":"🇧🇩","Pakistan":"🇵🇰","Russia":"🇷🇺","Italy":"🇮🇹","Spain":"🇪🇸","Egypt":"🇪🇬","Turkey":"🇹🇷","South Korea":"🇰🇷" };
+      return flags[country] || "🏳️";
     }
+    function getWikiUrl(c) { return `https://en.wikipedia.org/wiki/${c.replace(/ /g, '_')}`; }
 
-    function getFlagEmoji(country) {
-      const flags = { "United States":"🇺🇸","United Kingdom":"🇬🇧","Canada":"🇨🇦","Australia":"🇦🇺","India":"🇮🇳","China":"🇨🇳","Japan":"🇯🇵","Germany":"🇩🇪","France":"🇫🇷","Brazil":"🇧🇷","Mexico":"🇲🇽","Bangladesh":"🇧🇩","Pakistan":"🇵🇰","Vietnam":"🇻🇳","Russia":"🇷🇺","Italy":"🇮🇹","Spain":"🇪🇸","Egypt":"🇪🇬","Nigeria":"🇳🇬","Turkey":"🇹🇷","South Korea":"🇰🇷","Indonesia":"🇮🇩" };
-      return flags[country] || "🌍";
-    }
+    let favorites = new Set(JSON.parse(localStorage.getItem('cap_favs') || '[]'));
+    let clicks = JSON.parse(localStorage.getItem('cap_clicks') || '{}');
+    let searchTerm = '', view = 'grid', showFavOnly = false;
 
-    // App State
-    let favorites = new Set(JSON.parse(localStorage.getItem('capitalium_favorites') || '[]'));
-    let clickCounts = JSON.parse(localStorage.getItem('capitalium_clicks') || '{}');
-    let searchTerm = '';
-    let currentView = 'grid';
-    let showFavoritesOnly = false;
-
-    // DOM Elements
-    const container = document.getElementById('countriesContainer');
-    const totalSpan = document.getElementById('totalCount');
-    const favCountSpan = document.getElementById('favCount');
-    const clickCounterSpan = document.getElementById('clickCounter');
-    const searchInput = document.getElementById('searchInput');
-    const clearBtn = document.getElementById('clearSearch');
-    const gridBtn = document.getElementById('gridView');
-    const listBtn = document.getElementById('listView');
-    const darkBtn = document.getElementById('darkModeBtn');
-    const exportBtn = document.getElementById('exportBtn');
-    const randomBtn = document.getElementById('randomBtn');
-    const favFilterBtn = document.getElementById('favFilterBtn');
-    const resetLeaderboardBtn = document.getElementById('resetLeaderboardBtn');
-    const activeFiltersDiv = document.getElementById('activeFilters');
-    const toastDiv = document.getElementById('toast');
-    const toastMsgSpan = document.getElementById('toastMsg');
-    const toastIcon = document.getElementById('toastIcon');
-    const leaderboardList = document.getElementById('leaderboardList');
-    const totalClicksRecord = document.getElementById('totalClicksRecord');
-    const topClickRecord = document.getElementById('topClickRecord');
-
-    function showToast(message, icon = '📘') {
-      toastIcon.textContent = icon;
-      toastMsgSpan.textContent = message;
-      toastDiv.classList.remove('translate-x-[150%]');
-      toastDiv.classList.add('translate-x-0');
-      setTimeout(() => {
-        toastDiv.classList.add('translate-x-[150%]');
-        toastDiv.classList.remove('translate-x-0');
-      }, 2000);
-    }
-
+    function showToast(msg, icon = '📘') { let t = document.getElementById('toast'); document.getElementById('toastIcon').innerText = icon; document.getElementById('toastMsg').innerText = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2000); }
     function updateLeaderboard() {
-      const sorted = Object.entries(clickCounts).sort((a, b) => b[1] - a[1]).slice(0, 10);
-      const totalClicks = Object.values(clickCounts).reduce((sum, v) => sum + v, 0);
-      totalClicksRecord.textContent = totalClicks;
-      
-      const top = sorted[0];
-      if (top) topClickRecord.innerHTML = `👑 Top: ${top[0]} (${top[1]} clicks)`;
-      else topClickRecord.innerHTML = `👑 Top: --`;
-      
-      if (sorted.length === 0) {
-        leaderboardList.innerHTML = '<div class="text-center text-gray-400 dark:text-gray-500 py-8 text-sm">✨ Click Wikipedia links to see records ✨</div>';
-        return;
-      }
-      
-      leaderboardList.innerHTML = sorted.map(([country, count], idx) => {
-        let medal = '';
-        let medalClass = '';
-        if (idx === 0) { medal = '🥇'; medalClass = 'medal-gold'; }
-        else if (idx === 1) { medal = '🥈'; medalClass = 'medal-silver'; }
-        else if (idx === 2) { medal = '🥉'; medalClass = 'medal-bronze'; }
-        else medal = `${idx + 1}.`;
-        
-        return `
-          <div class="leaderboard-item flex items-center justify-between p-2 rounded-xl bg-gray-50 dark:bg-slate-800/50">
-            <div class="flex items-center gap-2">
-              <span class="w-8 text-center font-bold ${medalClass ? 'text-white rounded-full w-6 h-6 flex items-center justify-center text-xs' : 'text-gray-600 dark:text-gray-400'}">${medal}</span>
-              <span class="font-medium text-sm text-gray-800 dark:text-gray-200">${getFlagEmoji(country)} ${country}</span>
-            </div>
-            <span class="font-bold text-orange-600 dark:text-orange-400">${count} clicks</span>
-          </div>
-        `;
+      let sorted = Object.entries(clicks).sort((a,b)=>b[1]-a[1]).slice(0,10);
+      let total = Object.values(clicks).reduce((s,v)=>s+v,0);
+      document.getElementById('totalClicksRecord').innerText = total;
+      document.getElementById('clickCounter').innerHTML = `📖 ${total}`;
+      let top = sorted[0]; document.getElementById('topClickRecord').innerHTML = top ? `👑 Top: ${top[0]} (${top[1]} clicks)` : '👑 Top: --';
+      let container = document.getElementById('leaderboardList');
+      if(sorted.length===0) { container.innerHTML = '<div style="text-align:center;padding:30px;color:var(--text-muted);">✨ Click Wikipedia links to see records ✨</div>'; return; }
+      container.innerHTML = sorted.map(([c, cnt], i) => {
+        let medal = i===0?'🥇':i===1?'🥈':i===2?'🥉':`${i+1}.`;
+        return `<div class="leaderboard-item"><div class="medal">${medal}</div><div><span style="font-weight:600;">${getFlag(c)} ${c}</span></div><div style="font-weight:800;color:#f97316;">${cnt} clicks</div></div>`;
       }).join('');
-      
-      clickCounterSpan.innerHTML = `📖 ${totalClicks} total clicks`;
     }
-
-    function updateStats() {
-      const totalClicks = Object.values(clickCounts).reduce((sum, val) => sum + val, 0);
-      clickCounterSpan.innerHTML = `📖 ${totalClicks} total clicks`;
-      favCountSpan.innerHTML = `⭐ ${favorites.size} favorites`;
-      updateLeaderboard();
-    }
-
-    function updateActiveFilters() {
-      activeFiltersDiv.innerHTML = '';
-      if (showFavoritesOnly) {
-        const chip = document.createElement('span');
-        chip.className = 'bg-orange-100 dark:bg-orange-900/50 text-orange-700 dark:text-orange-300 px-3 py-1 rounded-full text-xs flex items-center gap-1';
-        chip.innerHTML = '⭐ Favorites only <button class="ml-1 hover:text-red-500" data-filter="fav">✖</button>';
-        activeFiltersDiv.appendChild(chip);
-      }
-      if (searchTerm) {
-        const chip = document.createElement('span');
-        chip.className = 'bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 px-3 py-1 rounded-full text-xs flex items-center gap-1';
-        chip.innerHTML = `🔍 "${searchTerm}" <button class="ml-1 hover:text-red-500" data-filter="search">✖</button>`;
-        activeFiltersDiv.appendChild(chip);
-      }
-      document.querySelectorAll('[data-filter="fav"]').forEach(btn => btn.onclick = () => { showFavoritesOnly = false; render(); showToast('Showing all countries', '🌍'); });
-      document.querySelectorAll('[data-filter="search"]').forEach(btn => btn.onclick = () => { searchInput.value = ''; searchTerm = ''; clearBtn.classList.add('hidden'); render(); showToast('Search cleared', '🔍'); });
-    }
-
-    function getFilteredCountries() {
-      let filtered = [...allCountries];
-      if (searchTerm) {
-        const term = searchTerm.toLowerCase();
-        filtered = filtered.filter(c => c.country.toLowerCase().includes(term) || c.capital.toLowerCase().includes(term));
-      }
-      if (showFavoritesOnly) filtered = filtered.filter(c => favorites.has(c.country));
-      return filtered;
-    }
-
     function render() {
-      const filtered = getFilteredCountries();
-      totalSpan.textContent = filtered.length;
-      updateStats();
-      updateActiveFilters();
-
-      if (filtered.length === 0) {
-        container.innerHTML = `<div class="text-center py-20 text-gray-500 dark:text-gray-400 text-lg">✨ No countries match your search ✨</div>`;
-        return;
-      }
-
-      container.className = currentView === 'grid'
-        ? 'grid grid-cols-1 sm:grid-cols-2 gap-4'
-        : 'flex flex-col gap-3';
-
+      let filtered = allCountries.filter(c => (!showFavOnly || favorites.has(c.country)) && (searchTerm === '' || c.country.toLowerCase().includes(searchTerm.toLowerCase()) || c.capital.toLowerCase().includes(searchTerm.toLowerCase())));
+      document.getElementById('totalCount').innerHTML = filtered.length;
+      document.getElementById('favCount').innerHTML = `⭐ ${favorites.size}`;
+      updateLeaderboard();
+      let container = document.getElementById('countriesContainer');
+      if(filtered.length===0) { container.innerHTML = '<div class="empty-message">✨ No countries found ✨</div>'; return; }
+      container.className = view === 'grid' ? 'grid-view' : 'list-view';
       container.innerHTML = '';
       filtered.forEach((item, idx) => {
-        const isFavorite = favorites.has(item.country);
-        const visitCount = clickCounts[item.country] || 0;
-        const card = document.createElement('div');
-        card.className = `country-card bg-white dark:bg-slate-800/90 border-2 border-gray-200 dark:border-slate-700 hover:border-orange-400 dark:hover:border-orange-500 rounded-2xl p-4 shadow-md cursor-pointer ${currentView === 'list' ? 'flex justify-between items-center' : ''}`;
-        card.style.animationDelay = `${idx * 0.01}s`;
-        
-        if (currentView === 'grid') {
-          card.innerHTML = `
-            <div class="flex justify-between items-start">
-              <div class="flex-1">
-                <div class="flex items-center gap-2 flex-wrap">
-                  <span class="text-2xl">${getFlagEmoji(item.country)}</span>
-                  <span class="font-extrabold text-gray-800 dark:text-white group-hover:text-orange-600">${item.country}</span>
-                </div>
-                <div class="mt-2 flex items-center gap-2 flex-wrap">
-                  <span class="text-sm font-semibold text-gray-500 dark:text-gray-400">🏛️ ${item.capital}</span>
-                  ${visitCount > 0 ? `<span class="text-xs text-gray-400">📚 ${visitCount}</span>` : ''}
-                  ${visitCount > 3 ? '<span class="text-xs text-orange-500 animate-pulse">🔥</span>' : ''}
-                </div>
-              </div>
-              <div class="flex gap-2">
-                <button class="fav-star text-2xl ${isFavorite ? 'text-yellow-500' : 'text-gray-400'} hover:scale-125 transition" data-country="${item.country}">${isFavorite ? '★' : '☆'}</button>
-                <button class="wiki-link text-2xl text-blue-500 hover:scale-110 transition" data-country="${item.country}">📖</button>
-              </div>
-            </div>
-          `;
+        let isFav = favorites.has(item.country);
+        let cnt = clicks[item.country] || 0;
+        let card = document.createElement('div'); card.className = 'country-card'; card.style.animationDelay = `${idx*0.01}s`;
+        if(view === 'grid') {
+          card.innerHTML = `<div class="card-header"><div class="country-info"><span class="flag">${getFlag(item.country)}</span><span class="country-name">${item.country}</span></div><div class="card-actions"><button class="star-btn ${isFav ? 'favorited' : ''}" data-country="${item.country}">${isFav ? '★' : '☆'}</button><button class="wiki-btn" data-country="${item.country}">📖</button></div></div><div class="capital-info"><span class="capital-name">🏛️ ${item.capital}</span>${cnt>0?`<span class="click-count">📚 ${cnt}</span>`:''}${cnt>3?'<span class="hot-badge">🔥</span>':''}</div>`;
         } else {
-          card.innerHTML = `
-            <div class="flex justify-between items-center w-full">
-              <div class="flex items-center gap-3">
-                <span class="text-2xl">${getFlagEmoji(item.country)}</span>
-                <div><span class="font-extrabold text-gray-800 dark:text-white">${item.country}</span><span class="text-sm text-gray-500 ml-2">🏛️ ${item.capital}</span></div>
-              </div>
-              <div class="flex gap-3">
-                <button class="fav-star text-xl ${isFavorite ? 'text-yellow-500' : 'text-gray-400'} hover:scale-125 transition" data-country="${item.country}">${isFavorite ? '★' : '☆'}</button>
-                <button class="wiki-link text-xl text-blue-500 hover:scale-110 transition" data-country="${item.country}">📖</button>
-              </div>
-            </div>
-          `;
+          card.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center;width:100%;"><div style="display:flex;align-items:center;gap:12px;"><span class="flag">${getFlag(item.country)}</span><div><span class="country-name">${item.country}</span><span class="capital-name" style="margin-left:8px;">🏛️ ${item.capital}</span>${cnt>0?`<span class="click-count" style="margin-left:8px;">📚 ${cnt}</span>`:''}${cnt>3?'<span class="hot-badge" style="margin-left:4px;">🔥</span>':''}</div></div><div class="card-actions"><button class="star-btn ${isFav ? 'favorited' : ''}" data-country="${item.country}">${isFav ? '★' : '☆'}</button><button class="wiki-btn" data-country="${item.country}">📖</button></div></div>`;
         }
         container.appendChild(card);
       });
-
-      document.querySelectorAll('.fav-star').forEach(btn => btn.onclick = (e) => {
-        e.stopPropagation(); const country = btn.dataset.country;
-        if (favorites.has(country)) favorites.delete(country);
-        else favorites.add(country);
-        localStorage.setItem('capitalium_favorites', JSON.stringify([...favorites]));
-        showToast(favorites.has(country) ? `⭐ Added ${country}` : `💔 Removed ${country}`);
-        render();
-      });
-
-      document.querySelectorAll('.wiki-link').forEach(btn => btn.onclick = (e) => {
-        e.stopPropagation(); const country = btn.dataset.country;
-        clickCounts[country] = (clickCounts[country] || 0) + 1;
-        localStorage.setItem('capitalium_clicks', JSON.stringify(clickCounts));
-        window.open(getWikipediaUrl(country), '_blank');
-        showToast(`📖 Opening Wikipedia: ${country}`, '📖');
-        render();
-      });
+      document.querySelectorAll('.star-btn').forEach(btn => btn.onclick = (e) => { e.stopPropagation(); let c = btn.dataset.country; if(favorites.has(c)) favorites.delete(c); else favorites.add(c); localStorage.setItem('cap_favs', JSON.stringify([...favorites])); showToast(favorites.has(c)?`⭐ Added ${c}`:`💔 Removed ${c}`); render(); });
+      document.querySelectorAll('.wiki-btn').forEach(btn => btn.onclick = (e) => { e.stopPropagation(); let c = btn.dataset.country; clicks[c] = (clicks[c]||0)+1; localStorage.setItem('cap_clicks', JSON.stringify(clicks)); window.open(getWikiUrl(c), '_blank'); showToast(`📖 Opening ${c}`); render(); });
     }
 
-    // Dark Mode
-    function initDarkMode() {
-      const isDark = localStorage.getItem('capitalium_dark') === 'true';
-      if (isDark) document.documentElement.classList.add('dark');
-      darkBtn.textContent = isDark ? '☀️ Light' : '🌙 Dark';
-      if (isDark) darkBtn.classList.replace('bg-gray-200', 'bg-orange-500');
-      else darkBtn.classList.replace('bg-orange-500', 'bg-gray-200');
-    }
-    function toggleDarkMode() {
-      document.documentElement.classList.toggle('dark');
-      const isDark = document.documentElement.classList.contains('dark');
-      localStorage.setItem('capitalium_dark', isDark);
-      darkBtn.textContent = isDark ? '☀️ Light' : '🌙 Dark';
-      if (isDark) darkBtn.classList.replace('bg-gray-200', 'bg-orange-500');
-      else darkBtn.classList.replace('bg-orange-500', 'bg-gray-200');
-      showToast(isDark ? 'Dark mode enabled' : 'Light mode enabled', isDark ? '🌙' : '☀️');
-    }
+    // Dark Mode Toggle
+    function initDark() { if(localStorage.getItem('cap_dark')==='true') document.body.classList.add('dark'); }
+    function toggleDark() { document.body.classList.toggle('dark'); localStorage.setItem('cap_dark', document.body.classList.contains('dark')); showToast(document.body.classList.contains('dark')?'Dark mode enabled':'Light mode enabled'); document.getElementById('darkModeBtn').innerText = document.body.classList.contains('dark')?'☀️ Light':'🌙 Dark'; }
+    initDark(); document.getElementById('darkModeBtn').innerText = document.body.classList.contains('dark')?'☀️ Light':'🌙 Dark';
+    document.getElementById('darkModeBtn').onclick = toggleDark;
 
     // Event Listeners
-    searchInput.addEventListener('input', (e) => { searchTerm = e.target.value; clearBtn.classList.toggle('hidden', searchTerm === ''); render(); });
-    clearBtn.addEventListener('click', () => { searchInput.value = ''; searchTerm = ''; clearBtn.classList.add('hidden'); render(); showToast('Search cleared', '🔍'); });
-    gridBtn.addEventListener('click', () => { currentView = 'grid'; gridBtn.classList.replace('bg-gray-200', 'bg-orange-500'); listBtn.classList.replace('bg-orange-500', 'bg-gray-200'); render(); showToast('Grid view', '📱'); });
-    listBtn.addEventListener('click', () => { currentView = 'list'; listBtn.classList.replace('bg-gray-200', 'bg-orange-500'); gridBtn.classList.replace('bg-orange-500', 'bg-gray-200'); render(); showToast('List view', '📋'); });
-    darkBtn.addEventListener('click', toggleDarkMode);
-    favFilterBtn.addEventListener('click', () => { showFavoritesOnly = !showFavoritesOnly; render(); showToast(showFavoritesOnly ? 'Showing favorites only' : 'Showing all countries', '⭐'); });
-    exportBtn.addEventListener('click', () => { let csv = "Country,Capital,Favorite,Clicks\n" + allCountries.map(c => `"${c.country}","${c.capital}",${favorites.has(c.country) ? "Yes" : "No"},${clickCounts[c.country] || 0}`).join('\n'); const blob = new Blob([csv], { type: 'text/csv' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `capitalium_${new Date().toISOString().slice(0,10)}.csv`; a.click(); URL.revokeObjectURL(blob); showToast(`Exported ${allCountries.length} countries`, '📎'); });
-    randomBtn.addEventListener('click', () => { const rand = allCountries[Math.floor(Math.random() * allCountries.length)]; showToast(`🎲 Random: ${rand.country} → ${rand.capital}`, '🎲'); });
-    resetLeaderboardBtn.addEventListener('click', () => { if (confirm('Reset all click records? This cannot be undone.')) { clickCounts = {}; localStorage.setItem('capitalium_clicks', JSON.stringify(clickCounts)); render(); showToast('All click records reset!', '🔄'); } });
-
-    function updateClock() { document.getElementById('clock').innerHTML = `🕒 ${new Date().toLocaleTimeString()}`; }
-    setInterval(updateClock, 1000);
-    updateClock();
-    initDarkMode();
-    render();
-    showToast('✨ Welcome to CAPITALIUM PRO! Click 📖 to set world records ✨', '🏆');
+    document.getElementById('searchInput').oninput = (e) => { searchTerm = e.target.value; document.getElementById('clearSearch').style.display = searchTerm ? 'block' : 'none'; render(); };
+    document.getElementById('clearSearch').onclick = () => { document.getElementById('searchInput').value = ''; searchTerm = ''; document.getElementById('clearSearch').style.display = 'none'; render(); showToast('Search cleared','🔍'); };
+    document.getElementById('gridView').onclick = () => { view='grid'; render(); showToast('Grid view','📱'); };
+    document.getElementById('listView').onclick = () => { view='list'; render(); showToast('List view','📋'); };
+    document.getElementById('favFilterBtn').onclick = () => { showFavOnly = !showFavOnly; render(); showToast(showFavOnly?'Showing favorites only':'Showing all countries','⭐'); };
+    document.getElementById('exportBtn').onclick = () => { let csv = "Country,Capital,Favorite,Clicks\n"+allCountries.map(c=>`"${c.country}","${c.capital}",${favorites.has(c.country)?"Yes":"No"},${clicks[c.country]||0}`).join('\n'); let blob=new Blob([csv],{type:'text/csv'}); let a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`capitals_${new Date().toISOString().slice(0,10)}.csv`; a.click(); showToast(`Exported ${allCountries.length} countries`,'📎'); };
+    document.getElementById('randomBtn').onclick = () => { let r = allCountries[Math.floor(Math.random()*allCountries.length)]; showToast(`🎲 Random: ${r.country} → ${r.capital}`,'🎲'); };
+    document.getElementById('resetLeaderboardBtn').onclick = () => { if(confirm('Reset all click records?')){ clicks={}; localStorage.setItem('cap_clicks',JSON.stringify(clicks)); render(); showToast('All records reset','🔄'); } };
+    setInterval(()=>{ document.getElementById('clock').innerHTML = `🕒 ${new Date().toLocaleTimeString()}`; },1000);
+    render(); showToast('✨ Welcome to CAPITALIUM PRO! Click 📖 to set world records ✨','🏆');
   </script>
 </body>
 </html>
