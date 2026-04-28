@@ -67,18 +67,34 @@ const allCountries = [
   { country: "Yemen", capital: "Sana'a" }, { country: "Zambia", capital: "Lusaka" }, { country: "Zimbabwe", capital: "Harare" }
 ];
 
+// Track Wikipedia clicks
+let clickCounts = JSON.parse(localStorage.getItem('clickCounts') || '{}');
+
 // ======================== HELPER FUNCTIONS ========================
 function getWikiUrl(country) {
   const special = {
-    "United States": "United_States", "United Kingdom": "United_Kingdom", "Côte d'Ivoire": "Ivory_Coast",
-    "North Korea": "North_Korea", "South Korea": "South_Korea", "Bosnia and Herzegovina": "Bosnia_and_Herzegovina"
+    "United States": "United_States", 
+    "United Kingdom": "United_Kingdom", 
+    "Côte d'Ivoire": "Ivory_Coast",
+    "North Korea": "North_Korea", 
+    "South Korea": "South_Korea", 
+    "Bosnia and Herzegovina": "Bosnia_and_Herzegovina",
+    "Antigua and Barbuda": "Antigua_and_Barbuda",
+    "Trinidad and Tobago": "Trinidad_and_Tobago",
+    "Papua New Guinea": "Papua_New_Guinea",
+    "Saudi Arabia": "Saudi_Arabia"
   };
   const name = special[country] || country.replace(/ /g, '_');
   return `https://en.wikipedia.org/wiki/${encodeURIComponent(name)}`;
 }
 
 function getFlag(country) {
-  const flags = { "United States":"🇺🇸","United Kingdom":"🇬🇧","Canada":"🇨🇦","Australia":"🇦🇺","India":"🇮🇳","China":"🇨🇳","Japan":"🇯🇵","Germany":"🇩🇪","France":"🇫🇷","Brazil":"🇧🇷","Mexico":"🇲🇽","Bangladesh":"🇧🇩","Pakistan":"🇵🇰","Vietnam":"🇻🇳","Russia":"🇷🇺","Italy":"🇮🇹","Spain":"🇪🇸","Egypt":"🇪🇬","Nigeria":"🇳🇬","Turkey":"🇹🇷","South Korea":"🇰🇷","Indonesia":"🇮🇩" };
+  const flags = { 
+    "United States":"🇺🇸","United Kingdom":"🇬🇧","Canada":"🇨🇦","Australia":"🇦🇺","India":"🇮🇳",
+    "China":"🇨🇳","Japan":"🇯🇵","Germany":"🇩🇪","France":"🇫🇷","Brazil":"🇧🇷","Mexico":"🇲🇽",
+    "Bangladesh":"🇧🇩","Pakistan":"🇵🇰","Vietnam":"🇻🇳","Russia":"🇷🇺","Italy":"🇮🇹","Spain":"🇪🇸",
+    "Egypt":"🇪🇬","Nigeria":"🇳🇬","Turkey":"🇹🇷","South Korea":"🇰🇷","Indonesia":"🇮🇩"
+  };
   return flags[country] || "🏳️";
 }
 
@@ -92,6 +108,7 @@ let showFavoritesOnly = false;
 const container = document.getElementById('countriesContainer');
 const totalSpan = document.getElementById('totalCount');
 const favCountSpan = document.getElementById('favCount');
+const visitedSpan = document.getElementById('visitedCount');
 const searchInput = document.getElementById('searchInput');
 const clearBtn = document.getElementById('clearSearch');
 const gridBtn = document.getElementById('gridView');
@@ -101,16 +118,27 @@ const exportBtn = document.getElementById('exportBtn');
 const randomBtn = document.getElementById('randomBtn');
 const favFilterBtn = document.getElementById('favFilterBtn');
 const toast = document.getElementById('toast');
+const clockEl = document.getElementById('clock');
 
 // ======================== TOAST FUNCTION ========================
-function showToast(message) {
+function showToast(message, isError = false) {
   toast.textContent = message;
   toast.classList.remove('translate-x-[150%]');
   toast.classList.add('translate-x-0');
+  if (isError) {
+    toast.classList.add('bg-red-600');
+    setTimeout(() => toast.classList.remove('bg-red-600'), 2000);
+  }
   setTimeout(() => {
     toast.classList.add('translate-x-[150%]');
     toast.classList.remove('translate-x-0');
   }, 2000);
+}
+
+// ======================== UPDATE VISITED COUNT ========================
+function updateVisitedCount() {
+  const totalClicks = Object.values(clickCounts).reduce((a, b) => a + b, 0);
+  visitedSpan.innerHTML = `📖 ${totalClicks} clicks`;
 }
 
 // ======================== FILTER & SORT ========================
@@ -139,25 +167,28 @@ function render() {
   // Update stats
   totalSpan.textContent = filtered.length;
   favCountSpan.textContent = `⭐ ${favorites.size} favorites`;
+  updateVisitedCount();
   
   if (filtered.length === 0) {
-    container.innerHTML = `<div class="text-center py-20 text-gray-500 text-lg">✨ No countries found ✨</div>`;
+    container.innerHTML = `<div class="text-center py-20 text-gray-500 dark:text-gray-400 text-lg">✨ No countries found ✨</div>`;
     return;
   }
   
   // Set grid or list class
   if (currentView === 'grid') {
-    container.className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 transition-all';
+    container.className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 transition-all duration-300';
   } else {
-    container.className = 'flex flex-col gap-3 transition-all';
+    container.className = 'flex flex-col gap-3 transition-all duration-300';
   }
   
   container.innerHTML = '';
   
   filtered.forEach(item => {
     const isFav = favorites.has(item.country);
+    const clickCount = clickCounts[item.country] || 0;
+    
     const card = document.createElement('div');
-    card.className = `bg-white dark:bg-slate-800/90 border-2 border-gray-200 dark:border-slate-700 hover:border-orange-400 rounded-2xl p-4 shadow-md hover:shadow-xl transition-all group ${currentView === 'list' ? 'flex justify-between items-center' : ''}`;
+    card.className = `bg-white dark:bg-slate-800/90 border-2 border-gray-200 dark:border-slate-700 hover:border-orange-400 dark:hover:border-orange-500 rounded-2xl p-4 shadow-md hover:shadow-xl transition-all duration-200 group ${currentView === 'list' ? 'flex justify-between items-center' : ''}`;
     
     if (currentView === 'grid') {
       card.innerHTML = `
@@ -165,15 +196,16 @@ function render() {
           <div class="flex-1">
             <div class="flex items-center gap-2">
               <span class="text-2xl">${getFlag(item.country)}</span>
-              <span class="font-extrabold text-gray-800 dark:text-white group-hover:text-orange-600">${item.country}</span>
+              <span class="font-extrabold text-gray-800 dark:text-white group-hover:text-orange-600 dark:group-hover:text-orange-400 transition">${item.country}</span>
             </div>
             <div class="flex items-center gap-2 mt-2">
               <span class="text-sm font-semibold text-gray-500 dark:text-gray-400">🏛️ ${item.capital}</span>
+              ${clickCount > 0 ? `<span class="text-xs text-gray-400 dark:text-gray-500">📚 ${clickCount}</span>` : ''}
             </div>
           </div>
           <div class="flex gap-2">
-            <button class="fav-star text-2xl ${isFav ? 'text-yellow-500' : 'text-gray-400'} hover:scale-125 transition" data-country="${item.country}">${isFav ? '★' : '☆'}</button>
-            <button class="wiki-link text-2xl text-blue-500 hover:scale-110 transition" data-country="${item.country}">📖</button>
+            <button class="fav-star text-2xl ${isFav ? 'text-yellow-500' : 'text-gray-400 dark:text-gray-500'} hover:scale-125 transition" data-country="${item.country}">${isFav ? '★' : '☆'}</button>
+            <button class="wiki-link text-2xl text-blue-500 dark:text-blue-400 hover:scale-110 transition" data-country="${item.country}">📖</button>
           </div>
         </div>
       `;
@@ -185,11 +217,12 @@ function render() {
             <div>
               <span class="font-extrabold text-gray-800 dark:text-white">${item.country}</span>
               <span class="text-sm text-gray-500 dark:text-gray-400 ml-2">🏛️ ${item.capital}</span>
+              ${clickCount > 0 ? `<span class="text-xs text-gray-400 dark:text-gray-500 ml-2">📚 ${clickCount}</span>` : ''}
             </div>
           </div>
           <div class="flex gap-3">
-            <button class="fav-star text-xl ${isFav ? 'text-yellow-500' : 'text-gray-400'} hover:scale-125 transition" data-country="${item.country}">${isFav ? '★' : '☆'}</button>
-            <button class="wiki-link text-xl text-blue-500 hover:scale-110 transition" data-country="${item.country}">📖</button>
+            <button class="fav-star text-xl ${isFav ? 'text-yellow-500' : 'text-gray-400 dark:text-gray-500'} hover:scale-125 transition" data-country="${item.country}">${isFav ? '★' : '☆'}</button>
+            <button class="wiki-link text-xl text-blue-500 dark:text-blue-400 hover:scale-110 transition" data-country="${item.country}">📖</button>
           </div>
         </div>
       `;
@@ -219,10 +252,47 @@ function render() {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
       const country = btn.dataset.country;
+      clickCounts[country] = (clickCounts[country] || 0) + 1;
+      localStorage.setItem('clickCounts', JSON.stringify(clickCounts));
       window.open(getWikiUrl(country), '_blank');
       showToast(`📖 Opening Wikipedia: ${country}`);
+      updateVisitedCount();
     });
   });
+}
+
+// ======================== DARK MODE ========================
+function initDarkMode() {
+  const isDark = localStorage.getItem('darkMode') === 'true';
+  if (isDark) {
+    document.documentElement.classList.add('dark');
+    darkBtn.textContent = '☀️ Light';
+    darkBtn.classList.remove('bg-gray-200', 'dark:bg-slate-700');
+    darkBtn.classList.add('bg-orange-500', 'text-white');
+  } else {
+    document.documentElement.classList.remove('dark');
+    darkBtn.textContent = '🌙 Dark';
+    darkBtn.classList.remove('bg-orange-500', 'text-white');
+    darkBtn.classList.add('bg-gray-200', 'dark:bg-slate-700');
+  }
+}
+
+function toggleDarkMode() {
+  if (document.documentElement.classList.contains('dark')) {
+    document.documentElement.classList.remove('dark');
+    localStorage.setItem('darkMode', 'false');
+    darkBtn.textContent = '🌙 Dark';
+    darkBtn.classList.remove('bg-orange-500', 'text-white');
+    darkBtn.classList.add('bg-gray-200', 'dark:bg-slate-700');
+    showToast('☀️ Light mode enabled');
+  } else {
+    document.documentElement.classList.add('dark');
+    localStorage.setItem('darkMode', 'true');
+    darkBtn.textContent = '☀️ Light';
+    darkBtn.classList.remove('bg-gray-200', 'dark:bg-slate-700');
+    darkBtn.classList.add('bg-orange-500', 'text-white');
+    showToast('🌙 Dark mode enabled');
+  }
 }
 
 // ======================== EVENT LISTENERS ========================
@@ -237,35 +307,38 @@ clearBtn.addEventListener('click', () => {
   searchTerm = '';
   clearBtn.classList.add('hidden');
   render();
+  showToast('Search cleared');
 });
 
 gridBtn.addEventListener('click', () => {
   currentView = 'grid';
-  gridBtn.className = 'px-5 py-2.5 rounded-full font-bold bg-orange-500 text-white';
-  listBtn.className = 'px-5 py-2.5 rounded-full font-bold bg-white dark:bg-slate-800 border';
+  gridBtn.className = 'px-5 py-2.5 rounded-full font-bold transition-all duration-200 bg-orange-500 text-white shadow-md';
+  listBtn.className = 'px-5 py-2.5 rounded-full font-bold transition-all duration-200 bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-slate-600';
   render();
+  showToast('Grid view');
 });
 
 listBtn.addEventListener('click', () => {
   currentView = 'list';
-  listBtn.className = 'px-5 py-2.5 rounded-full font-bold bg-orange-500 text-white';
-  gridBtn.className = 'px-5 py-2.5 rounded-full font-bold bg-white dark:bg-slate-800 border';
+  listBtn.className = 'px-5 py-2.5 rounded-full font-bold transition-all duration-200 bg-orange-500 text-white shadow-md';
+  gridBtn.className = 'px-5 py-2.5 rounded-full font-bold transition-all duration-200 bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-slate-600';
   render();
+  showToast('List view');
 });
 
-darkBtn.addEventListener('click', () => {
-  document.documentElement.classList.toggle('dark');
-  const isDark = document.documentElement.classList.contains('dark');
-  localStorage.setItem('darkMode', isDark);
-  darkBtn.textContent = isDark ? '☀️ Light' : '🌙 Dark';
-  showToast(isDark ? 'Dark mode enabled' : 'Light mode enabled');
-});
+darkBtn.addEventListener('click', toggleDarkMode);
 
 favFilterBtn.addEventListener('click', () => {
   showFavoritesOnly = !showFavoritesOnly;
-  favFilterBtn.style.backgroundColor = showFavoritesOnly ? 'rgb(249, 115, 22)' : '';
-  favFilterBtn.style.color = showFavoritesOnly ? 'white' : '';
-  showToast(showFavoritesOnly ? 'Showing favorites only' : 'Showing all countries');
+  if (showFavoritesOnly) {
+    favFilterBtn.classList.add('bg-orange-500', 'text-white');
+    favFilterBtn.classList.remove('bg-gray-100', 'dark:bg-slate-700');
+    showToast('⭐ Showing favorites only');
+  } else {
+    favFilterBtn.classList.remove('bg-orange-500', 'text-white');
+    favFilterBtn.classList.add('bg-gray-100', 'dark:bg-slate-700');
+    showToast('🌍 Showing all countries');
+  }
   render();
 });
 
@@ -274,10 +347,22 @@ exportBtn.addEventListener('click', () => {
     Country: c.country,
     Capital: c.capital,
     Favorite: favorites.has(c.country) ? 'Yes' : 'No',
-    Wikipedia: getWikiUrl(c.country)
+    'Times Visited': clickCounts[c.country] || 0,
+    'Wikipedia URL': getWikiUrl(c.country)
   }));
-  const csv = [Object.keys(data[0]).join(','), ...data.map(row => Object.values(row).join(','))].join('\n');
-  const blob = new Blob([csv], { type: 'text/csv' });
+  
+  const headers = Object.keys(data[0]);
+  const csvRows = [headers.join(',')];
+  
+  for (const row of data) {
+    const values = headers.map(header => {
+      const val = row[header];
+      return `"${String(val).replace(/"/g, '""')}"`;
+    });
+    csvRows.push(values.join(','));
+  }
+  
+  const blob = new Blob([csvRows.join('\n')], { type: 'text/csv' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
@@ -290,25 +375,72 @@ exportBtn.addEventListener('click', () => {
 randomBtn.addEventListener('click', () => {
   const random = allCountries[Math.floor(Math.random() * allCountries.length)];
   showToast(`🎲 Random: ${random.country} → ${random.capital}`);
-  // Scroll to highlight? Optional
+  
+  // Flash the card if visible
+  const cards = document.querySelectorAll('.wiki-link');
+  for (let i = 0; i < cards.length; i++) {
+    if (cards[i].dataset.country === random.country) {
+      cards[i].closest('.bg-white')?.classList.add('ring-4', 'ring-yellow-400', 'scale-105');
+      setTimeout(() => {
+        cards[i].closest('.bg-white')?.classList.remove('ring-4', 'ring-yellow-400', 'scale-105');
+      }, 1000);
+      break;
+    }
+  }
 });
 
 // ======================== CLOCK ========================
 function updateClock() {
-  const clock = document.getElementById('clock');
-  if (clock) clock.textContent = `🕒 ${new Date().toLocaleTimeString()}`;
+  if (clockEl) clockEl.textContent = `🕒 ${new Date().toLocaleTimeString()}`;
 }
 setInterval(updateClock, 1000);
 updateClock();
 
-// ======================== DARK MODE INIT ========================
-if (localStorage.getItem('darkMode') === 'true') {
-  document.documentElement.classList.add('dark');
-  darkBtn.textContent = '☀️ Light';
-} else {
-  darkBtn.textContent = '🌙 Dark';
-}
+// ======================== KEYBOARD SHORTCUTS ========================
+document.addEventListener('keydown', (e) => {
+  if (e.key === '/' && document.activeElement !== searchInput) {
+    e.preventDefault();
+    searchInput.focus();
+    showToast('🔍 Type to search...');
+  }
+  if (e.key === 'Escape') {
+    if (searchTerm) {
+      searchInput.value = '';
+      searchTerm = '';
+      clearBtn.classList.add('hidden');
+      render();
+      showToast('Search cleared');
+    }
+  }
+  if (e.key === 'g' || e.key === 'G') {
+    if (currentView !== 'grid') {
+      gridBtn.click();
+    }
+  }
+  if (e.key === 'l' || e.key === 'L') {
+    if (currentView !== 'list') {
+      listBtn.click();
+    }
+  }
+  if (e.key === 'f' || e.key === 'F') {
+    favFilterBtn.click();
+  }
+  if (e.key === 'd' || e.key === 'D') {
+    darkBtn.click();
+  }
+  if (e.key === 'r' || e.key === 'R') {
+    if (showFavoritesOnly) favFilterBtn.click();
+    if (searchTerm) {
+      searchInput.value = '';
+      searchTerm = '';
+      clearBtn.classList.add('hidden');
+      render();
+    }
+    showToast('All filters reset');
+  }
+});
 
 // ======================== INITIAL RENDER ========================
+initDarkMode();
 render();
 showToast('✨ Welcome to CAPITALIUM! Click ★ to favorite countries ✨');
