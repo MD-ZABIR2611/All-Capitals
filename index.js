@@ -1,15 +1,6 @@
-// ======================== COMPLETE DATABASE with Continents ========================
-const continentMap = {
-  "Afghanistan":"Asia","Albania":"Europe","Algeria":"Africa","Andorra":"Europe","Angola":"Africa","Argentina":"South America","Armenia":"Asia","Australia":"Oceania","Austria":"Europe","Bangladesh":"Asia","Belgium":"Europe","Brazil":"South America","Canada":"North America","China":"Asia","Denmark":"Europe","Egypt":"Africa","France":"Europe","Germany":"Europe","India":"Asia","Indonesia":"Asia","Iran":"Asia","Iraq":"Asia","Italy":"Europe","Japan":"Asia","Mexico":"North America","Netherlands":"Europe","Nigeria":"Africa","Norway":"Europe","Pakistan":"Asia","Russia":"Europe/Asia","Saudi Arabia":"Asia","South Africa":"Africa","South Korea":"Asia","Spain":"Europe","Sweden":"Europe","Switzerland":"Europe","Turkey":"Asia/Europe","United Kingdom":"Europe","United States":"North America","Vatican City":"Europe","Vietnam":"Asia"
-};
-
-function getContinent(country) { 
-  return continentMap[country] || (country.includes("Antarctica")?"Antarctica":"Other"); 
-}
-
-// Full 197 countries database
+// ======================== COMPLETE DATABASE (197 Countries) ========================
 const allCountries = [
-  { country: "Afghanistan", capital: "Kabul" }, { country: "Albania", capital: "Tirana" }, { country: "Algeria", capital: "Algiers" }, 
+  { country: "Afghanistan", capital: "Kabul" }, { country: "Albania", capital: "Tirana" }, { country: "Algeria", capital: "Algiers" },
   { country: "Andorra", capital: "Andorra la Vella" }, { country: "Angola", capital: "Luanda" }, { country: "Antigua and Barbuda", capital: "St. John's" },
   { country: "Argentina", capital: "Buenos Aires" }, { country: "Armenia", capital: "Yerevan" }, { country: "Australia", capital: "Canberra" },
   { country: "Austria", capital: "Vienna" }, { country: "Azerbaijan", capital: "Baku" }, { country: "Bahamas", capital: "Nassau" },
@@ -76,40 +67,248 @@ const allCountries = [
   { country: "Yemen", capital: "Sana'a" }, { country: "Zambia", capital: "Lusaka" }, { country: "Zimbabwe", capital: "Harare" }
 ];
 
-function getFlag(country) { 
-  const flagMap = { "United States":"🇺🇸","United Kingdom":"🇬🇧","Canada":"🇨🇦","Australia":"🇦🇺","India":"🇮🇳","China":"🇨🇳","Japan":"🇯🇵","Germany":"🇩🇪","France":"🇫🇷","Brazil":"🇧🇷","Mexico":"🇲🇽","Bangladesh":"🇧🇩","Pakistan":"🇵🇰","Vietnam":"🇻🇳","South Korea":"🇰🇷","Russia":"🇷🇺","Italy":"🇮🇹","Spain":"🇪🇸","Egypt":"🇪🇬","Nigeria":"🇳🇬" };
-  return flagMap[country] || "🏳️";
-}
-
-function getWikiUrl(c) { 
-  const special = { "Côte d'Ivoire": "Ivory_Coast", "North Korea": "North_Korea", "South Korea": "South_Korea", "United States": "United_States" };
-  const name = special[c] || c.replace(/ /g, '_');
+// ======================== HELPER FUNCTIONS ========================
+function getWikiUrl(country) {
+  const special = {
+    "United States": "United_States", "United Kingdom": "United_Kingdom", "Côte d'Ivoire": "Ivory_Coast",
+    "North Korea": "North_Korea", "South Korea": "South_Korea", "Bosnia and Herzegovina": "Bosnia_and_Herzegovina"
+  };
+  const name = special[country] || country.replace(/ /g, '_');
   return `https://en.wikipedia.org/wiki/${encodeURIComponent(name)}`;
 }
 
-// State variables
-let favorites = new Set(JSON.parse(localStorage.getItem('favs') || '[]'));
-let visited = new Set(JSON.parse(localStorage.getItem('visited') || '[]'));
-let clickCounts = JSON.parse(localStorage.getItem('clicks') || '{}');
-let notes = JSON.parse(localStorage.getItem('notes') || '{}');
-let currentView = 'grid', searchTerm = '', showFavOnly = false, continentFilter = 'all', sortBy = 'default', randomOrder = [], quizMode = false, flashcardMode = false, quizScore = 0, streak = 0, mastered = new Set(JSON.parse(localStorage.getItem('mastered') || '[]')), currentFlashcardIndex = 0, flashcardCountries = [];
-let comparisonSelected = [];
-
-function updateStorage() { 
-  localStorage.setItem('favs', JSON.stringify([...favorites])); 
-  localStorage.setItem('visited', JSON.stringify([...visited])); 
-  localStorage.setItem('clicks', JSON.stringify(clickCounts)); 
-  localStorage.setItem('mastered', JSON.stringify([...mastered])); 
-  localStorage.setItem('notes', JSON.stringify(notes));
+function getFlag(country) {
+  const flags = { "United States":"🇺🇸","United Kingdom":"🇬🇧","Canada":"🇨🇦","Australia":"🇦🇺","India":"🇮🇳","China":"🇨🇳","Japan":"🇯🇵","Germany":"🇩🇪","France":"🇫🇷","Brazil":"🇧🇷","Mexico":"🇲🇽","Bangladesh":"🇧🇩","Pakistan":"🇵🇰","Vietnam":"🇻🇳","Russia":"🇷🇺","Italy":"🇮🇹","Spain":"🇪🇸","Egypt":"🇪🇬","Nigeria":"🇳🇬","Turkey":"🇹🇷","South Korea":"🇰🇷","Indonesia":"🇮🇩" };
+  return flags[country] || "🏳️";
 }
 
-function showToast(msg) { 
-  const toastText = document.getElementById('toastText');
-  const toast = document.getElementById('toastMsg');
-  if(!toastText || !toast) return;
-  toastText.innerText = msg; 
-  toast.classList.remove('translate-x-[120%]'); 
-  toast.classList.add('translate-x-0'); 
-  setTimeout(() => { 
-    toast.classList.add('translate-x-[120%]'); 
-    toast.classList.remove('translate-x-0'); 
+// ======================== STATE ========================
+let favorites = new Set(JSON.parse(localStorage.getItem('favorites') || '[]'));
+let searchTerm = '';
+let currentView = 'grid';
+let showFavoritesOnly = false;
+
+// ======================== DOM ELEMENTS ========================
+const container = document.getElementById('countriesContainer');
+const totalSpan = document.getElementById('totalCount');
+const favCountSpan = document.getElementById('favCount');
+const searchInput = document.getElementById('searchInput');
+const clearBtn = document.getElementById('clearSearch');
+const gridBtn = document.getElementById('gridView');
+const listBtn = document.getElementById('listView');
+const darkBtn = document.getElementById('darkModeBtn');
+const exportBtn = document.getElementById('exportBtn');
+const randomBtn = document.getElementById('randomBtn');
+const favFilterBtn = document.getElementById('favFilterBtn');
+const toast = document.getElementById('toast');
+
+// ======================== TOAST FUNCTION ========================
+function showToast(message) {
+  toast.textContent = message;
+  toast.classList.remove('translate-x-[150%]');
+  toast.classList.add('translate-x-0');
+  setTimeout(() => {
+    toast.classList.add('translate-x-[150%]');
+    toast.classList.remove('translate-x-0');
+  }, 2000);
+}
+
+// ======================== FILTER & SORT ========================
+function getFilteredCountries() {
+  let filtered = [...allCountries];
+  
+  if (searchTerm) {
+    const term = searchTerm.toLowerCase();
+    filtered = filtered.filter(c => 
+      c.country.toLowerCase().includes(term) || 
+      c.capital.toLowerCase().includes(term)
+    );
+  }
+  
+  if (showFavoritesOnly) {
+    filtered = filtered.filter(c => favorites.has(c.country));
+  }
+  
+  return filtered;
+}
+
+// ======================== RENDER FUNCTION ========================
+function render() {
+  const filtered = getFilteredCountries();
+  
+  // Update stats
+  totalSpan.textContent = filtered.length;
+  favCountSpan.textContent = `⭐ ${favorites.size} favorites`;
+  
+  if (filtered.length === 0) {
+    container.innerHTML = `<div class="text-center py-20 text-gray-500 text-lg">✨ No countries found ✨</div>`;
+    return;
+  }
+  
+  // Set grid or list class
+  if (currentView === 'grid') {
+    container.className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 transition-all';
+  } else {
+    container.className = 'flex flex-col gap-3 transition-all';
+  }
+  
+  container.innerHTML = '';
+  
+  filtered.forEach(item => {
+    const isFav = favorites.has(item.country);
+    const card = document.createElement('div');
+    card.className = `bg-white dark:bg-slate-800/90 border-2 border-gray-200 dark:border-slate-700 hover:border-orange-400 rounded-2xl p-4 shadow-md hover:shadow-xl transition-all group ${currentView === 'list' ? 'flex justify-between items-center' : ''}`;
+    
+    if (currentView === 'grid') {
+      card.innerHTML = `
+        <div class="flex justify-between items-start">
+          <div class="flex-1">
+            <div class="flex items-center gap-2">
+              <span class="text-2xl">${getFlag(item.country)}</span>
+              <span class="font-extrabold text-gray-800 dark:text-white group-hover:text-orange-600">${item.country}</span>
+            </div>
+            <div class="flex items-center gap-2 mt-2">
+              <span class="text-sm font-semibold text-gray-500 dark:text-gray-400">🏛️ ${item.capital}</span>
+            </div>
+          </div>
+          <div class="flex gap-2">
+            <button class="fav-star text-2xl ${isFav ? 'text-yellow-500' : 'text-gray-400'} hover:scale-125 transition" data-country="${item.country}">${isFav ? '★' : '☆'}</button>
+            <button class="wiki-link text-2xl text-blue-500 hover:scale-110 transition" data-country="${item.country}">📖</button>
+          </div>
+        </div>
+      `;
+    } else {
+      card.innerHTML = `
+        <div class="flex justify-between items-center w-full">
+          <div class="flex items-center gap-3">
+            <span class="text-2xl">${getFlag(item.country)}</span>
+            <div>
+              <span class="font-extrabold text-gray-800 dark:text-white">${item.country}</span>
+              <span class="text-sm text-gray-500 dark:text-gray-400 ml-2">🏛️ ${item.capital}</span>
+            </div>
+          </div>
+          <div class="flex gap-3">
+            <button class="fav-star text-xl ${isFav ? 'text-yellow-500' : 'text-gray-400'} hover:scale-125 transition" data-country="${item.country}">${isFav ? '★' : '☆'}</button>
+            <button class="wiki-link text-xl text-blue-500 hover:scale-110 transition" data-country="${item.country}">📖</button>
+          </div>
+        </div>
+      `;
+    }
+    
+    container.appendChild(card);
+  });
+  
+  // Attach event listeners to new buttons
+  document.querySelectorAll('.fav-star').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const country = btn.dataset.country;
+      if (favorites.has(country)) {
+        favorites.delete(country);
+        showToast(`💔 Removed ${country} from favorites`);
+      } else {
+        favorites.add(country);
+        showToast(`⭐ Added ${country} to favorites`);
+      }
+      localStorage.setItem('favorites', JSON.stringify([...favorites]));
+      render();
+    });
+  });
+  
+  document.querySelectorAll('.wiki-link').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const country = btn.dataset.country;
+      window.open(getWikiUrl(country), '_blank');
+      showToast(`📖 Opening Wikipedia: ${country}`);
+    });
+  });
+}
+
+// ======================== EVENT LISTENERS ========================
+searchInput.addEventListener('input', (e) => {
+  searchTerm = e.target.value;
+  clearBtn.classList.toggle('hidden', searchTerm === '');
+  render();
+});
+
+clearBtn.addEventListener('click', () => {
+  searchInput.value = '';
+  searchTerm = '';
+  clearBtn.classList.add('hidden');
+  render();
+});
+
+gridBtn.addEventListener('click', () => {
+  currentView = 'grid';
+  gridBtn.className = 'px-5 py-2.5 rounded-full font-bold bg-orange-500 text-white';
+  listBtn.className = 'px-5 py-2.5 rounded-full font-bold bg-white dark:bg-slate-800 border';
+  render();
+});
+
+listBtn.addEventListener('click', () => {
+  currentView = 'list';
+  listBtn.className = 'px-5 py-2.5 rounded-full font-bold bg-orange-500 text-white';
+  gridBtn.className = 'px-5 py-2.5 rounded-full font-bold bg-white dark:bg-slate-800 border';
+  render();
+});
+
+darkBtn.addEventListener('click', () => {
+  document.documentElement.classList.toggle('dark');
+  const isDark = document.documentElement.classList.contains('dark');
+  localStorage.setItem('darkMode', isDark);
+  darkBtn.textContent = isDark ? '☀️ Light' : '🌙 Dark';
+  showToast(isDark ? 'Dark mode enabled' : 'Light mode enabled');
+});
+
+favFilterBtn.addEventListener('click', () => {
+  showFavoritesOnly = !showFavoritesOnly;
+  favFilterBtn.style.backgroundColor = showFavoritesOnly ? 'rgb(249, 115, 22)' : '';
+  favFilterBtn.style.color = showFavoritesOnly ? 'white' : '';
+  showToast(showFavoritesOnly ? 'Showing favorites only' : 'Showing all countries');
+  render();
+});
+
+exportBtn.addEventListener('click', () => {
+  const data = allCountries.map(c => ({
+    Country: c.country,
+    Capital: c.capital,
+    Favorite: favorites.has(c.country) ? 'Yes' : 'No',
+    Wikipedia: getWikiUrl(c.country)
+  }));
+  const csv = [Object.keys(data[0]).join(','), ...data.map(row => Object.values(row).join(','))].join('\n');
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `capitals_${new Date().toISOString().slice(0, 10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast(`📎 Exported ${allCountries.length} countries to CSV`);
+});
+
+randomBtn.addEventListener('click', () => {
+  const random = allCountries[Math.floor(Math.random() * allCountries.length)];
+  showToast(`🎲 Random: ${random.country} → ${random.capital}`);
+  // Scroll to highlight? Optional
+});
+
+// ======================== CLOCK ========================
+function updateClock() {
+  const clock = document.getElementById('clock');
+  if (clock) clock.textContent = `🕒 ${new Date().toLocaleTimeString()}`;
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// ======================== DARK MODE INIT ========================
+if (localStorage.getItem('darkMode') === 'true') {
+  document.documentElement.classList.add('dark');
+  darkBtn.textContent = '☀️ Light';
+} else {
+  darkBtn.textContent = '🌙 Dark';
+}
+
+// ======================== INITIAL RENDER ========================
+render();
+showToast('✨ Welcome to CAPITALIUM! Click ★ to favorite countries ✨');
